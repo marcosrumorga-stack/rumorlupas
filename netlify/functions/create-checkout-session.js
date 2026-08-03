@@ -48,7 +48,10 @@ exports.handler = async (event) => {
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      payment_method_types: ["card"],
+      // No payment_method_types set here on purpose: Stripe Checkout then
+      // shows whatever payment methods are enabled in the Dashboard
+      // (Settings -> Payment methods) automatically, including wallets
+      // like Apple Pay / Google Pay that aren't explicit type strings.
       line_items,
       shipping_address_collection: { allowed_countries: ["PT"] },
       shipping_options: [
