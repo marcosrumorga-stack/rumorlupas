@@ -109,6 +109,21 @@
   </div>
 </div>
 
+<!-- Photo gallery lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
+  <div class="lightbox__box">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Fechar">×</button>
+    <p class="lightbox__name" id="lightboxName"></p>
+    <div class="lightbox__stage">
+      <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Foto anterior">‹</button>
+      <img id="lightboxImage" alt="">
+      <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Próxima foto">›</button>
+    </div>
+    <p class="lightbox__counter" id="lightboxCounter"></p>
+  </div>
+</div>
+
 <script src="products.js"></script>
 <script src="script.js"></script>
 </body>
