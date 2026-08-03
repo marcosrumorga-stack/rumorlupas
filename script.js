@@ -36,7 +36,11 @@ const checkoutBtn = document.getElementById("checkoutBtn");
 function renderProducts() {
   productGrid.innerHTML = PRODUCTS.map((p) => `
     <div class="product-card">
-      <div class="product-card__image">Foto em breve</div>
+      <div class="product-card__image">${
+        p.images && p.images.length
+          ? `<img src="${p.images[0]}" alt="${p.name}" loading="lazy">`
+          : "Foto em breve"
+      }</div>
       <div class="product-card__body">
         <p class="product-card__name">${p.name}</p>
         <p class="product-card__price">${p.price} €</p>

@@ -1,5 +1,13 @@
 const PRODUCTS = [
-  { id: "eye-jacket-45",   name: "Oakley Eye Jacket",     price: 45 },
+  { id: "eye-jacket-45",   name: "Oakley Eye Jacket",     price: 45, images: [
+      "images/products/eye-jacket-45/2.avif",
+      "images/products/eye-jacket-45/1.avif",
+      "images/products/eye-jacket-45/3.avif",
+      "images/products/eye-jacket-45/4.avif",
+      "images/products/eye-jacket-45/5.avif",
+      "images/products/eye-jacket-45/6.webp",
+      "images/products/eye-jacket-45/model.jpg",
+    ] },
   { id: "plantaris-50",    name: "Oakley Plantaris",      price: 50 },
   { id: "juliet-45",       name: "Oakley Juliet",         price: 45 },
   { id: "xx-45",           name: "Oakley XX",             price: 45 },
