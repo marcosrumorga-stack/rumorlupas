@@ -231,6 +231,7 @@ body {
   font-size: clamp(1.6rem, 2.6vw, 2.1rem);
   font-weight: 400;
   text-align: center;
+  margin-bottom: 40px;
 }
 .section__subtitle {
   text-align: center;
