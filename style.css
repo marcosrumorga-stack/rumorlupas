@@ -272,6 +272,25 @@ body {
 .shades:nth-of-type(3) { top: 40%; left: 42%; width: 160px; transform: rotate(-4deg); opacity: 0.035; }
 .shades:nth-of-type(4) { top: 82%; left: 10%; width: 90px; transform: rotate(14deg); }
 
+/* Decorative skull pattern */
+.skull-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.skull {
+  position: absolute;
+  width: 70px;
+  fill: var(--text);
+  opacity: 0.045;
+}
+.skull-pattern .skull:nth-of-type(1) { top: 10%; left: 6%; width: 60px; transform: rotate(-10deg); }
+.skull-pattern .skull:nth-of-type(2) { top: 60%; right: 8%; width: 90px; transform: rotate(8deg); }
+.skull-pattern .skull:nth-of-type(3) { bottom: 6%; left: 40%; width: 50px; transform: rotate(-6deg); opacity: 0.035; }
+.skull--catalogo:nth-of-type(5) { top: 78%; left: 88%; width: 55px; fill: var(--accent); opacity: 0.06; transform: rotate(-12deg); }
+.skull--catalogo:nth-of-type(6) { top: 12%; left: 60%; width: 45px; fill: var(--text); opacity: 0.04; transform: rotate(15deg); }
+
 /* Products */
 .products {
   display: grid;
