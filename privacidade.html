@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidade — RumorLupas</title>
+<meta name="description" content="Política de privacidade da RumorLupas.">
+<link rel="icon" type="image/png" href="images/boar-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .legal { max-width: 760px; margin: 0 auto; padding: 110px 24px 90px; }
+  .legal h1 { font-size: clamp(1.8rem, 3vw, 2.3rem); margin-bottom: 8px; }
+  .legal .updated { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 40px; }
+  .legal h2 { font-size: 1.2rem; margin-top: 36px; margin-bottom: 12px; }
+  .legal p, .legal li { color: var(--text-muted); line-height: 1.7; margin-bottom: 10px; }
+  .legal ul { padding-left: 20px; margin-bottom: 10px; }
+  .legal a { color: var(--accent); }
+  .legal strong { color: var(--text); }
+  .back-link { display: inline-block; margin-bottom: 24px; color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="index.html" class="logo"><img src="images/boar-icon.png" alt="" class="logo__icon">RUMOR<span>LUPAS</span></a>
+  </div>
+</header>
+
+<main class="legal">
+  <a href="index.html" class="back-link">← Voltar ao site</a>
+  <h1>Política de Privacidade</h1>
+  <p class="updated">Última atualização: [preencher data]</p>
+
+  <p>A RumorLupas ("nós") respeita a sua privacidade e está empenhada em proteger os seus dados pessoais. Esta política explica que informação recolhemos, para que fins, e quais os seus direitos.</p>
+
+  <h2>1. Quem somos</h2>
+  <p><strong>RumorLupas</strong> — [nome legal da empresa / NIF a preencher]. Para questões sobre privacidade, contacte-nos em <a href="mailto:contato@rumorlupas.com">contato@rumorlupas.com</a>.</p>
+
+  <h2>2. Que dados recolhemos</h2>
+  <ul>
+    <li><strong>Dados de encomenda:</strong> nome, morada de entrega, e-mail e telefone, fornecidos por si no momento da compra através do checkout do Stripe.</li>
+    <li><strong>Dados de pagamento:</strong> processados diretamente pelo Stripe — a RumorLupas não vê nem armazena o número do seu cartão.</li>
+    <li><strong>Dados do carrinho:</strong> os produtos que adiciona ao carrinho ficam guardados localmente no seu navegador (localStorage), não em nenhum servidor nosso, até finalizar a compra.</li>
+  </ul>
+
+  <h2>3. Para que usamos os seus dados</h2>
+  <ul>
+    <li>Processar e entregar a sua encomenda</li>
+    <li>Comunicar consigo sobre o estado da compra</li>
+    <li>Cumprir obrigações legais (ex.: faturação)</li>
+  </ul>
+
+  <h2>4. Com quem partilhamos</h2>
+  <p>Partilhamos apenas o necessário com prestadores de serviço que nos ajudam a operar a loja:</p>
+  <ul>
+    <li><strong>Stripe</strong> — processamento de pagamentos</li>
+    <li><strong>Netlify</strong> — alojamento do site</li>
+    <li><strong>CTT</strong> (ou transportadora equivalente) — entrega da encomenda</li>
+  </ul>
+  <p>Não vendemos os seus dados a terceiros.</p>
+
+  <h2>5. Quanto tempo guardamos os dados</h2>
+  <p>Guardamos os dados da encomenda pelo tempo exigido por lei (obrigações fiscais/contabilísticas) e apagamo-los quando deixam de ser necessários.</p>
+
+  <h2>6. Os seus direitos</h2>
+  <p>Ao abrigo do RGPD, tem direito a aceder, corrigir, apagar ou pedir a portabilidade dos seus dados, e a opor-se ao tratamento. Para exercer estes direitos, contacte-nos em <a href="mailto:contato@rumorlupas.com">contato@rumorlupas.com</a>.</p>
+
+  <h2>7. Cookies</h2>
+  <p>O site utiliza armazenamento local do navegador para manter o carrinho de compras. O checkout do Stripe pode utilizar cookies próprios necessários ao processamento seguro do pagamento.</p>
+
+  <h2>8. Alterações a esta política</h2>
+  <p>Podemos atualizar esta política periodicamente. A data no topo desta página indica a versão mais recente.</p>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <p>&copy; <span id="year"></span> RumorLupas. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>
