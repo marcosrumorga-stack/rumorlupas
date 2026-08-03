@@ -1,7 +1,7 @@
 const PRODUCTS = [
   {
     id: "eye-jacket-45",
-    name: "Oakley Eye Jacket",
+    name: "Oakley Eye Jacket Redux",
     price: 45,
     history: "Lançado em 1996, o Eye Jacket foi um dos modelos que definiu a estética esportiva da Oakley nos anos 90, com sua lente envolvente e visual futurista. Rapidamente virou item de estilo fora das pistas, adotado pela cena rave e pelo streetwear da época. Essa versão \"Redux\" resgata a silhueta original com acabamento atualizado.",
     images: [
