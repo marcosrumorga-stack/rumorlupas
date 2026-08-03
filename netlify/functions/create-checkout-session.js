@@ -48,7 +48,7 @@ exports.handler = async (event) => {
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      automatic_payment_methods: { enabled: true },
+      payment_method_types: ["card", "multibanco", "klarna", "paypal"],
       line_items,
       shipping_address_collection: { allowed_countries: ["PT"] },
       shipping_options: [
