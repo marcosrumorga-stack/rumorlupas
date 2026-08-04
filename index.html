@@ -32,20 +32,48 @@
 
 <section class="hero">
   <div class="hero__decor" aria-hidden="true">
-    <p class="hero__watermark">RUMOR<span>LUPAS</span></p>
-    <svg class="hero__sun" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="100" r="90"/></svg>
-    <svg class="hero__mountain" viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,200 L280,60 L420,140 L680,20 L900,150 L1120,70 L1440,200 Z"/></svg>
-    <svg class="leaf leaf--1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path d="M32 4C20 16 8 24 8 40c0 10 8 18 18 20-2-6-2-12 0-18 4 8 10 12 18 14 6-14 4-28-4-40-2 6-6 10-12 12 2-10 2-16-4-24z"/></svg>
-    <svg class="leaf leaf--2" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path d="M32 4C20 16 8 24 8 40c0 10 8 18 18 20-2-6-2-12 0-18 4 8 10 12 18 14 6-14 4-28-4-40-2 6-6 10-12 12 2-10 2-16-4-24z"/></svg>
-    <svg class="leaf leaf--3" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path d="M32 4C20 16 8 24 8 40c0 10 8 18 18 20-2-6-2-12 0-18 4 8 10 12 18 14 6-14 4-28-4-40-2 6-6 10-12 12 2-10 2-16-4-24z"/></svg>
+    <div class="hero__glow"></div>
+    <svg class="hero__lens" viewBox="38 34 324 356" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="rl-lensfill" cx="36%" cy="30%" r="80%">
+          <stop offset="0" stop-color="#e8434a" stop-opacity=".18"/>
+          <stop offset="1" stop-color="#c81d25" stop-opacity=".04"/>
+        </radialGradient>
+        <g id="rl-ott-side">
+          <path d="M200 330C206 348 220 362 240 370C264 378 300 375 322 362C340 351 348 336 348 316C350 268 348 210 338 158C328 112 310 74 288 52C280 44 266 46 262 62C272 100 278 150 276 196C274 232 252 264 220 280C208 288 200 300 200 312"/>
+          <path d="M275 60C292 100 305 130 308 165C311 205 308 235 300 258" opacity=".35"/>
+          <path d="M278 74l2 12M290 72l2 12M292 112l1 13M304 111l1 13M302 194l0 13M315 194l0 13" opacity=".6"/>
+          <path d="M270 72L286 67" stroke-width="2.6" stroke-dasharray="0.1 7.6" opacity=".75"/>
+        </g>
+      </defs>
+      <use href="#rl-ott-side"/>
+      <use href="#rl-ott-side" transform="translate(400,0) scale(-1,1)"/>
+      <path d="M158 174C154 208 163 242 184 262C191 269 209 269 216 262C237 242 246 208 242 174C222 166 178 166 158 174Z"/>
+      <path d="M200 182L200 254" opacity=".3"/>
+      <circle class="lens" cx="132" cy="300" r="60"/>
+      <circle class="lens" cx="268" cy="300" r="60"/>
+      <circle cx="132" cy="300" r="53" opacity=".35"/>
+      <circle cx="268" cy="300" r="53" opacity=".35"/>
+      <circle class="rivets" cx="132" cy="300" r="67"/>
+      <circle class="rivets" cx="268" cy="300" r="67"/>
+      <path class="rivets" d="M168 226C178 248 188 258 200 261C212 258 222 248 232 226" opacity=".8"/>
+      <path class="rivets" d="M200 274L200 330" opacity=".7"/>
+    </svg>
+    <div class="hero__grid"></div>
   </div>
   <div class="container hero__inner">
-    <p class="hero__eyebrow">LUPAS <img src="images/oakley-logo.png" alt="Oakley" class="hero__eyebrow-logo"></p>
-    <h1>Veja o mundo com <span>estilo</span></h1>
+    <p class="hero__eyebrow"><span class="hero__rule"></span>LUPAS <img src="images/oakley-logo.png" alt="Oakley" class="hero__eyebrow-logo"><span class="hero__rule"></span></p>
+    <h1>Veja o mundo<br>com <span>estilo</span></h1>
     <p class="hero__subtitle">Modelos Oakley de qualidade premium, sem complicação: escolhe o modelo, paga com segurança e recebe rapidinho em casa.</p>
     <div class="hero__actions">
       <a href="#catalogo" class="btn btn--primary">Ver catálogo</a>
+      <a href="#sobre" class="btn btn--ghost">Sobre a marca</a>
     </div>
+    <ul class="hero__trust">
+      <li>Proteção UV400</li>
+      <li>Envio para Portugal</li>
+      <li>Pagamento seguro Stripe</li>
+    </ul>
   </div>
 </section>
 
@@ -79,7 +107,7 @@
 <section class="instagram">
   <img src="images/boar-icon.png" alt="" class="instagram__watermark">
   <div class="container instagram__content">
-    <p class="hero__eyebrow">@rumorlupas</p>
+    <p class="eyebrow">@rumorlupas</p>
     <h2 class="section__title">Siga no Instagram</h2>
     <p class="instagram__subtitle">Novidades, lançamentos e bastidores da RumorLupas — segue lá pra não perder nada.</p>
     <a href="https://instagram.com/rumorlupas" class="btn btn--primary" target="_blank" rel="noopener">Seguir @rumorlupas</a>
