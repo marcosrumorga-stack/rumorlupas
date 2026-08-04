@@ -36,6 +36,7 @@ const PRODUCTS = [
           "images/products/plantaris-50/preto/2.avif",
           "images/products/plantaris-50/preto/3.avif",
           "images/products/plantaris-50/preto/4.avif",
+          "images/products/plantaris-50/preto/model.webp",
         ],
       },
     ],
