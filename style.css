@@ -132,14 +132,25 @@ body {
   pointer-events: none;
   z-index: 0;
 }
-.hero__glow {
+.band__decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.band__glow {
   position: absolute;
   inset: 0;
   background:
     radial-gradient(70% 90% at 50% 8%, rgba(200,29,37,0.30), transparent 62%),
     radial-gradient(50% 60% at 50% 100%, rgba(212,165,61,0.12), transparent 70%);
 }
-.hero__grid {
+.band__glow--soft {
+  background:
+    radial-gradient(85% 110% at 50% 0%, rgba(200,29,37,0.17), transparent 66%),
+    radial-gradient(60% 80% at 50% 100%, rgba(212,165,61,0.07), transparent 72%);
+}
+.band__grid {
   position: absolute;
   inset: 0;
   background-image:
@@ -286,7 +297,41 @@ body {
 
 /* Sections */
 .section { padding: 90px 0; }
-.section--alt { background: var(--bg-alt); }
+
+/* Dark band — shares the hero's visual identity */
+.section--dark {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: #100e0d;
+  color: #fff;
+}
+.section--dark .container { position: relative; z-index: 1; }
+.section--dark .section__title { color: #fff; }
+.section--dark .about__text,
+.section--dark .instagram__subtitle { color: rgba(255,255,255,0.6); }
+.section--dark .eyebrow { color: var(--accent-light); }
+
+/* Oakley model silhouettes */
+.models-pattern { position: absolute; inset: 0; }
+.model {
+  position: absolute;
+  height: auto;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.085;
+}
+.model .bolt { fill: #fff; stroke: none; }
+.model--1 { top: 12%; left: 2%; width: 250px; transform: rotate(-8deg); }
+.model--2 { top: 7%; right: 4%; width: 215px; transform: rotate(5deg); opacity: 0.07; }
+.model--3 { bottom: 10%; right: 12%; width: 265px; transform: rotate(-4deg); opacity: 0.06; }
+.model--4 { bottom: 15%; left: 11%; width: 200px; transform: rotate(9deg); opacity: 0.07; }
+.model--5 { top: 14%; left: 5%; width: 235px; transform: rotate(6deg); }
+.model--6 { bottom: 12%; right: 6%; width: 255px; transform: rotate(-7deg); opacity: 0.07; }
+.model--7 { top: 56%; left: 14%; width: 185px; transform: rotate(-3deg); opacity: 0.055; }
 .section__title {
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 2.6vw, 2.1rem);
@@ -324,21 +369,12 @@ body {
 .shades:nth-of-type(4) { top: 82%; left: 10%; width: 90px; transform: rotate(14deg); }
 
 /* Decorative skull pattern */
-.skull-pattern {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
 .skull {
   position: absolute;
   width: 70px;
   fill: var(--text);
   opacity: 0.045;
 }
-.skull-pattern .skull:nth-of-type(1) { top: 10%; left: 6%; width: 60px; transform: rotate(-10deg); }
-.skull-pattern .skull:nth-of-type(2) { top: 60%; right: 8%; width: 90px; transform: rotate(8deg); }
-.skull-pattern .skull:nth-of-type(3) { bottom: 6%; left: 40%; width: 50px; transform: rotate(-6deg); opacity: 0.035; }
 .skull--catalogo:nth-of-type(5) { top: 78%; left: 88%; width: 55px; fill: var(--accent); opacity: 0.06; transform: rotate(-12deg); }
 .skull--catalogo:nth-of-type(6) { top: 12%; left: 60%; width: 45px; fill: var(--text); opacity: 0.04; transform: rotate(15deg); }
 
@@ -410,22 +446,17 @@ body {
 
 /* Instagram */
 .instagram {
-  position: relative;
   padding: 110px 0;
-  overflow: hidden;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  background:
-    radial-gradient(ellipse at center, rgba(200,29,37,0.06), transparent 60%),
-    var(--bg-alt);
+  border-top: 1px solid rgba(255,255,255,0.07);
 }
 .instagram__watermark {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 380px;
-  opacity: 0.08;
+  width: 430px;
+  opacity: 0.22;
+  filter: brightness(1.45) saturate(1.25);
   pointer-events: none;
 }
 .instagram__content {
@@ -448,9 +479,9 @@ body {
 
 /* Footer */
 .footer {
-  border-top: 1px solid var(--border);
-  padding: 28px 0;
-  background: var(--bg-alt);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 32px 0;
+  background: #0b0a09;
 }
 .footer__inner {
   display: flex;
@@ -458,10 +489,12 @@ body {
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.42);
   font-size: 0.85rem;
 }
-.footer__note { font-size: 0.78rem; color: var(--text-muted); }
+.footer__note { font-size: 0.78rem; color: rgba(255,255,255,0.34); }
+.footer a { color: rgba(255,255,255,0.66); }
+.footer a:hover { color: #fff; }
 
 /* Product detail page */
 .product-page { padding-top: 50px; }
