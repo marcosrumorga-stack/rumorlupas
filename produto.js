@@ -21,6 +21,7 @@ if (!product) {
 
   document.getElementById("pageTitle").textContent = `${product.name} — RumorLupas`;
   document.getElementById("productName").textContent = product.name;
+  document.getElementById("productColors").innerHTML = colorSwatchesHtml(product);
   document.getElementById("productPrice").textContent = `${product.price} €`;
   document.getElementById("productHistory").textContent =
     product.history || "Em breve, mais detalhes sobre a história deste modelo.";

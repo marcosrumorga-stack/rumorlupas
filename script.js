@@ -19,6 +19,7 @@ function renderProducts() {
       }</div>
       <div class="product-card__body">
         <a href="produto.html?id=${p.id}" class="product-card__name">${p.name}</a>
+        ${colorSwatchesHtml(p)}
         <p class="product-card__price">${p.price} €</p>
         <button class="product-card__btn" data-id="${p.id}">Adicionar ao carrinho</button>
       </div>

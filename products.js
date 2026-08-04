@@ -3,6 +3,7 @@ const PRODUCTS = [
     id: "eye-jacket-45",
     name: "Eye Jacket Redux",
     price: 45,
+    colors: [{ name: "Preto", hex: "#15130f" }],
     history: "Lançado em 1996, o Eye Jacket foi um dos modelos que definiu a estética esportiva da Oakley nos anos 90, com sua lente envolvente e visual futurista. Rapidamente virou item de estilo fora das pistas, adotado pela cena rave e pelo streetwear da época. Essa versão \"Redux\" resgata a silhueta original com acabamento atualizado.",
     images: [
       "images/products/eye-jacket-45/2.avif",
@@ -18,6 +19,7 @@ const PRODUCTS = [
     id: "plantaris-50",
     name: "Plantaris",
     price: 50,
+    colors: [{ name: "Preto", hex: "#15130f" }],
     history: "O Plantaris representa a leitura mais recente da Oakley sobre o formato wrap clássico da marca, com maior cobertura lateral e um encaixe pensado tanto para performance quanto para o dia a dia. Une a herança esportiva da marca a um visual mais contemporâneo.",
     images: [
       "images/products/plantaris-50/1.avif",
@@ -81,3 +83,12 @@ const PRODUCTS = [
     history: "O PitBoss é um resgate de um dos formatos mais robustos do catálogo Oakley do início dos anos 2000, com armação espessa e presença forte — um visual que remete diretamente à estética \"Y2K\" que voltou às ruas nos últimos anos.",
   },
 ];
+
+function colorSwatchesHtml(product) {
+  if (!product.colors || !product.colors.length) return "";
+  const label = product.colors.map((c) => c.name).join(", ");
+  const dots = product.colors
+    .map((c) => `<span class="swatch" style="--swatch: ${c.hex}"></span>`)
+    .join("");
+  return `<p class="swatches" aria-label="Cores disponíveis: ${label}">${dots}</p>`;
+}
