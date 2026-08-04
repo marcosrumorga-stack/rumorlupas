@@ -23,8 +23,29 @@ const cartTotalEl = document.getElementById("cartTotal");
 const cartCountEl = document.getElementById("cartCount");
 const checkoutBtn = document.getElementById("checkoutBtn");
 
-function addToCart(id) {
-  cart[id] = (cart[id] || 0) + 1;
+// A cart key is "<productId>" for a plain product, or "<productId>|<colorId>"
+// when the product comes in more than one colour. Keys written before colours
+// existed have no suffix, and still resolve to the product's first colour.
+function cartKey(productId, colorId) {
+  return colorId ? `${productId}|${colorId}` : productId;
+}
+
+function cartLine(key, qty) {
+  const [productId, colorId] = key.split("|");
+  const product = PRODUCTS.find((p) => p.id === productId);
+  if (!product) return null;
+  return { key, qty, product, color: findColor(product, colorId) };
+}
+
+function cartLines() {
+  return Object.entries(cart)
+    .map(([key, qty]) => cartLine(key, qty))
+    .filter(Boolean);
+}
+
+function addToCart(productId, colorId) {
+  const key = cartKey(productId, colorId);
+  cart[key] = (cart[key] || 0) + 1;
   saveCart(cart);
   renderCart();
   openCart();
@@ -45,10 +66,7 @@ function removeFromCart(id) {
 }
 
 function cartTotal() {
-  return Object.entries(cart).reduce((sum, [id, qty]) => {
-    const product = PRODUCTS.find((p) => p.id === id);
-    return sum + (product ? product.price * qty : 0);
-  }, 0);
+  return cartLines().reduce((sum, line) => sum + line.product.price * line.qty, 0);
 }
 
 function cartCount() {
@@ -56,27 +74,29 @@ function cartCount() {
 }
 
 function renderCart() {
-  const entries = Object.entries(cart);
+  const lines = cartLines();
   cartCountEl.textContent = cartCount();
 
-  if (entries.length === 0) {
+  if (lines.length === 0) {
     cartItemsEl.innerHTML = '<p class="cart-drawer__empty">Seu carrinho está vazio.</p>';
   } else {
-    cartItemsEl.innerHTML = entries.map(([id, qty]) => {
-      const product = PRODUCTS.find((p) => p.id === id);
-      if (!product) return "";
+    cartItemsEl.innerHTML = lines.map(({ key, qty, product, color }) => {
+      const images = productImages(product, color && color.id);
       return `
         <div class="cart-item">
-          <div class="cart-item__thumb"></div>
+          <div class="cart-item__thumb">${
+            images.length ? `<img src="${images[0]}" alt="">` : ""
+          }</div>
           <div class="cart-item__info">
             <p class="cart-item__name">${product.name}</p>
+            ${color ? `<p class="cart-item__color"><span class="swatch" style="--swatch: ${color.hex}"></span>${color.name}</p>` : ""}
             <p class="cart-item__price">${product.price} € · <span class="cart-item__qty-inline">${qty}x</span></p>
             <div class="cart-item__qty">
-              <button data-action="dec" data-id="${id}">−</button>
+              <button data-action="dec" data-id="${key}">−</button>
               <span>${qty}</span>
-              <button data-action="inc" data-id="${id}">+</button>
+              <button data-action="inc" data-id="${key}">+</button>
             </div>
-            <button class="cart-item__remove" data-action="remove" data-id="${id}">Remover</button>
+            <button class="cart-item__remove" data-action="remove" data-id="${key}">Remover</button>
           </div>
         </div>
       `;

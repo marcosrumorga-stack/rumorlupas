@@ -9,25 +9,34 @@ nav.querySelectorAll("a").forEach((link) => {
 
 const productGrid = document.getElementById("productGrid");
 
+// Which colour each card is currently showing, keyed by product id.
+const selectedColor = {};
+PRODUCTS.forEach((p) => {
+  selectedColor[p.id] = defaultColorId(p);
+});
+
 function renderProducts() {
-  productGrid.innerHTML = PRODUCTS.map((p) => `
-    <div class="product-card">
-      <div class="product-card__image"${p.images && p.images.length ? ` data-id="${p.id}" role="button" tabindex="0" aria-label="Ver fotos de ${p.name}"` : ""}>${
-        p.images && p.images.length
-          ? `<img src="${p.images[0]}" alt="${p.name}" loading="lazy">`
+  productGrid.innerHTML = PRODUCTS.map((p) => {
+    const images = productImages(p, selectedColor[p.id]);
+    return `
+    <div class="product-card" data-product="${p.id}">
+      <div class="product-card__image"${images.length ? ` data-id="${p.id}" role="button" tabindex="0" aria-label="Ver fotos de ${p.name}"` : ""}>${
+        images.length
+          ? `<img src="${images[0]}" alt="${p.name}" loading="lazy">`
           : "Foto em breve"
       }</div>
       <div class="product-card__body">
         <a href="produto.html?id=${p.id}" class="product-card__name">${p.name}</a>
-        ${colorSwatchesHtml(p)}
+        ${colorSwatchesHtml(p, selectedColor[p.id])}
         <p class="product-card__price">${p.price} €</p>
         <button class="product-card__btn" data-id="${p.id}">Adicionar ao carrinho</button>
       </div>
     </div>
-  `).join("");
+  `;
+  }).join("");
 
   productGrid.querySelectorAll(".product-card__btn").forEach((btn) => {
-    btn.addEventListener("click", () => addToCart(btn.dataset.id));
+    btn.addEventListener("click", () => addToCart(btn.dataset.id, selectedColor[btn.dataset.id]));
   });
 
   productGrid.querySelectorAll(".product-card__image[data-id]").forEach((el) => {
@@ -38,6 +47,29 @@ function renderProducts() {
         openLightbox(el.dataset.id);
       }
     });
+  });
+
+  productGrid.querySelectorAll(".swatch").forEach((btn) => {
+    const productId = btn.closest(".product-card").dataset.product;
+    btn.addEventListener("click", () => pickColor(productId, btn.dataset.color));
+  });
+}
+
+function pickColor(productId, colorId) {
+  selectedColor[productId] = colorId;
+
+  const product = PRODUCTS.find((p) => p.id === productId);
+  const card = productGrid.querySelector(`.product-card[data-product="${productId}"]`);
+  if (!product || !card) return;
+
+  const images = productImages(product, colorId);
+  const img = card.querySelector(".product-card__image img");
+  if (img && images.length) img.src = images[0];
+
+  card.querySelectorAll(".swatch").forEach((s) => {
+    const on = s.dataset.color === colorId;
+    s.classList.toggle("active", on);
+    s.setAttribute("aria-pressed", on);
   });
 }
 
@@ -55,8 +87,10 @@ let lightboxIndex = 0;
 
 function openLightbox(productId) {
   const product = PRODUCTS.find((p) => p.id === productId);
-  if (!product || !product.images || !product.images.length) return;
-  lightboxImages = product.images;
+  if (!product) return;
+  const images = productImages(product, selectedColor[productId]);
+  if (!images.length) return;
+  lightboxImages = images;
   lightboxIndex = 0;
   lightboxName.textContent = product.name;
   renderLightboxImage();

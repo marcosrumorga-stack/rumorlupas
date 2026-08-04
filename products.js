@@ -3,29 +3,41 @@ const PRODUCTS = [
     id: "eye-jacket-45",
     name: "Eye Jacket Redux",
     price: 45,
-    colors: [{ name: "Preto", hex: "#15130f" }],
     history: "Lançado em 1996, o Eye Jacket foi um dos modelos que definiu a estética esportiva da Oakley nos anos 90, com sua lente envolvente e visual futurista. Rapidamente virou item de estilo fora das pistas, adotado pela cena rave e pelo streetwear da época. Essa versão \"Redux\" resgata a silhueta original com acabamento atualizado.",
-    images: [
-      "images/products/eye-jacket-45/2.avif",
-      "images/products/eye-jacket-45/1.avif",
-      "images/products/eye-jacket-45/3.avif",
-      "images/products/eye-jacket-45/4.avif",
-      "images/products/eye-jacket-45/5.avif",
-      "images/products/eye-jacket-45/6.webp",
-      "images/products/eye-jacket-45/model.jpg",
+    colors: [
+      {
+        id: "preto",
+        name: "Preto",
+        hex: "#15130f",
+        images: [
+          "images/products/eye-jacket-45/preto/2.avif",
+          "images/products/eye-jacket-45/preto/1.avif",
+          "images/products/eye-jacket-45/preto/3.avif",
+          "images/products/eye-jacket-45/preto/4.avif",
+          "images/products/eye-jacket-45/preto/5.avif",
+          "images/products/eye-jacket-45/preto/6.webp",
+          "images/products/eye-jacket-45/preto/model.jpg",
+        ],
+      },
     ],
   },
   {
     id: "plantaris-50",
     name: "Plantaris",
     price: 50,
-    colors: [{ name: "Preto", hex: "#15130f" }],
     history: "O Plantaris representa a leitura mais recente da Oakley sobre o formato wrap clássico da marca, com maior cobertura lateral e um encaixe pensado tanto para performance quanto para o dia a dia. Une a herança esportiva da marca a um visual mais contemporâneo.",
-    images: [
-      "images/products/plantaris-50/1.avif",
-      "images/products/plantaris-50/2.avif",
-      "images/products/plantaris-50/3.avif",
-      "images/products/plantaris-50/4.avif",
+    colors: [
+      {
+        id: "preto",
+        name: "Preto",
+        hex: "#15130f",
+        images: [
+          "images/products/plantaris-50/preto/1.avif",
+          "images/products/plantaris-50/preto/2.avif",
+          "images/products/plantaris-50/preto/3.avif",
+          "images/products/plantaris-50/preto/4.avif",
+        ],
+      },
     ],
   },
   {
@@ -84,11 +96,34 @@ const PRODUCTS = [
   },
 ];
 
-function colorSwatchesHtml(product) {
-  if (!product.colors || !product.colors.length) return "";
-  const label = product.colors.map((c) => c.name).join(", ");
+// A product either has colour variants — each with its own photos — or a plain
+// images list. These helpers hide that difference from the rest of the code.
+
+function hasColors(product) {
+  return Boolean(product.colors && product.colors.length);
+}
+
+function defaultColorId(product) {
+  return hasColors(product) ? product.colors[0].id : null;
+}
+
+function findColor(product, colorId) {
+  if (!hasColors(product)) return null;
+  return product.colors.find((c) => c.id === colorId) || product.colors[0];
+}
+
+function productImages(product, colorId) {
+  const color = findColor(product, colorId);
+  return (color ? color.images : product.images) || [];
+}
+
+function colorSwatchesHtml(product, selectedId) {
+  if (!hasColors(product)) return "";
   const dots = product.colors
-    .map((c) => `<span class="swatch" style="--swatch: ${c.hex}"></span>`)
+    .map((c) => {
+      const on = c.id === selectedId;
+      return `<button type="button" class="swatch${on ? " active" : ""}" style="--swatch: ${c.hex}" data-color="${c.id}" aria-pressed="${on}" title="${c.name}"><span class="sr-only">${c.name}</span></button>`;
+    })
     .join("");
-  return `<p class="swatches" aria-label="Cores disponíveis: ${label}">${dots}</p>`;
+  return `<div class="swatches" role="group" aria-label="Cor">${dots}</div>`;
 }
