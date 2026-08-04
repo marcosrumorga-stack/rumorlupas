@@ -342,8 +342,40 @@ body {
 .section__subtitle {
   text-align: center;
   color: var(--text-muted);
-  margin-top: 10px;
   margin-bottom: 48px;
+}
+.section__title:has(+ .section__subtitle) { margin-bottom: 12px; }
+
+/* What ships in the box — the same for every model */
+.includes {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.includes__title {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.includes__list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  font-size: 0.92rem;
+}
+.includes__list li { display: flex; align-items: center; gap: 8px; }
+.includes__list svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Decorative sunglasses pattern */
