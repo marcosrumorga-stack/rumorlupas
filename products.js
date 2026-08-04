@@ -19,6 +19,12 @@ const PRODUCTS = [
     name: "Plantaris",
     price: 50,
     history: "O Plantaris representa a leitura mais recente da Oakley sobre o formato wrap clássico da marca, com maior cobertura lateral e um encaixe pensado tanto para performance quanto para o dia a dia. Une a herança esportiva da marca a um visual mais contemporâneo.",
+    images: [
+      "images/products/plantaris-50/1.avif",
+      "images/products/plantaris-50/2.avif",
+      "images/products/plantaris-50/3.avif",
+      "images/products/plantaris-50/4.avif",
+    ],
   },
   {
     id: "juliet-45",
