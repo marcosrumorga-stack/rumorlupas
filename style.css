@@ -64,7 +64,7 @@ body {
     3px 3px 0 rgba(22,20,19,0.25);
 }
 .logo span { color: #fff; }
-.logo__icon { height: 38px; width: auto; display: block; margin-right: 10px; }
+.logo__icon { height: 38px; width: auto; display: block; margin-right: -3px; }
 
 .nav {
   display: flex;
@@ -85,6 +85,31 @@ body {
   display: flex;
   align-items: center;
   gap: 14px;
+}
+
+/* The brand name set in running headings, matching the header logo. */
+.brandmark {
+  /* Plain inline, not flex: flex would give the name its own baseline and
+     drop it off the line the rest of the heading sits on. */
+  white-space: nowrap;
+  color: var(--gold);
+  text-shadow:
+    -1.5px -1.5px 0 var(--text),
+    1.5px -1.5px 0 var(--text),
+    -1.5px 1.5px 0 var(--text),
+    1.5px 1.5px 0 var(--text);
+}
+.brandmark span { color: #fff; }
+.brandmark__icon {
+  /* Taller than the caps on purpose, and centred on them: vertical-align
+     drops it half its overhang below the baseline. Negative block margins
+     keep it from stretching the line box. */
+  height: 1.7em;
+  width: auto;
+  vertical-align: -0.2em;
+  margin-right: -0.03em;
+  margin-top: -0.45em;
+  margin-bottom: -0.45em;
 }
 
 /* The legal pages stay in Portuguese; the notice only matters to other readers. */
@@ -272,7 +297,7 @@ body {
   height: clamp(50px, 7.4vw, 76px);
   width: auto;
   display: block;
-  margin-right: clamp(10px, 1.6vw, 18px);
+  margin-right: clamp(-6px, -0.5vw, -3px);
 }
 .hero__eyebrow {
   display: flex;

@@ -29,7 +29,7 @@ const I18N = {
     "product.photosOf": "Ver fotos de",
     "product.photo": "foto",
 
-    "about.title": "Sobre a RumorLupas",
+    "about.title": "Sobre a <span class=\"brandmark\"><img src=\"images/boar-icon.png\" alt=\"\" class=\"brandmark__icon\">RUMOR<span>LUPAS</span></span>",
     "about.text": "A RumorLupas nasceu da paixão por óculos de sol de qualidade. Trabalhamos com modelos de qualidade premium, unindo proteção UV, durabilidade e o estilo que você procura para o dia a dia, pra prática esportiva e principalmente pra curtir aquela festa/rave.",
 
     "ig.title": "Siga no Instagram",
@@ -102,7 +102,7 @@ const I18N = {
     "product.photosOf": "See photos of",
     "product.photo": "photo",
 
-    "about.title": "About RumorLupas",
+    "about.title": "About <span class=\"brandmark\"><img src=\"images/boar-icon.png\" alt=\"\" class=\"brandmark__icon\">RUMOR<span>LUPAS</span></span>",
     "about.text": "RumorLupas was born out of a love for well-made sunglasses. We work with premium models that bring together UV protection, durability and the look you want — for everyday wear, for sport, and above all for the night out or the rave.",
 
     "ig.title": "Follow us on Instagram",
@@ -175,7 +175,7 @@ const I18N = {
     "product.photosOf": "Ver fotos de",
     "product.photo": "foto",
 
-    "about.title": "Sobre RumorLupas",
+    "about.title": "Sobre <span class=\"brandmark\"><img src=\"images/boar-icon.png\" alt=\"\" class=\"brandmark__icon\">RUMOR<span>LUPAS</span></span>",
     "about.text": "RumorLupas nació de la pasión por unas buenas gafas de sol. Trabajamos con modelos premium que unen protección UV, durabilidad y el estilo que buscas — para el día a día, para el deporte y sobre todo para esa fiesta o rave.",
 
     "ig.title": "Síguenos en Instagram",
