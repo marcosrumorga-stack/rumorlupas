@@ -227,6 +227,34 @@ const I18N = {
 const LANG_KEY = "rumorlupas_lang";
 const HTML_LANG = { pt: "pt-PT", en: "en", es: "es" };
 
+// Drawn rather than written as emoji: Windows ships no flag glyphs, so 🇵🇹
+// would show up as the letters "PT". Portuguese gets half Portugal, half
+// Brazil, since the shop speaks to both.
+const FLAGS = {
+  pt: `<svg class="lang__flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="4.8" height="16" fill="#006600"/>
+    <rect x="4.8" width="7.2" height="16" fill="#FF0000"/>
+    <circle cx="4.8" cy="8" r="2.7" fill="#FFCC00"/>
+    <circle cx="4.8" cy="8" r="1.5" fill="#FFFFFF"/>
+    <circle cx="4.8" cy="8" r="0.8" fill="#FF0000"/>
+    <rect x="12" width="12" height="16" fill="#009C3B"/>
+    <polygon points="18,2.6 23,8 18,13.4 13,8" fill="#FFDF00"/>
+    <circle cx="18" cy="8" r="2.5" fill="#002776"/>
+    <path d="M15.7 7.4c1.6-.9 3.4-.6 4.6.4" stroke="#FFFFFF" stroke-width="0.8" fill="none"/>
+  </svg>`,
+  en: `<svg class="lang__flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="24" height="16" fill="#012169"/>
+    <path d="M0 0L24 16M24 0L0 16" stroke="#FFFFFF" stroke-width="3.2"/>
+    <path d="M0 0L24 16M24 0L0 16" stroke="#C8102E" stroke-width="1.6"/>
+    <path d="M12 0V16M0 8H24" stroke="#FFFFFF" stroke-width="5.4"/>
+    <path d="M12 0V16M0 8H24" stroke="#C8102E" stroke-width="3.2"/>
+  </svg>`,
+  es: `<svg class="lang__flag" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="24" height="16" fill="#AA151B"/>
+    <rect y="4" width="24" height="8" fill="#F1BF00"/>
+  </svg>`,
+};
+
 let currentLang = (() => {
   try {
     const saved = localStorage.getItem(LANG_KEY);
@@ -282,6 +310,8 @@ function setLanguage(lang) {
 }
 
 document.querySelectorAll(".lang__btn").forEach((btn) => {
+  const flag = FLAGS[btn.dataset.lang];
+  if (flag) btn.innerHTML = `${flag}<span class="lang__code">${btn.textContent.trim()}</span>`;
   btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
 });
 
