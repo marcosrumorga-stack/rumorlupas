@@ -424,7 +424,6 @@ body {
 .section--dark .section__title { color: #fff; }
 .section--dark .about__text,
 .section--dark .instagram__subtitle { color: rgba(255,255,255,0.6); }
-.section--dark .eyebrow { color: var(--accent-light); }
 
 /* Oakley model silhouettes */
 .models-pattern { position: absolute; inset: 0; }
@@ -647,14 +646,6 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 .instagram__content {
   position: relative;
   text-align: center;
-}
-.eyebrow {
-  color: var(--accent);
-  letter-spacing: 0.3em;
-  font-size: 0.78rem;
-  font-weight: 700;
-  margin-bottom: 14px;
-  text-indent: 0.3em;
 }
 .instagram__subtitle {
   color: var(--text-muted);
