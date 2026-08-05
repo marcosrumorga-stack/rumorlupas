@@ -27,13 +27,19 @@
 <header class="header">
   <div class="container header__inner">
     <a href="index.html" class="logo"><img src="images/boar-icon.png" alt="" class="logo__icon">RUMOR<span>LUPAS</span></a>
+    <div class="lang" role="group" data-i18n-aria="aria.lang" aria-label="Idioma">
+      <button type="button" class="lang__btn" data-lang="pt">PT</button>
+      <button type="button" class="lang__btn" data-lang="en">EN</button>
+      <button type="button" class="lang__btn" data-lang="es">ES</button>
+    </div>
   </div>
 </header>
 
-<main class="legal">
-  <a href="index.html" class="back-link">← Voltar ao site</a>
+<main class="legal" lang="pt-PT">
+  <a href="index.html" class="back-link" data-i18n="legal.back">← Voltar ao site</a>
   <h1>Política de Privacidade</h1>
   <p class="updated">Última atualização: 03/08/2026</p>
+  <p class="legal__notice" data-i18n="legal.notice">Este documento só tem valor legal na versão em português.</p>
 
   <p>A RumorLupas ("nós") respeita a sua privacidade e está empenhada em proteger os seus dados pessoais. Esta política explica que informação recolhemos, para que fins, e quais os seus direitos.</p>
 
@@ -78,10 +84,11 @@
 
 <footer class="footer">
   <div class="container footer__inner">
-    <p>&copy; <span id="year"></span> RumorLupas. Todos os direitos reservados.</p>
+    <p>&copy; <span id="year"></span> RumorLupas. <span data-i18n="footer.rights">Todos os direitos reservados.</span></p>
   </div>
 </footer>
 
+<script src="i18n.js"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>

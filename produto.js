@@ -24,8 +24,10 @@ if (!product) {
 
   document.getElementById("productName").textContent = product.name;
   document.getElementById("productPrice").textContent = `${product.price} €`;
-  document.getElementById("productHistory").textContent =
-    product.history || "Em breve, mais detalhes sobre a história deste modelo.";
+  const historyEl = document.getElementById("productHistory");
+  function renderHistory() {
+    historyEl.textContent = productHistory(product);
+  }
 
   const galleryImage = document.getElementById("galleryImage");
   const galleryThumbs = document.getElementById("galleryThumbs");
@@ -38,7 +40,7 @@ if (!product) {
   function renderGallery() {
     if (!images.length) {
       galleryImage.remove();
-      document.querySelector(".product-detail__stage").textContent = "Foto em breve";
+      document.querySelector(".product-detail__stage").textContent = t("product.soon");
       return;
     }
 
@@ -47,7 +49,7 @@ if (!product) {
 
     galleryThumbs.innerHTML = images.map((src, i) => `
       <button class="product-detail__thumb${i === galleryIndex ? " active" : ""}" data-index="${i}">
-        <img src="${src}" alt="${product.name} — foto ${i + 1}" loading="lazy">
+        <img src="${src}" alt="${product.name} — ${t("product.photo")} ${i + 1}" loading="lazy">
       </button>
     `).join("");
 
@@ -89,8 +91,15 @@ if (!product) {
 
   renderColors();
   renderGallery();
+  renderHistory();
 
   document.getElementById("addToCartBtn").addEventListener("click", () => {
     addToCart(product.id, currentColor);
+  });
+
+  // The story and the photo captions are written by JS, so redraw on a switch.
+  document.addEventListener("rl:languagechange", () => {
+    renderHistory();
+    renderGallery();
   });
 }

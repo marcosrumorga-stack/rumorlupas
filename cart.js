@@ -78,7 +78,7 @@ function renderCart() {
   cartCountEl.textContent = cartCount();
 
   if (lines.length === 0) {
-    cartItemsEl.innerHTML = '<p class="cart-drawer__empty">Seu carrinho está vazio.</p>';
+    cartItemsEl.innerHTML = `<p class="cart-drawer__empty">${t("cart.empty")}</p>`;
   } else {
     cartItemsEl.innerHTML = lines.map(({ key, qty, product, color }) => {
       const images = productImages(product, color && color.id);
@@ -96,7 +96,7 @@ function renderCart() {
               <span>${qty}</span>
               <button data-action="inc" data-id="${key}">+</button>
             </div>
-            <button class="cart-item__remove" data-action="remove" data-id="${key}">Remover</button>
+            <button class="cart-item__remove" data-action="remove" data-id="${key}">${t("cart.remove")}</button>
           </div>
         </div>
       `;
@@ -126,7 +126,7 @@ checkoutBtn.addEventListener("click", async () => {
   if (entries.length === 0) return;
 
   checkoutBtn.disabled = true;
-  checkoutBtn.textContent = "A processar...";
+  checkoutBtn.textContent = t("cart.processing");
 
   try {
     const res = await fetch("/.netlify/functions/create-checkout-session", {
@@ -139,8 +139,8 @@ checkoutBtn.addEventListener("click", async () => {
     window.location.href = url;
   } catch (err) {
     checkoutBtn.disabled = false;
-    checkoutBtn.textContent = "Finalizar compra";
-    alert("Não foi possível iniciar o pagamento. Tenta novamente em instantes.");
+    checkoutBtn.textContent = t("cart.checkout");
+    alert(t("cart.error"));
   }
 });
 
@@ -150,9 +150,9 @@ function handleCheckoutRedirect() {
   if (status === "success") {
     cart = {};
     saveCart(cart);
-    alert("Pagamento confirmado! Obrigado pela compra.");
+    alert(t("cart.success"));
   } else if (status === "cancel") {
-    alert("Pagamento cancelado. Seu carrinho continua salvo.");
+    alert(t("cart.canceled"));
   }
   if (status) {
     window.history.replaceState({}, "", window.location.pathname);
@@ -161,3 +161,6 @@ function handleCheckoutRedirect() {
 
 renderCart();
 handleCheckoutRedirect();
+
+// Cart rows are built in JS, so they have to be redrawn when the language changes.
+document.addEventListener("rl:languagechange", renderCart);

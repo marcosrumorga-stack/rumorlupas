@@ -1,0 +1,290 @@
+// Every translatable string on the site lives here, so adding a language means
+// editing this one file. Markup carries data-i18n="<key>" (text), data-i18n-html
+// (when the string contains inline tags) or data-i18n-aria (aria-label).
+// Scripts that build markup at runtime call t("<key>") instead.
+
+const I18N = {
+  pt: {
+    "nav.catalog": "Catálogo",
+    "nav.about": "Sobre",
+    "aria.cart": "Abrir carrinho",
+    "aria.menu": "Abrir menu",
+    "aria.lang": "Idioma",
+    "aria.close": "Fechar",
+    "aria.prevPhoto": "Foto anterior",
+    "aria.nextPhoto": "Próxima foto",
+
+    "hero.title": "Veja o mundo<br>com <span>estilo</span>",
+    "hero.subtitle": "Óculos premium, sem complicação: escolhe o modelo, paga com segurança e recebe rapidinho em casa.",
+    "hero.cta": "Ver catálogo",
+    "hero.about": "Sobre a marca",
+    "hero.trust1": "Proteção UV400",
+    "hero.trust2": "Envio para Portugal",
+    "hero.trust3": "Pagamento seguro Stripe",
+
+    "catalog.title": "Catálogo",
+    "catalog.subtitle": "Todos os modelos vêm com micro bag, pano de limpeza e case.",
+    "product.soon": "Foto em breve",
+    "product.add": "Adicionar ao carrinho",
+    "product.photosOf": "Ver fotos de",
+    "product.photo": "foto",
+
+    "about.title": "Sobre a RumorLupas",
+    "about.text": "A RumorLupas nasceu da paixão por óculos de sol de qualidade. Trabalhamos com modelos de qualidade premium, unindo proteção UV, durabilidade e o estilo que você procura para o dia a dia, pra prática esportiva e principalmente pra curtir aquela festa/rave.",
+
+    "ig.title": "Siga no Instagram",
+    "ig.subtitle": "Novidades, lançamentos e bastidores da RumorLupas — segue lá pra não perder nada.",
+    "ig.cta": "Seguir @rumorlupas",
+
+    "footer.rights": "Todos os direitos reservados.",
+    "footer.privacy": "Política de Privacidade",
+    "footer.terms": "Termos e Condições",
+    "footer.stripe": "Pagamentos processados com segurança via Stripe.",
+
+    "cart.title": "Seu carrinho",
+    "cart.empty": "Seu carrinho está vazio.",
+    "cart.total": "Total",
+    "cart.checkout": "Finalizar compra",
+    "cart.processing": "A processar...",
+    "cart.note": "Pagamento seguro via Stripe · Envio para Portugal (3,90 €)",
+    "cart.remove": "Remover",
+    "cart.error": "Não foi possível iniciar o pagamento. Tenta novamente em instantes.",
+    "cart.success": "Pagamento confirmado! Obrigado pela compra.",
+    "cart.canceled": "Pagamento cancelado. Seu carrinho continua salvo.",
+
+    "pp.back": "← Voltar ao catálogo",
+    "pp.notFound": "Produto não encontrado.",
+    "pp.history": "A história do modelo",
+    "pp.historySoon": "Em breve, mais detalhes sobre a história deste modelo.",
+    "pp.includes": "Vem com",
+    "pp.bag": "Micro bag",
+    "pp.cloth": "Pano de limpeza",
+    "pp.case": "Case",
+
+    "legal.back": "← Voltar ao site",
+    "legal.notice": "Este documento só tem valor legal na versão em português.",
+
+    "history.eye-jacket-45": "Lançado em 1996, o Eye Jacket foi um dos modelos que definiu a estética esportiva da Oakley nos anos 90, com sua lente envolvente e visual futurista. Rapidamente virou item de estilo fora das pistas, adotado pela cena rave e pelo streetwear da época. Essa versão \"Redux\" resgata a silhueta original com acabamento atualizado.",
+    "history.plantaris-50": "O Plantaris representa a leitura mais recente da Oakley sobre o formato wrap clássico da marca, com maior cobertura lateral e um encaixe pensado tanto para performance quanto para o dia a dia. Une a herança esportiva da marca a um visual mais contemporâneo.",
+    "history.juliet-45": "A Juliet integra a lendária linha X-Metal da Oakley, lançada no fim dos anos 90 e batizada em referência ao desenho técnico das lentes. Com armação metálica e visual arrojado, tornou-se peça cult no automobilismo e no streetwear, sendo um dos modelos mais colecionados da marca até hoje.",
+    "history.xx-45": "O XX segue a linguagem geométrica e metálica que consagrou a família X-Metal da Oakley, com uma proposta ainda mais compacta e angular. Um modelo para quem busca o visual técnico da marca em um formato mais discreto.",
+    "history.plate-55": "O Plate aposta em uma armação mais robusta e um visual urbano, afastando-se da estética puramente esportiva da Oakley em direção ao dia a dia da cidade sem abandonar a durabilidade que a marca é conhecida por entregar.",
+    "history.gascan-50": "Introduzido no início dos anos 2000, o Gascan é hoje um dos formatos mais duradouros do catálogo Oakley — simples, versátil e igualmente à vontade na praia, na cidade ou na trilha. Sua permanência em produção por mais de duas décadas é rara entre os modelos da marca.",
+    "history.splice-53": "O Splice combina uma armação semi-arredondada com lente ampla, equilibrando o DNA esportivo da Oakley com um visual mais suave, pensado para quem quer proteção solar sem abrir mão do conforto no uso prolongado.",
+    "history.monster-dog-47": "O Monster Dog nasceu da fase mais experimental do design da Oakley nos anos 2000, com uma armação larga e presença marcante. Um modelo para quem não tem medo de um visual mais ousado.",
+    "history.dartboard-50": "O Dartboard traz uma lente circular ampla sobre uma armação leve, equilibrando um visual retrô com a tecnologia de lentes que a Oakley desenvolveu para uso esportivo intenso.",
+    "history.flak-2xl-45": "O Flak é uma das siluetas mais populares e duradouras da Oakley, adotado amplamente no ciclismo e no atletismo pela estabilidade e campo de visão. A versão 2.0 XL amplia o encaixe para rostos maiores, mantendo a mesma proposta de performance.",
+    "history.pitboss-53": "O PitBoss é um resgate de um dos formatos mais robustos do catálogo Oakley do início dos anos 2000, com armação espessa e presença forte — um visual que remete diretamente à estética \"Y2K\" que voltou às ruas nos últimos anos.",
+  },
+
+  en: {
+    "nav.catalog": "Catalogue",
+    "nav.about": "About",
+    "aria.cart": "Open cart",
+    "aria.menu": "Open menu",
+    "aria.lang": "Language",
+    "aria.close": "Close",
+    "aria.prevPhoto": "Previous photo",
+    "aria.nextPhoto": "Next photo",
+
+    "hero.title": "See the world<br>in <span>style</span>",
+    "hero.subtitle": "Premium sunglasses, no fuss: pick your model, pay securely and have them at your door in days.",
+    "hero.cta": "See the catalogue",
+    "hero.about": "About the brand",
+    "hero.trust1": "UV400 protection",
+    "hero.trust2": "Shipping within Portugal",
+    "hero.trust3": "Secure payment by Stripe",
+
+    "catalog.title": "Catalogue",
+    "catalog.subtitle": "Every model comes with a micro bag, a cleaning cloth and a case.",
+    "product.soon": "Photo coming soon",
+    "product.add": "Add to cart",
+    "product.photosOf": "See photos of",
+    "product.photo": "photo",
+
+    "about.title": "About RumorLupas",
+    "about.text": "RumorLupas was born out of a love for well-made sunglasses. We work with premium models that bring together UV protection, durability and the look you want — for everyday wear, for sport, and above all for the night out or the rave.",
+
+    "ig.title": "Follow us on Instagram",
+    "ig.subtitle": "New arrivals, drops and behind the scenes at RumorLupas — follow along so you don't miss anything.",
+    "ig.cta": "Follow @rumorlupas",
+
+    "footer.rights": "All rights reserved.",
+    "footer.privacy": "Privacy Policy",
+    "footer.terms": "Terms and Conditions",
+    "footer.stripe": "Payments processed securely by Stripe.",
+
+    "cart.title": "Your cart",
+    "cart.empty": "Your cart is empty.",
+    "cart.total": "Total",
+    "cart.checkout": "Checkout",
+    "cart.processing": "Processing...",
+    "cart.note": "Secure payment by Stripe · Shipping within Portugal (€3.90)",
+    "cart.remove": "Remove",
+    "cart.error": "We couldn't start the payment. Please try again in a moment.",
+    "cart.success": "Payment confirmed. Thank you for your order.",
+    "cart.canceled": "Payment canceled. Your cart has been kept.",
+
+    "pp.back": "← Back to the catalogue",
+    "pp.notFound": "Product not found.",
+    "pp.history": "The story behind the model",
+    "pp.historySoon": "More on the story of this model soon.",
+    "pp.includes": "In the box",
+    "pp.bag": "Micro bag",
+    "pp.cloth": "Cleaning cloth",
+    "pp.case": "Case",
+
+    "legal.back": "← Back to the site",
+    "legal.notice": "This document is in Portuguese. Only the Portuguese version is legally binding.",
+
+    "history.eye-jacket-45": "Released in 1996, the Eye Jacket was one of the models that defined Oakley's sporting look in the nineties, with its wraparound lens and futuristic shape. It quickly became a style piece off the track, taken up by the rave scene and the streetwear of the day. This \"Redux\" version brings back the original silhouette with an updated finish.",
+    "history.plantaris-50": "The Plantaris is Oakley's most recent take on the wrap shape the brand is known for, with more coverage at the sides and a fit meant for both performance and everyday wear. It carries the brand's sporting heritage into a more contemporary look.",
+    "history.juliet-45": "The Juliet belongs to Oakley's legendary X-Metal line, launched in the late nineties and named after the technical drawing of its lenses. With its metal frame and bold shape, it became a cult piece in motorsport and streetwear, and remains one of the brand's most collected models.",
+    "history.xx-45": "The XX follows the geometric, metallic language that made Oakley's X-Metal family famous, in an even more compact and angular form. A model for anyone who wants the brand's technical look in a quieter shape.",
+    "history.plate-55": "The Plate goes for a sturdier frame and an urban look, stepping away from Oakley's purely sporting side towards city life — without giving up the durability the brand is known for.",
+    "history.gascan-50": "Introduced in the early 2000s, the Gascan is now one of the longest-running shapes in Oakley's catalogue — simple, versatile and equally at home on the beach, in the city or on the trail. Staying in production for more than two decades is rare among the brand's models.",
+    "history.splice-53": "The Splice pairs a semi-rounded frame with a wide lens, balancing Oakley's sporting DNA with a softer look — made for anyone who wants sun protection without giving up comfort over a long day.",
+    "history.monster-dog-47": "The Monster Dog came out of Oakley's most experimental design period in the 2000s, with a wide frame and real presence. A model for anyone unafraid of a bolder look.",
+    "history.dartboard-50": "The Dartboard sets a wide circular lens on a light frame, balancing a retro look with the lens technology Oakley developed for hard sporting use.",
+    "history.flak-2xl-45": "The Flak is one of Oakley's most popular and enduring silhouettes, widely worn in cycling and athletics for its stability and field of view. The 2.0 XL version widens the fit for larger faces while keeping the same performance intent.",
+    "history.pitboss-53": "The PitBoss revives one of the chunkiest shapes in Oakley's early-2000s catalogue, with a thick frame and strong presence — a look that points straight back at the Y2K aesthetic that has returned to the streets in recent years.",
+  },
+
+  es: {
+    "nav.catalog": "Catálogo",
+    "nav.about": "Sobre",
+    "aria.cart": "Abrir carrito",
+    "aria.menu": "Abrir menú",
+    "aria.lang": "Idioma",
+    "aria.close": "Cerrar",
+    "aria.prevPhoto": "Foto anterior",
+    "aria.nextPhoto": "Foto siguiente",
+
+    "hero.title": "Mira el mundo<br>con <span>estilo</span>",
+    "hero.subtitle": "Gafas premium, sin complicaciones: elige el modelo, paga con seguridad y recíbelas en casa en pocos días.",
+    "hero.cta": "Ver catálogo",
+    "hero.about": "Sobre la marca",
+    "hero.trust1": "Protección UV400",
+    "hero.trust2": "Envío a Portugal",
+    "hero.trust3": "Pago seguro con Stripe",
+
+    "catalog.title": "Catálogo",
+    "catalog.subtitle": "Todos los modelos incluyen micro bag, paño de limpieza y estuche.",
+    "product.soon": "Foto próximamente",
+    "product.add": "Añadir al carrito",
+    "product.photosOf": "Ver fotos de",
+    "product.photo": "foto",
+
+    "about.title": "Sobre RumorLupas",
+    "about.text": "RumorLupas nació de la pasión por unas buenas gafas de sol. Trabajamos con modelos premium que unen protección UV, durabilidad y el estilo que buscas — para el día a día, para el deporte y sobre todo para esa fiesta o rave.",
+
+    "ig.title": "Síguenos en Instagram",
+    "ig.subtitle": "Novedades, lanzamientos y el detrás de cámaras de RumorLupas — síguenos para no perderte nada.",
+    "ig.cta": "Seguir @rumorlupas",
+
+    "footer.rights": "Todos los derechos reservados.",
+    "footer.privacy": "Política de Privacidad",
+    "footer.terms": "Términos y Condiciones",
+    "footer.stripe": "Pagos procesados de forma segura con Stripe.",
+
+    "cart.title": "Tu carrito",
+    "cart.empty": "Tu carrito está vacío.",
+    "cart.total": "Total",
+    "cart.checkout": "Finalizar compra",
+    "cart.processing": "Procesando...",
+    "cart.note": "Pago seguro con Stripe · Envío a Portugal (3,90 €)",
+    "cart.remove": "Eliminar",
+    "cart.error": "No se pudo iniciar el pago. Inténtalo de nuevo en un momento.",
+    "cart.success": "Pago confirmado. Gracias por tu compra.",
+    "cart.canceled": "Pago cancelado. Tu carrito sigue guardado.",
+
+    "pp.back": "← Volver al catálogo",
+    "pp.notFound": "Producto no encontrado.",
+    "pp.history": "La historia del modelo",
+    "pp.historySoon": "Pronto, más detalles sobre la historia de este modelo.",
+    "pp.includes": "Incluye",
+    "pp.bag": "Micro bag",
+    "pp.cloth": "Paño de limpieza",
+    "pp.case": "Estuche",
+
+    "legal.back": "← Volver al sitio",
+    "legal.notice": "Este documento está en portugués. Solo la versión en portugués tiene valor legal.",
+
+    "history.eye-jacket-45": "Lanzado en 1996, el Eye Jacket fue uno de los modelos que definió la estética deportiva de Oakley en los noventa, con su lente envolvente y su aire futurista. Pronto se convirtió en pieza de estilo fuera de la pista, adoptada por la escena rave y el streetwear de la época. Esta versión \"Redux\" recupera la silueta original con un acabado actualizado.",
+    "history.plantaris-50": "El Plantaris es la lectura más reciente de Oakley sobre el formato wrap clásico de la marca, con mayor cobertura lateral y un ajuste pensado tanto para el rendimiento como para el día a día. Lleva la herencia deportiva de la marca a un aspecto más contemporáneo.",
+    "history.juliet-45": "El Juliet forma parte de la legendaria línea X-Metal de Oakley, lanzada a finales de los noventa y bautizada en referencia al dibujo técnico de sus lentes. Con montura metálica y una forma atrevida, se convirtió en pieza de culto en el automovilismo y el streetwear, y sigue siendo uno de los modelos más coleccionados de la marca.",
+    "history.xx-45": "El XX sigue el lenguaje geométrico y metálico que consagró a la familia X-Metal de Oakley, en un formato aún más compacto y angular. Un modelo para quien busca el aire técnico de la marca en una forma más discreta.",
+    "history.plate-55": "El Plate apuesta por una montura más robusta y un aire urbano, alejándose de la estética puramente deportiva de Oakley hacia el día a día de la ciudad, sin renunciar a la durabilidad por la que se conoce a la marca.",
+    "history.gascan-50": "Introducido a principios de los 2000, el Gascan es hoy uno de los formatos más duraderos del catálogo de Oakley — sencillo, versátil e igual de cómodo en la playa, en la ciudad o en la montaña. Mantenerse en producción más de dos décadas es raro entre los modelos de la marca.",
+    "history.splice-53": "El Splice combina una montura semirredondeada con una lente amplia, equilibrando el ADN deportivo de Oakley con un aire más suave, pensado para quien quiere protección solar sin renunciar a la comodidad durante todo el día.",
+    "history.monster-dog-47": "El Monster Dog nació de la etapa más experimental del diseño de Oakley en los 2000, con una montura ancha y mucha presencia. Un modelo para quien no teme un aspecto más atrevido.",
+    "history.dartboard-50": "El Dartboard monta una lente circular amplia sobre una montura ligera, equilibrando un aire retro con la tecnología de lentes que Oakley desarrolló para el uso deportivo intenso.",
+    "history.flak-2xl-45": "El Flak es una de las siluetas más populares y duraderas de Oakley, muy usada en ciclismo y atletismo por su estabilidad y campo de visión. La versión 2.0 XL amplía el ajuste para rostros más grandes, manteniendo la misma propuesta de rendimiento.",
+    "history.pitboss-53": "El PitBoss recupera uno de los formatos más robustos del catálogo de Oakley de principios de los 2000, con montura gruesa y mucha presencia — un aire que remite directamente a la estética Y2K que ha vuelto a las calles en los últimos años.",
+  },
+};
+
+const LANG_KEY = "rumorlupas_lang";
+const HTML_LANG = { pt: "pt-PT", en: "en", es: "es" };
+
+let currentLang = (() => {
+  try {
+    const saved = localStorage.getItem(LANG_KEY);
+    if (saved && I18N[saved]) return saved;
+  } catch {
+    // localStorage can throw in private mode; fall through to the browser hint
+  }
+  const guess = (navigator.language || "pt").slice(0, 2).toLowerCase();
+  return I18N[guess] ? guess : "pt";
+})();
+
+// Falls back to Portuguese, then to the key itself, so a missing string shows
+// something readable instead of blanking the element.
+function t(key) {
+  const table = I18N[currentLang] || I18N.pt;
+  return table[key] || I18N.pt[key] || key;
+}
+
+function applyTranslations(root) {
+  const scope = root || document;
+  scope.querySelectorAll("[data-i18n]").forEach((el) => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  scope.querySelectorAll("[data-i18n-html]").forEach((el) => {
+    el.innerHTML = t(el.dataset.i18nHtml);
+  });
+  scope.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+    el.setAttribute("aria-label", t(el.dataset.i18nAria));
+  });
+}
+
+function syncLangButtons() {
+  document.querySelectorAll(".lang__btn").forEach((btn) => {
+    const on = btn.dataset.lang === currentLang;
+    btn.classList.toggle("active", on);
+    btn.setAttribute("aria-pressed", String(on));
+  });
+}
+
+function setLanguage(lang) {
+  if (!I18N[lang]) return;
+  currentLang = lang;
+  try {
+    localStorage.setItem(LANG_KEY, lang);
+  } catch {
+    // Not being able to remember the choice is not worth failing over
+  }
+  document.documentElement.lang = HTML_LANG[lang];
+  applyTranslations();
+  syncLangButtons();
+  // Anything built by JS — product cards, the cart — redraws itself on this.
+  document.dispatchEvent(new CustomEvent("rl:languagechange"));
+}
+
+document.querySelectorAll(".lang__btn").forEach((btn) => {
+  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+});
+
+document.documentElement.lang = HTML_LANG[currentLang];
+applyTranslations();
+syncLangButtons();

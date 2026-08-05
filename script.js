@@ -20,16 +20,16 @@ function renderProducts() {
     const images = productImages(p, selectedColor[p.id]);
     return `
     <div class="product-card" data-product="${p.id}">
-      <div class="product-card__image"${images.length ? ` data-id="${p.id}" role="button" tabindex="0" aria-label="Ver fotos de ${p.name}"` : ""}>${
+      <div class="product-card__image"${images.length ? ` data-id="${p.id}" role="button" tabindex="0" aria-label="${t("product.photosOf")} ${p.name}"` : ""}>${
         images.length
           ? `<img src="${images[0]}" alt="${p.name}" loading="lazy">`
-          : "Foto em breve"
+          : t("product.soon")
       }</div>
       <div class="product-card__body">
         <a href="produto.html?id=${p.id}" class="product-card__name">${p.name}</a>
         ${colorSwatchesHtml(p, selectedColor[p.id])}
         <p class="product-card__price">${p.price} €</p>
-        <button class="product-card__btn" data-id="${p.id}">Adicionar ao carrinho</button>
+        <button class="product-card__btn" data-id="${p.id}">${t("product.add")}</button>
       </div>
     </div>
   `;
@@ -125,3 +125,6 @@ document.addEventListener("keydown", (e) => {
 });
 
 renderProducts();
+
+// Cards are built in JS, so they have to be redrawn when the language changes.
+document.addEventListener("rl:languagechange", renderProducts);
