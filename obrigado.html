@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pedido confirmado — RumorLupas</title>
+<meta name="description" content="Pedido confirmado — RumorLupas.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="images/boar-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header" id="top">
+  <div class="container header__inner">
+    <a href="index.html" class="logo"><img src="images/boar-icon.png" alt="" class="logo__icon">RUMOR<span>LUPAS</span></a>
+    <div class="lang" role="group" data-i18n-aria="aria.lang" aria-label="Idioma">
+      <button type="button" class="lang__btn" data-lang="pt">PT</button>
+      <button type="button" class="lang__btn" data-lang="en">EN</button>
+      <button type="button" class="lang__btn" data-lang="es">ES</button>
+    </div>
+  </div>
+</header>
+
+<main class="section section--dark thanks">
+  <div class="band__decor" aria-hidden="true">
+    <div class="band__glow band__glow--soft"></div>
+    <div class="band__grid"></div>
+  </div>
+  <div class="container thanks__inner">
+    <svg class="thanks__check" viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="32" cy="32" r="29"/>
+      <path d="M19 33.5L28 42.5L45 23"/>
+    </svg>
+    <p class="thanks__eyebrow" data-i18n="thanks.eyebrow">Pedido confirmado</p>
+    <h1 data-i18n="thanks.title">Obrigado pela compra!</h1>
+    <p class="thanks__text" data-i18n="thanks.text">Recebemos seu pedido e já estamos preparando o envio. Ele chega em 2 a 5 dias úteis.</p>
+
+    <div class="thanks__ref" id="orderRef" hidden>
+      <span class="thanks__ref-label" data-i18n="thanks.ref">Referência do pedido</span>
+      <code id="orderRefValue"></code>
+      <span class="thanks__ref-note" data-i18n="thanks.refNote">Guarde essa referência se precisar falar com a gente.</span>
+    </div>
+
+    <p class="thanks__help" data-i18n-html="thanks.help">Dúvidas sobre o pedido? Escreva para <a href="mailto:contato@rumorlupas.com">contato@rumorlupas.com</a>.</p>
+
+    <div class="hero__actions thanks__actions">
+      <a href="index.html#catalogo" class="btn btn--primary" data-i18n="thanks.back">Voltar ao catálogo</a>
+      <a href="https://instagram.com/rumorlupas" class="btn btn--ghost btn--icon" target="_blank" rel="noopener">
+        <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5.4"/>
+          <circle cx="12" cy="12" r="4.2"/>
+          <circle cx="17.5" cy="6.5" r="1.15" fill="currentColor" stroke="none"/>
+        </svg>
+        <span data-i18n="ig.cta">Seguir @rumorlupas</span>
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <p>&copy; <span id="year"></span> RumorLupas. <span data-i18n="footer.rights">Todos os direitos reservados.</span></p>
+    <p class="footer__note">
+      <a href="privacidade.html" data-i18n="footer.privacy">Política de Privacidade</a> · <a href="termos.html" data-i18n="footer.terms">Termos e Condições</a>
+    </p>
+  </div>
+</footer>
+
+<script src="i18n.js"></script>
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// Reaching this page means Stripe took the payment, so the cart has served its
+// purpose. Cleared here rather than on the way out, so an abandoned checkout
+// still finds the basket intact.
+try {
+  localStorage.removeItem("rumorlupas_cart");
+} catch {
+  // Private mode — nothing to clear
+}
+
+const ref = new URLSearchParams(window.location.search).get("ref");
+if (ref) {
+  document.getElementById("orderRefValue").textContent = ref;
+  document.getElementById("orderRef").hidden = false;
+}
+</script>
+</body>
+</html>

@@ -100,7 +100,9 @@ exports.handler = async (event) => {
           },
         },
       ],
-      success_url: `${siteUrl}/?checkout=success`,
+      // Stripe swaps {CHECKOUT_SESSION_ID} for the real id — the reference the
+      // customer quotes and the shop looks up in the Stripe dashboard.
+      success_url: `${siteUrl}/obrigado.html?ref={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/?checkout=cancel`,
     });
 

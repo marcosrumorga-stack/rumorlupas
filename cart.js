@@ -174,15 +174,41 @@ checkoutBtn.addEventListener("click", async () => {
   }
 });
 
+// A toast rather than alert(): abandoning a payment is not an error worth
+// freezing the page over, and the customer can carry on reading behind it.
+function showNotice(message) {
+  const el = document.createElement("div");
+  el.className = "notice";
+  el.setAttribute("role", "status");
+
+  const text = document.createElement("span");
+  text.textContent = message;
+
+  const close = document.createElement("button");
+  close.className = "notice__close";
+  close.setAttribute("aria-label", t("aria.close"));
+  close.textContent = "×";
+
+  el.append(text, close);
+  document.body.appendChild(el);
+
+  const dismiss = () => el.remove();
+  close.addEventListener("click", dismiss);
+  setTimeout(dismiss, 8000);
+}
+
 function handleCheckoutRedirect() {
   const params = new URLSearchParams(window.location.search);
   const status = params.get("checkout");
+
+  // A paid order now lands on obrigado.html, which clears the cart itself.
+  // This still catches an old link sitting in someone's history.
   if (status === "success") {
     cart = {};
     saveCart(cart);
-    alert(t("cart.success"));
+    renderCart();
   } else if (status === "cancel") {
-    alert(t("cart.canceled"));
+    showNotice(t("cart.canceled"));
   }
   if (status) {
     window.history.replaceState({}, "", window.location.pathname);

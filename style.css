@@ -31,6 +31,100 @@ body {
 }
 
 /* Header */
+/* Order confirmation page */
+.thanks { text-align: center; padding: 110px 0 120px; }
+.thanks__inner { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; }
+.thanks__check {
+  width: 68px;
+  height: 68px;
+  margin-bottom: 26px;
+  fill: none;
+  stroke: var(--accent-light);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.thanks__eyebrow {
+  color: var(--accent-light);
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  font-size: 0.74rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.thanks h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4.4vw, 3rem);
+  font-weight: 400;
+  line-height: 1.06;
+  text-wrap: balance;
+  margin-bottom: 18px;
+}
+.thanks__text { color: rgba(255,255,255,0.68); font-size: 1.05rem; }
+.thanks__ref {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 32px auto;
+  padding: 18px 20px;
+  max-width: 460px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+}
+.thanks__ref-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+.thanks__ref code {
+  font-size: 0.78rem;
+  color: #fff;
+  word-break: break-all;
+  user-select: all;
+}
+.thanks__ref-note { font-size: 0.78rem; color: rgba(255,255,255,0.45); }
+.thanks__help { color: rgba(255,255,255,0.6); font-size: 0.92rem; }
+.thanks__help a { color: var(--accent-light); }
+.thanks__actions { justify-content: center; margin-top: 30px; }
+
+/* Toast */
+.notice {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: min(520px, calc(100vw - 32px));
+  padding: 13px 14px 13px 18px;
+  border-radius: 999px;
+  background: var(--text);
+  color: #fff;
+  font-size: 0.88rem;
+  box-shadow: 0 14px 34px -12px rgba(0,0,0,0.5);
+}
+.notice__close {
+  border: none;
+  background: none;
+  color: rgba(255,255,255,0.6);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.notice__close:hover { color: #fff; }
+@media (prefers-reduced-motion: no-preference) {
+  .notice { animation: notice-in 0.28s ease-out; }
+  @keyframes notice-in {
+    from { opacity: 0; transform: translate(-50%, 12px); }
+    to   { opacity: 1; transform: translate(-50%, 0); }
+  }
+}
+
 /* Announcement bar */
 .announce {
   background: var(--text);

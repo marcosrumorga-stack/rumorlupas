@@ -56,6 +56,14 @@ const I18N = {
     "cart.success": "Pagamento confirmado! Obrigado pela compra.",
     "cart.canceled": "Pagamento cancelado. Seu carrinho continua salvo.",
 
+    "thanks.eyebrow": "Pedido confirmado",
+    "thanks.title": "Obrigado pela compra!",
+    "thanks.text": "Recebemos seu pedido e já estamos preparando o envio. Ele chega em 2 a 5 dias úteis.",
+    "thanks.ref": "Referência do pedido",
+    "thanks.refNote": "Guarde essa referência se precisar falar com a gente.",
+    "thanks.help": "Dúvidas sobre o pedido? Escreva para <a href=\"mailto:contato@rumorlupas.com\">contato@rumorlupas.com</a>.",
+    "thanks.back": "Voltar ao catálogo",
+
     "pp.back": "← Voltar ao catálogo",
     "pp.notFound": "Produto não encontrado.",
     "pp.history": "A história do modelo",
@@ -133,6 +141,14 @@ const I18N = {
     "cart.success": "Payment confirmed. Thank you for your order.",
     "cart.canceled": "Payment canceled. Your cart has been kept.",
 
+    "thanks.eyebrow": "Order confirmed",
+    "thanks.title": "Thank you for your order",
+    "thanks.text": "We have your order and we're getting it ready to ship. It arrives in 2 to 5 working days.",
+    "thanks.ref": "Order reference",
+    "thanks.refNote": "Keep this reference if you need to get in touch.",
+    "thanks.help": "Questions about your order? Write to <a href=\"mailto:contato@rumorlupas.com\">contato@rumorlupas.com</a>.",
+    "thanks.back": "Back to the catalogue",
+
     "pp.back": "← Back to the catalogue",
     "pp.notFound": "Product not found.",
     "pp.history": "The story behind the model",
@@ -209,6 +225,14 @@ const I18N = {
     "cart.error": "No se pudo iniciar el pago. Inténtalo de nuevo en un momento.",
     "cart.success": "Pago confirmado. Gracias por tu compra.",
     "cart.canceled": "Pago cancelado. Tu carrito sigue guardado.",
+
+    "thanks.eyebrow": "Pedido confirmado",
+    "thanks.title": "¡Gracias por tu compra!",
+    "thanks.text": "Recibimos tu pedido y ya lo estamos preparando para el envío. Llega en 2 a 5 días hábiles.",
+    "thanks.ref": "Referencia del pedido",
+    "thanks.refNote": "Guarda esta referencia por si necesitas contactarnos.",
+    "thanks.help": "¿Dudas sobre tu pedido? Escríbenos a <a href=\"mailto:contato@rumorlupas.com\">contato@rumorlupas.com</a>.",
+    "thanks.back": "Volver al catálogo",
 
     "pp.back": "← Volver al catálogo",
     "pp.notFound": "Producto no encontrado.",
