@@ -57,6 +57,34 @@ const PRODUCTS = [
   { id: "pitboss-53", name: "PitBoss", price: 53, oldPrice: 75.71 },
 ];
 
+// Categories are read off the products themselves, so there is no second list
+// to keep in step. To open a new one, give a product a category and add a
+// "category.<id>" string to i18n.js — the tab appears on its own:
+//
+//   { id: "chapeu-25", name: "Chapéu", price: 25, category: "chapeus" }
+//
+const DEFAULT_CATEGORY = "lupas";
+
+function productCategory(product) {
+  return product.category || DEFAULT_CATEGORY;
+}
+
+// In the order the products declare them, so the tabs follow the catalogue.
+function categories() {
+  const found = [];
+  PRODUCTS.forEach((p) => {
+    const c = productCategory(p);
+    if (!found.includes(c)) found.push(c);
+  });
+  return found;
+}
+
+function categoryLabel(id) {
+  const key = `category.${id}`;
+  const text = t(key);
+  return text === key ? id : text;
+}
+
 // A product either has colour variants — each with its own photos — or a plain
 // images list. These helpers hide that difference from the rest of the code.
 
@@ -137,5 +165,5 @@ function colorSwatchesHtml(product, selectedId) {
 // The checkout function pulls the catalogue from here too, so stock is written
 // in one place rather than kept in step across two files.
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { PRODUCTS, stockOf, isSoldOut, findColor };
+  module.exports = { PRODUCTS, stockOf, isSoldOut, findColor, productCategory };
 }

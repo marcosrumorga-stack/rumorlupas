@@ -23,7 +23,8 @@ const I18N = {
     "hero.trust3": "Pagamento seguro Stripe",
 
     "catalog.title": "Catálogo",
-    "catalog.subtitle": "Todos os modelos vêm com micro bag, pano de limpeza e case.",
+    "catalog.note.lupas": "Todos os modelos vêm com micro bag, pano de limpeza e case.",
+    "category.lupas": "Lupas",
     "product.soon": "Foto em breve",
     "product.add": "Adicionar ao carrinho",
     "product.soldOut": "Esgotado",
@@ -120,7 +121,8 @@ const I18N = {
     "hero.trust3": "Secure payment by Stripe",
 
     "catalog.title": "Catalogue",
-    "catalog.subtitle": "Every model comes with a micro bag, a cleaning cloth and a case.",
+    "catalog.note.lupas": "Every model comes with a micro bag, a cleaning cloth and a case.",
+    "category.lupas": "Lupas",
     "product.soon": "Photo coming soon",
     "product.add": "Add to cart",
     "product.soldOut": "Sold out",
@@ -217,7 +219,8 @@ const I18N = {
     "hero.trust3": "Pago seguro con Stripe",
 
     "catalog.title": "Catálogo",
-    "catalog.subtitle": "Todos los modelos incluyen micro bag, paño de limpieza y estuche.",
+    "catalog.note.lupas": "Todos los modelos incluyen micro bag, paño de limpieza y estuche.",
+    "category.lupas": "Lupas",
     "product.soon": "Foto próximamente",
     "product.add": "Añadir al carrito",
     "product.soldOut": "Agotado",

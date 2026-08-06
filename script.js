@@ -43,8 +43,42 @@ function mediaHtml(p) {
     </a>${arrows}${out}`;
 }
 
+const categoryTabs = document.getElementById("categoryTabs");
+const catalogNote = document.getElementById("catalogNote");
+let activeCategory = categories()[0];
+
+// What ships in the box differs per category — a hat comes with no cleaning
+// cloth. Categories with nothing to say simply show no line.
+function renderCatalogNote() {
+  const key = `catalog.note.${activeCategory}`;
+  const text = t(key);
+  const has = text !== key;
+  catalogNote.textContent = has ? text : "";
+  catalogNote.hidden = !has;
+}
+
+function renderCategories() {
+  const all = categories();
+  categoryTabs.innerHTML = all
+    .map((id) => {
+      const on = id === activeCategory;
+      return `<button type="button" role="tab" class="cats__tab${on ? " active" : ""}" data-cat="${id}" aria-selected="${on}">${categoryLabel(id)}</button>`;
+    })
+    .join("");
+
+  categoryTabs.querySelectorAll(".cats__tab").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (btn.dataset.cat === activeCategory) return;
+      activeCategory = btn.dataset.cat;
+      renderCategories();
+      renderCatalogNote();
+      renderProducts();
+    });
+  });
+}
+
 function renderProducts() {
-  productGrid.innerHTML = PRODUCTS.map((p) => `
+  productGrid.innerHTML = PRODUCTS.filter((p) => productCategory(p) === activeCategory).map((p) => `
     <div class="product-card" data-product="${p.id}">
       <div class="product-card__media">${mediaHtml(p)}</div>
       <div class="product-card__body">
@@ -106,10 +140,16 @@ function pickColor(productId, colorId) {
   renderProducts();
 }
 
+renderCategories();
+renderCatalogNote();
 renderProducts();
 
-// Cards are built in JS, so they have to be redrawn when the language changes.
-document.addEventListener("rl:languagechange", renderProducts);
+// Tabs, note and cards are built in JS, so they redraw when the language changes.
+document.addEventListener("rl:languagechange", () => {
+  renderCategories();
+  renderCatalogNote();
+  renderProducts();
+});
 
 // The customer strip: arrows for the mouse, which has no sideways gesture, and
 // click-and-drag on top. Touch and trackpad already work through scroll-snap.

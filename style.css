@@ -714,6 +714,7 @@ button.swatch { position: relative; }
   margin-bottom: 48px;
 }
 .section__title:has(+ .section__subtitle) { margin-bottom: 12px; }
+.section__title:has(+ .cats) { margin-bottom: 24px; }
 
 /* Reassurances at the buy button — the answers people look for before paying */
 .assurances {
@@ -800,6 +801,35 @@ button.swatch { position: relative; }
 }
 .skull--catalogo:nth-of-type(5) { top: 78%; left: 88%; width: 55px; fill: var(--accent); opacity: 0.06; transform: rotate(-12deg); }
 .skull--catalogo:nth-of-type(6) { top: 12%; left: 60%; width: 45px; fill: var(--text); opacity: 0.04; transform: rotate(15deg); }
+
+/* Category tabs — one per category found in the catalogue */
+.cats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 34px;
+}
+.cats:has(+ .section__subtitle) { margin-bottom: 14px; }
+.cats__tab {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  padding: 9px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.cats__tab:hover { color: var(--text); border-color: var(--text-muted); }
+.cats__tab.active {
+  background: var(--text);
+  border-color: var(--text);
+  color: #fff;
+}
+.cats__tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Products */
 .products {
