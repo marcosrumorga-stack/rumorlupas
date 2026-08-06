@@ -15,11 +15,11 @@ const I18N = {
     "aria.nextPhoto": "Próxima foto",
 
     "hero.title": "Veja o mundo<br>com <span>estilo</span>",
-    "hero.subtitle": "Óculos premium, sem complicação: escolhe o modelo, paga com segurança e recebe rapidinho em casa.",
+    "hero.subtitle": "Óculos premium, sem complicação: você escolhe o modelo, paga com segurança e recebe rapidinho em casa.",
     "hero.cta": "Ver catálogo",
     "hero.about": "Sobre a marca",
     "hero.trust1": "Proteção UV400",
-    "hero.trust2": "Envio para Portugal",
+    "hero.trust2": "Frete para todo Portugal",
     "hero.trust3": "Pagamento seguro Stripe",
 
     "catalog.title": "Catálogo",
@@ -34,7 +34,7 @@ const I18N = {
     "about.text": "A RumorLupas nasceu da paixão por óculos de sol de qualidade. Trabalhamos com modelos de qualidade premium, unindo proteção UV, durabilidade e o estilo que você procura para o dia a dia, pra prática esportiva e principalmente pra curtir aquela festa/rave.",
 
     "ig.title": "Siga no Instagram",
-    "ig.subtitle": "Novidades, lançamentos e bastidores da RumorLupas — segue lá pra não perder nada.",
+    "ig.subtitle": "Novidades, lançamentos e bastidores da RumorLupas — siga lá pra não perder nada.",
     "ig.cta": "Seguir @rumorlupas",
 
     "footer.rights": "Todos os direitos reservados.",
@@ -46,13 +46,13 @@ const I18N = {
     "cart.empty": "Seu carrinho está vazio.",
     "cart.total": "Total",
     "cart.checkout": "Finalizar compra",
-    "cart.processing": "A processar...",
-    "cart.note": "Pagamento seguro via Stripe · Envio para Portugal (3,90 €)",
-    "ship.bar": "Envio grátis em encomendas acima de 80 €",
-    "ship.remaining": "Faltam {x} para teres envio grátis",
-    "ship.unlocked": "Boa! Tens envio grátis nesta encomenda",
+    "cart.processing": "Processando...",
+    "cart.note": "Pagamento seguro via Stripe · Frete para Portugal (3,90 €)",
+    "ship.bar": "Frete grátis em pedidos acima de 80 €",
+    "ship.remaining": "Faltam {x} para você ganhar frete grátis",
+    "ship.unlocked": "Boa! Você tem frete grátis neste pedido",
     "cart.remove": "Remover",
-    "cart.error": "Não foi possível iniciar o pagamento. Tenta novamente em instantes.",
+    "cart.error": "Não foi possível iniciar o pagamento. Tente novamente em instantes.",
     "cart.success": "Pagamento confirmado! Obrigado pela compra.",
     "cart.canceled": "Pagamento cancelado. Seu carrinho continua salvo.",
 
@@ -77,7 +77,7 @@ const I18N = {
     "history.splice-53": "O Splice combina uma armação semi-arredondada com lente ampla, equilibrando o DNA esportivo da Oakley com um visual mais suave, pensado para quem quer proteção solar sem abrir mão do conforto no uso prolongado.",
     "history.monster-dog-47": "O Monster Dog nasceu da fase mais experimental do design da Oakley nos anos 2000, com uma armação larga e presença marcante. Um modelo para quem não tem medo de um visual mais ousado.",
     "history.dartboard-50": "O Dartboard traz uma lente circular ampla sobre uma armação leve, equilibrando um visual retrô com a tecnologia de lentes que a Oakley desenvolveu para uso esportivo intenso.",
-    "history.flak-2xl-45": "O Flak é uma das siluetas mais populares e duradouras da Oakley, adotado amplamente no ciclismo e no atletismo pela estabilidade e campo de visão. A versão 2.0 XL amplia o encaixe para rostos maiores, mantendo a mesma proposta de performance.",
+    "history.flak-2xl-45": "O Flak é uma das silhuetas mais populares e duradouras da Oakley, adotado amplamente no ciclismo e no atletismo pela estabilidade e campo de visão. A versão 2.0 XL amplia o encaixe para rostos maiores, mantendo a mesma proposta de performance.",
     "history.pitboss-53": "O PitBoss é um resgate de um dos formatos mais robustos do catálogo Oakley do início dos anos 2000, com armação espessa e presença forte — um visual que remete diretamente à estética \"Y2K\" que voltou às ruas nos últimos anos.",
   },
 
