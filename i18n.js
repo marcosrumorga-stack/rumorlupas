@@ -57,6 +57,8 @@ const I18N = {
     "cart.error": "Não foi possível iniciar o pagamento. Tente novamente em instantes.",
     "cart.success": "Pagamento confirmado! Obrigado pela compra.",
     "cart.canceled": "Pagamento cancelado. Seu carrinho continua salvo.",
+    "stock.adjusted": "Só restam {n} unidades de {name}. Ajustamos seu carrinho.",
+    "stock.soldOut": "{name} esgotou e saiu do seu carrinho.",
 
     "thanks.eyebrow": "Pedido confirmado",
     "thanks.title": "Obrigado pela compra!",
@@ -152,6 +154,8 @@ const I18N = {
     "cart.error": "We couldn't start the payment. Please try again in a moment.",
     "cart.success": "Payment confirmed. Thank you for your order.",
     "cart.canceled": "Payment canceled. Your cart has been kept.",
+    "stock.adjusted": "Only {n} left of {name}. We've adjusted your cart.",
+    "stock.soldOut": "{name} sold out and has left your cart.",
 
     "thanks.eyebrow": "Order confirmed",
     "thanks.title": "Thank you for your order",
@@ -247,6 +251,8 @@ const I18N = {
     "cart.error": "No se pudo iniciar el pago. Inténtalo de nuevo en un momento.",
     "cart.success": "Pago confirmado. Gracias por tu compra.",
     "cart.canceled": "Pago cancelado. Tu carrito sigue guardado.",
+    "stock.adjusted": "Solo quedan {n} unidades de {name}. Ajustamos tu carrito.",
+    "stock.soldOut": "{name} se agotó y salió de tu carrito.",
 
     "thanks.eyebrow": "Pedido confirmado",
     "thanks.title": "¡Gracias por tu compra!",

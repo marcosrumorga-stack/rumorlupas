@@ -74,12 +74,15 @@ exports.handler = async (event) => {
       }
     }
 
+    // Answered as JSON so the browser can name the model and mend the cart,
+    // instead of showing the customer a bare failure.
     const available = stockFor(id, colorId);
-    if (available <= 0) {
-      return { statusCode: 409, body: `Sold out: ${id}` };
-    }
-    if (qty > available) {
-      return { statusCode: 409, body: `Only ${available} left of ${id}` };
+    if (available < qty) {
+      return {
+        statusCode: 409,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ error: "stock", key, available }),
+      };
     }
 
     lines.push({ product, qty, colorName });

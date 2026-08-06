@@ -164,6 +164,15 @@ checkoutBtn.addEventListener("click", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ cart }),
     });
+    if (res.status === 409) {
+      const detail = await res.json().catch(() => null);
+      if (detail && detail.error === "stock") {
+        checkoutBtn.disabled = false;
+        checkoutBtn.textContent = t("cart.checkout");
+        mendCart(detail.key, detail.available);
+        return;
+      }
+    }
     if (!res.ok) throw new Error("checkout failed");
     const { url } = await res.json();
     window.location.href = url;
@@ -173,6 +182,27 @@ checkoutBtn.addEventListener("click", async () => {
     alert(t("cart.error"));
   }
 });
+
+// Stock ran out between opening the page and paying. Rather than a dead end,
+// put the cart right and say what changed, so checking out again just works.
+function mendCart(key, available) {
+  const line = cartLine(key, cart[key] || 0);
+  const name = line ? line.product.name : "";
+
+  if (available > 0) {
+    cart[key] = available;
+  } else {
+    delete cart[key];
+  }
+  saveCart(cart);
+  renderCart();
+  openCart();
+
+  const message = available > 0
+    ? t("stock.adjusted").replace("{n}", available).replace("{name}", name)
+    : t("stock.soldOut").replace("{name}", name);
+  showNotice(message);
+}
 
 // A toast rather than alert(): abandoning a payment is not an error worth
 // freezing the page over, and the customer can carry on reading behind it.
