@@ -31,6 +31,42 @@ body {
 }
 
 /* Header */
+/* Announcement bar */
+.announce {
+  background: var(--text);
+  color: rgba(255,255,255,0.92);
+  text-align: center;
+  padding: 9px 16px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* Free-shipping progress in the cart */
+.ship-progress {
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+}
+.ship-progress__label { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 8px; }
+.ship-progress__label strong { color: var(--accent); }
+.ship-progress__track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+.ship-progress__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width 0.35s ease;
+}
+.ship-progress.done { border-color: rgba(200,29,37,0.35); }
+.ship-progress.done .ship-progress__label { color: var(--text); font-weight: 600; }
+
 .header {
   position: sticky;
   top: 0;

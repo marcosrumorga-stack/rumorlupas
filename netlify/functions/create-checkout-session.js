@@ -1,6 +1,12 @@
 const Stripe = require("stripe");
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
+// Shipping rules. The threshold is repeated in cart.js so the drawer can show
+// how far the customer still is from it — but this file is what actually
+// charges, so change it here first and keep the two in step.
+const FREE_SHIPPING_FROM = 80;
+const SHIPPING_CENTS = 390;
+
 // Keep this in sync with products.js — prices are looked up here, never
 // trusted from the client, so someone can't tamper with the cart to pay less.
 // `colors` maps a colour id to the name that goes on the Stripe line item, so
@@ -66,6 +72,10 @@ exports.handler = async (event) => {
     quantity: qty,
   }));
 
+  // Worked out from the resolved lines, never from a total sent by the client.
+  const subtotal = lines.reduce((sum, { product, qty }) => sum + product.price * qty, 0);
+  const freeShipping = subtotal >= FREE_SHIPPING_FROM;
+
   const siteUrl = process.env.URL || "http://localhost:8888";
 
   try {
@@ -81,8 +91,8 @@ exports.handler = async (event) => {
         {
           shipping_rate_data: {
             type: "fixed_amount",
-            fixed_amount: { amount: 390, currency: "eur" },
-            display_name: "Envio CTT — Portugal",
+            fixed_amount: { amount: freeShipping ? 0 : SHIPPING_CENTS, currency: "eur" },
+            display_name: freeShipping ? "Envio grátis — Portugal" : "Envio CTT — Portugal",
             delivery_estimate: {
               minimum: { unit: "business_day", value: 2 },
               maximum: { unit: "business_day", value: 5 },

@@ -65,6 +65,11 @@ function removeFromCart(id) {
   renderCart();
 }
 
+// Mirrors FREE_SHIPPING_FROM in netlify/functions/create-checkout-session.js.
+// That file is what charges; this one only tells the customer how close they
+// are. If one changes, change both.
+const FREE_SHIPPING_FROM = 80;
+
 function cartTotal() {
   return cartLines().reduce((sum, line) => sum + line.product.price * line.qty, 0);
 }
@@ -108,6 +113,31 @@ function renderCart() {
   }
 
   cartTotalEl.textContent = formatPrice(cartTotal());
+  renderShipProgress();
+}
+
+function renderShipProgress() {
+  const el = document.getElementById("shipProgress");
+  if (!el) return;
+
+  const total = cartTotal();
+  if (total === 0) {
+    el.hidden = true;
+    return;
+  }
+  el.hidden = false;
+
+  const done = total >= FREE_SHIPPING_FROM;
+  const missing = Math.max(FREE_SHIPPING_FROM - total, 0);
+  const pct = Math.min((total / FREE_SHIPPING_FROM) * 100, 100);
+
+  el.classList.toggle("done", done);
+  el.innerHTML = `
+    <p class="ship-progress__label">${
+      done ? t("ship.unlocked") : t("ship.remaining").replace("{x}", `<strong>${formatPrice(missing)}</strong>`)
+    }</p>
+    <div class="ship-progress__track"><div class="ship-progress__fill" style="width: ${pct}%"></div></div>
+  `;
 }
 
 function openCart() {
