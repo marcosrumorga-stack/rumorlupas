@@ -110,3 +110,79 @@ renderProducts();
 
 // Cards are built in JS, so they have to be redrawn when the language changes.
 document.addEventListener("rl:languagechange", renderProducts);
+
+// The customer strip: arrows for the mouse, which has no sideways gesture, and
+// click-and-drag on top. Touch and trackpad already work through scroll-snap.
+const clientesStrip = document.getElementById("clientesStrip");
+if (clientesStrip) {
+  // Endless in both directions: the photos are laid out three times over and
+  // the scroll position is shifted by one set whenever it reaches an edge.
+  // Because the sets are identical, the shift is invisible.
+  const originals = Array.from(clientesStrip.children);
+  for (let copy = 0; copy < 2; copy++) {
+    originals.forEach((node) => {
+      const clone = node.cloneNode(true);
+      clone.setAttribute("aria-hidden", "true");
+      clientesStrip.appendChild(clone);
+    });
+  }
+
+  // Widths come from CSS, not from the photos, so this is right before they load.
+  const setWidth = () => clientesStrip.scrollWidth / 3;
+  const page = () => Math.min(clientesStrip.clientWidth * 0.8, setWidth() * 0.5);
+
+  // Start on the middle set, so there is a full set of room either way.
+  requestAnimationFrame(() => { clientesStrip.scrollLeft = setWidth(); });
+
+  clientesStrip.addEventListener("scroll", () => {
+    const w = setWidth();
+    if (clientesStrip.scrollLeft >= 2 * w) clientesStrip.scrollLeft -= w;
+    else if (clientesStrip.scrollLeft <= 0) clientesStrip.scrollLeft += w;
+  }, { passive: true });
+
+  // Re-centre before an arrow scroll, so the animation never crosses an edge
+  // and gets cut short by the shift above.
+  function recentre() {
+    const w = setWidth();
+    while (clientesStrip.scrollLeft >= 2 * w) clientesStrip.scrollLeft -= w;
+    while (clientesStrip.scrollLeft < w) clientesStrip.scrollLeft += w;
+  }
+
+  document.getElementById("clientesPrev").addEventListener("click", () => {
+    recentre();
+    clientesStrip.scrollBy({ left: -page(), behavior: "smooth" });
+  });
+  document.getElementById("clientesNext").addEventListener("click", () => {
+    recentre();
+    clientesStrip.scrollBy({ left: page(), behavior: "smooth" });
+  });
+
+  let down = false;
+  let startX = 0;
+  let startScroll = 0;
+
+  clientesStrip.addEventListener("pointerdown", (e) => {
+    if (e.pointerType !== "mouse") return;
+    down = true;
+    startX = e.clientX;
+    startScroll = clientesStrip.scrollLeft;
+  });
+
+  clientesStrip.addEventListener("pointermove", (e) => {
+    if (!down) return;
+    const moved = e.clientX - startX;
+    // Only take over once it's clearly a drag, not a stray click.
+    if (!clientesStrip.classList.contains("dragging") && Math.abs(moved) < 4) return;
+    clientesStrip.classList.add("dragging");
+    clientesStrip.setPointerCapture(e.pointerId);
+    clientesStrip.scrollLeft = startScroll - moved;
+  });
+
+  const endDrag = () => {
+    down = false;
+    clientesStrip.classList.remove("dragging");
+  };
+  clientesStrip.addEventListener("pointerup", endDrag);
+  clientesStrip.addEventListener("pointercancel", endDrag);
+  clientesStrip.addEventListener("pointerleave", endDrag);
+}

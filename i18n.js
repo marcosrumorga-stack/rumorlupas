@@ -33,6 +33,9 @@ const I18N = {
     "about.title": "Sobre a <span class=\"brandmark\"><img src=\"images/boar-icon.png\" alt=\"\" class=\"brandmark__icon\">RUMOR<span>LUPAS</span></span>",
     "about.text": "A RumorLupas nasceu da paixão por óculos de sol de qualidade. Trabalhamos com modelos de qualidade premium, unindo proteção UV, durabilidade e o estilo que você procura para o dia a dia, pra prática esportiva e principalmente pra curtir aquela festa/rave.",
 
+    "clients.title": "Quem já usa",
+    "clients.subtitle": "Gente real com as nossas lupas, publicada com autorização.",
+
     "ig.title": "Siga no Instagram",
     "ig.subtitle": "Novidades, lançamentos e bastidores da RumorLupas — siga lá pra não perder nada.",
     "ig.cta": "Seguir @rumorlupas",
@@ -127,6 +130,9 @@ const I18N = {
     "about.title": "About <span class=\"brandmark\"><img src=\"images/boar-icon.png\" alt=\"\" class=\"brandmark__icon\">RUMOR<span>LUPAS</span></span>",
     "about.text": "RumorLupas was born out of a love for well-made sunglasses. We work with premium models that bring together UV protection, durability and the look you want — for everyday wear, for sport, and above all for the night out or the rave.",
 
+    "clients.title": "Already wearing them",
+    "clients.subtitle": "Real people in our sunglasses, shared with their permission.",
+
     "ig.title": "Follow us on Instagram",
     "ig.subtitle": "New arrivals, drops and behind the scenes at RumorLupas — follow along so you don't miss anything.",
     "ig.cta": "Follow @rumorlupas",
@@ -220,6 +226,9 @@ const I18N = {
 
     "about.title": "Sobre <span class=\"brandmark\"><img src=\"images/boar-icon.png\" alt=\"\" class=\"brandmark__icon\">RUMOR<span>LUPAS</span></span>",
     "about.text": "RumorLupas nació de la pasión por unas buenas gafas de sol. Trabajamos con modelos premium que unen protección UV, durabilidad y el estilo que buscas — para el día a día, para el deporte y sobre todo para esa fiesta o rave.",
+
+    "clients.title": "Quién ya las usa",
+    "clients.subtitle": "Gente real con nuestras gafas, publicada con su permiso.",
 
     "ig.title": "Síguenos en Instagram",
     "ig.subtitle": "Novedades, lanzamientos y el detrás de cámaras de RumorLupas — síguenos para no perderte nada.",

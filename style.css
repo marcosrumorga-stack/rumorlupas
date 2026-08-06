@@ -622,7 +622,64 @@ button.swatch { position: relative; }
 .section--dark .container { position: relative; z-index: 1; }
 .section--dark .section__title { color: #fff; }
 .section--dark .about__text,
+.section--dark .section__subtitle,
 .section--dark .instagram__subtitle { color: rgba(255,255,255,0.6); }
+
+/* Customer photos — a full-bleed strip. Arrows matter here: a mouse has no
+   sideways gesture, so without them desktop visitors simply can't move it. */
+.clientes__viewport { position: relative; }
+.strip-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 50%;
+  background: rgba(16,14,13,0.72);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+}
+.strip-nav:hover { background: rgba(16,14,13,0.92); border-color: rgba(255,255,255,0.4); }
+.strip-nav:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 2px; }
+.strip-nav--prev { left: clamp(8px, 2vw, 24px); }
+.strip-nav--next { right: clamp(8px, 2vw, 24px); }
+.clientes__strip.dragging { cursor: grabbing; }
+.clientes__strip.dragging img { pointer-events: none; }
+
+.clientes__strip {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  /* No scroll-snap here: the loop nudges scrollLeft, and snapping would
+     fight that and make the seam visible. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0 clamp(16px, 5vw, 60px) 4px;
+}
+.clientes__strip::-webkit-scrollbar { display: none; }
+.clientes__strip img {
+  flex: 0 0 auto;
+  width: clamp(150px, 21vw, 220px);
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.clientes__strip { cursor: grab; }
 
 /* Oakley model silhouettes */
 .models-pattern { position: absolute; inset: 0; }
