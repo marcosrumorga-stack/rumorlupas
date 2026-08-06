@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Página não encontrada — RumorLupas</title>
+<meta name="robots" content="noindex">
+<!-- Every path here is root-absolute on purpose. Netlify serves this file for
+     any unmatched URL while the address bar keeps the wrong path, so relative
+     links would resolve against that path and break. -->
+<link rel="icon" type="image/png" href="/images/boar-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="header" id="top">
+  <div class="container header__inner">
+    <a href="/" class="logo"><img src="/images/boar-icon.png" alt="" class="logo__icon">RUMOR<span>LUPAS</span></a>
+    <div class="lang" role="group" data-i18n-aria="aria.lang" aria-label="Idioma">
+      <button type="button" class="lang__btn" data-lang="pt">PT</button>
+      <button type="button" class="lang__btn" data-lang="en">EN</button>
+      <button type="button" class="lang__btn" data-lang="es">ES</button>
+    </div>
+  </div>
+</header>
+
+<main class="section section--dark notfound">
+  <div class="band__decor" aria-hidden="true">
+    <div class="band__glow band__glow--soft"></div>
+    <div class="band__grid"></div>
+  </div>
+  <div class="container notfound__inner">
+    <p class="notfound__code" aria-hidden="true">404</p>
+    <p class="notfound__eyebrow" data-i18n="nf.eyebrow">Erro 404</p>
+    <h1 data-i18n="nf.title">Esta página não existe</h1>
+    <p class="notfound__text" data-i18n="nf.text">O link pode estar mal escrito, ou a página pode ter sido removida. O catálogo continua onde estava.</p>
+    <div class="hero__actions notfound__actions">
+      <a href="/#catalogo" class="btn btn--primary" data-i18n="hero.cta">Ver catálogo</a>
+      <a href="/" class="btn btn--ghost" data-i18n="nf.home">Página inicial</a>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <p>&copy; <span id="year"></span> RumorLupas. <span data-i18n="footer.rights">Todos os direitos reservados.</span></p>
+    <p class="footer__note" data-i18n-html="footer.contact">Dúvidas? <a href="mailto:rumorlupas@gmail.com">rumorlupas@gmail.com</a></p>
+  </div>
+</footer>
+
+<script src="/i18n.js"></script>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

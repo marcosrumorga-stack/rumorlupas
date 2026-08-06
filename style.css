@@ -89,6 +89,35 @@ body {
 .thanks__help a { color: var(--accent-light); }
 .thanks__actions { justify-content: center; margin-top: 30px; }
 
+/* Not-found page */
+.notfound { text-align: center; padding: 96px 0 116px; }
+.notfound__inner { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; }
+.notfound__code {
+  font-family: var(--font-display);
+  font-size: clamp(4.5rem, 15vw, 9rem);
+  line-height: 0.9;
+  color: rgba(255,255,255,0.07);
+  margin-bottom: -6px;
+}
+.notfound__eyebrow {
+  color: var(--accent-light);
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  font-size: 0.74rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.notfound h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1.08;
+  text-wrap: balance;
+  margin-bottom: 16px;
+}
+.notfound__text { color: rgba(255,255,255,0.62); }
+.notfound__actions { justify-content: center; margin-top: 30px; }
+
 /* Toast */
 .notice {
   position: fixed;

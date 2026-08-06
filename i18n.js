@@ -64,6 +64,11 @@ const I18N = {
     "thanks.help": "Dúvidas sobre o pedido? Escreva para <a href=\"mailto:rumorlupas@gmail.com\">rumorlupas@gmail.com</a>.",
     "thanks.back": "Voltar ao catálogo",
 
+    "nf.eyebrow": "Erro 404",
+    "nf.title": "Esta página não existe",
+    "nf.text": "O link pode estar mal escrito, ou a página pode ter sido removida. O catálogo continua onde estava.",
+    "nf.home": "Página inicial",
+
     "pp.back": "← Voltar ao catálogo",
     "pp.notFound": "Produto não encontrado.",
     "pp.history": "A história do modelo",
@@ -152,6 +157,11 @@ const I18N = {
     "thanks.help": "Questions about your order? Write to <a href=\"mailto:rumorlupas@gmail.com\">rumorlupas@gmail.com</a>.",
     "thanks.back": "Back to the catalogue",
 
+    "nf.eyebrow": "Error 404",
+    "nf.title": "This page doesn't exist",
+    "nf.text": "The link may be mistyped, or the page may have been removed. The catalogue is still where it was.",
+    "nf.home": "Home page",
+
     "pp.back": "← Back to the catalogue",
     "pp.notFound": "Product not found.",
     "pp.history": "The story behind the model",
@@ -239,6 +249,11 @@ const I18N = {
     "thanks.refNote": "Guarda esta referencia por si necesitas contactarnos.",
     "thanks.help": "¿Dudas sobre tu pedido? Escríbenos a <a href=\"mailto:rumorlupas@gmail.com\">rumorlupas@gmail.com</a>.",
     "thanks.back": "Volver al catálogo",
+
+    "nf.eyebrow": "Error 404",
+    "nf.title": "Esta página no existe",
+    "nf.text": "El enlace puede estar mal escrito, o la página puede haber sido eliminada. El catálogo sigue donde estaba.",
+    "nf.home": "Página de inicio",
 
     "pp.back": "← Volver al catálogo",
     "pp.notFound": "Producto no encontrado.",
