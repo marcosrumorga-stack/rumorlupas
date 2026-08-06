@@ -73,7 +73,6 @@ const I18N = {
     "pp.cloth": "Pano de limpeza",
     "pp.case": "Case",
     "assure.returns": "14 dias para devolver",
-    "assure.warranty": "3 anos de garantia",
     "assure.delivery": "Entrega em 2 a 5 dias úteis",
     "footer.contact": "Dúvidas? <a href=\"mailto:rumorlupas@gmail.com\">rumorlupas@gmail.com</a>",
 
@@ -162,7 +161,6 @@ const I18N = {
     "pp.cloth": "Cleaning cloth",
     "pp.case": "Case",
     "assure.returns": "14 days to return it",
-    "assure.warranty": "3-year warranty",
     "assure.delivery": "Delivered in 2 to 5 working days",
     "footer.contact": "Questions? <a href=\"mailto:rumorlupas@gmail.com\">rumorlupas@gmail.com</a>",
 
@@ -251,7 +249,6 @@ const I18N = {
     "pp.cloth": "Paño de limpieza",
     "pp.case": "Estuche",
     "assure.returns": "14 días para devolver",
-    "assure.warranty": "3 años de garantía",
     "assure.delivery": "Entrega en 2 a 5 días hábiles",
     "footer.contact": "¿Dudas? <a href=\"mailto:rumorlupas@gmail.com\">rumorlupas@gmail.com</a>",
 
