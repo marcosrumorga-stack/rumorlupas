@@ -5,7 +5,8 @@ const PRODUCTS = [
   {
     id: "eye-jacket-45",
     name: "Eye Jacket Redux",
-    price: 45,
+    price: 43,
+    oldPrice: 61.43,
     colors: [
       {
         id: "preto",
@@ -26,7 +27,8 @@ const PRODUCTS = [
   {
     id: "plantaris-50",
     name: "Plantaris",
-    price: 50,
+    price: 49,
+    oldPrice: 70,
     colors: [
       {
         id: "preto",
@@ -42,15 +44,15 @@ const PRODUCTS = [
       },
     ],
   },
-  { id: "juliet-45", name: "Juliet", price: 45 },
-  { id: "xx-45", name: "XX", price: 45 },
-  { id: "plate-55", name: "Plate", price: 55 },
-  { id: "gascan-50", name: "Gascan", price: 50 },
-  { id: "splice-53", name: "Splice", price: 53 },
-  { id: "monster-dog-47", name: "Monster Dog", price: 47 },
-  { id: "dartboard-50", name: "Dartboard", price: 50 },
-  { id: "flak-2xl-45", name: "Flak 2.0 XL", price: 45 },
-  { id: "pitboss-53", name: "PitBoss", price: 53 },
+  { id: "juliet-45", name: "Juliet", price: 43, oldPrice: 61.43 },
+  { id: "xx-45", name: "XX", price: 43, oldPrice: 61.43 },
+  { id: "plate-55", name: "Plate", price: 53, oldPrice: 75.71 },
+  { id: "gascan-50", name: "Gascan", price: 49, oldPrice: 70 },
+  { id: "splice-53", name: "Splice", price: 53, oldPrice: 75.71 },
+  { id: "monster-dog-47", name: "Monster Dog", price: 47, oldPrice: 67.14 },
+  { id: "dartboard-50", name: "Dartboard", price: 49, oldPrice: 70 },
+  { id: "flak-2xl-45", name: "Flak 2.0 XL", price: 43, oldPrice: 61.43 },
+  { id: "pitboss-53", name: "PitBoss", price: 53, oldPrice: 75.71 },
 ];
 
 // A product either has colour variants — each with its own photos — or a plain
@@ -72,6 +74,27 @@ function findColor(product, colorId) {
 function productImages(product, colorId) {
   const color = findColor(product, colorId);
   return (color ? color.images : product.images) || [];
+}
+
+// Portuguese writes 61,43 € — and whole euros carry no decimals, matching how
+// the prices have always been shown.
+function formatPrice(value) {
+  const shown = Number.isInteger(value) ? String(value) : value.toFixed(2).replace(".", ",");
+  return `${shown} €`;
+}
+
+// Derived, not stored: change either price and the badge follows.
+function discountPercent(product) {
+  if (!product.oldPrice || product.oldPrice <= product.price) return 0;
+  return Math.round((1 - product.price / product.oldPrice) * 100);
+}
+
+function priceHtml(product) {
+  const now = `<span class="price__now">${formatPrice(product.price)}</span>`;
+  const off = discountPercent(product);
+  if (!off) return now;
+  return `<s class="price__old">${formatPrice(product.oldPrice)}</s>${now}` +
+    `<span class="price__off" aria-label="${off}% ${t("price.off")}">-${off}%</span>`;
 }
 
 function productHistory(product) {

@@ -90,7 +90,7 @@ function renderCart() {
           <div class="cart-item__info">
             <p class="cart-item__name">${product.name}</p>
             ${color ? `<p class="cart-item__color"><span class="swatch" style="--swatch: ${color.hex}"></span>${color.name}</p>` : ""}
-            <p class="cart-item__price">${product.price} € · <span class="cart-item__qty-inline">${qty}x</span></p>
+            <p class="cart-item__price">${formatPrice(product.price)} · <span class="cart-item__qty-inline">${qty}x</span></p>
             <div class="cart-item__qty">
               <button data-action="dec" data-id="${key}">−</button>
               <span>${qty}</span>
@@ -107,7 +107,7 @@ function renderCart() {
     cartItemsEl.querySelectorAll("[data-action='remove']").forEach((b) => b.addEventListener("click", () => removeFromCart(b.dataset.id)));
   }
 
-  cartTotalEl.textContent = `${cartTotal()} €`;
+  cartTotalEl.textContent = formatPrice(cartTotal());
 }
 
 function openCart() {

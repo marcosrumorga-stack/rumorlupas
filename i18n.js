@@ -28,6 +28,7 @@ const I18N = {
     "product.add": "Adicionar ao carrinho",
     "product.photosOf": "Ver fotos de",
     "product.photo": "foto",
+    "price.off": "de desconto",
 
     "about.title": "Sobre a <span class=\"brandmark\"><img src=\"images/boar-icon.png\" alt=\"\" class=\"brandmark__icon\">RUMOR<span>LUPAS</span></span>",
     "about.text": "A RumorLupas nasceu da paixão por óculos de sol de qualidade. Trabalhamos com modelos de qualidade premium, unindo proteção UV, durabilidade e o estilo que você procura para o dia a dia, pra prática esportiva e principalmente pra curtir aquela festa/rave.",
@@ -101,6 +102,7 @@ const I18N = {
     "product.add": "Add to cart",
     "product.photosOf": "See photos of",
     "product.photo": "photo",
+    "price.off": "off",
 
     "about.title": "About <span class=\"brandmark\"><img src=\"images/boar-icon.png\" alt=\"\" class=\"brandmark__icon\">RUMOR<span>LUPAS</span></span>",
     "about.text": "RumorLupas was born out of a love for well-made sunglasses. We work with premium models that bring together UV protection, durability and the look you want — for everyday wear, for sport, and above all for the night out or the rave.",
@@ -174,6 +176,7 @@ const I18N = {
     "product.add": "Añadir al carrito",
     "product.photosOf": "Ver fotos de",
     "product.photo": "foto",
+    "price.off": "de descuento",
 
     "about.title": "Sobre <span class=\"brandmark\"><img src=\"images/boar-icon.png\" alt=\"\" class=\"brandmark__icon\">RUMOR<span>LUPAS</span></span>",
     "about.text": "RumorLupas nació de la pasión por unas buenas gafas de sol. Trabajamos con modelos premium que unen protección UV, durabilidad y el estilo que buscas — para el día a día, para el deporte y sobre todo para esa fiesta o rave.",

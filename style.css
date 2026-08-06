@@ -571,7 +571,28 @@ body {
   text-decoration: none;
 }
 .product-card__name:hover { color: var(--accent); text-decoration: underline; }
-.product-card__price { color: var(--accent); font-weight: 700; font-size: 1.15rem; margin-bottom: 14px; }
+.product-card__price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin-bottom: 14px;
+}
+.price__now { color: var(--accent); font-weight: 700; font-size: 1.15rem; }
+.price__old {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  text-decoration-thickness: 1.5px;
+}
+.price__off {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+}
 
 /* Available colours */
 .sr-only {
@@ -737,11 +758,15 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   margin-bottom: 10px;
 }
 .product-detail__price {
-  color: var(--accent);
-  font-weight: 700;
-  font-size: 1.4rem;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 10px;
   margin-bottom: 20px;
 }
+.product-detail__price .price__now { font-size: 1.5rem; }
+.product-detail__price .price__old { font-size: 1rem; }
+.product-detail__price .price__off { font-size: 0.76rem; }
 .product-detail__history {
   margin-top: 36px;
   padding-top: 28px;

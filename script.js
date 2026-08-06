@@ -28,7 +28,7 @@ function renderProducts() {
       <div class="product-card__body">
         <a href="produto.html?id=${p.id}" class="product-card__name">${p.name}</a>
         ${colorSwatchesHtml(p, selectedColor[p.id])}
-        <p class="product-card__price">${p.price} €</p>
+        <p class="product-card__price">${priceHtml(p)}</p>
         <button class="product-card__btn" data-id="${p.id}">${t("product.add")}</button>
       </div>
     </div>

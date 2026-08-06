@@ -23,9 +23,10 @@ if (!product) {
   let currentColor = defaultColorId(product);
 
   document.getElementById("productName").textContent = product.name;
-  document.getElementById("productPrice").textContent = `${product.price} €`;
+  const priceEl = document.getElementById("productPrice");
   const historyEl = document.getElementById("productHistory");
   function renderHistory() {
+    priceEl.innerHTML = priceHtml(product);
     historyEl.textContent = productHistory(product);
   }
 
