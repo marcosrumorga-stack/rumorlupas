@@ -104,6 +104,13 @@ if (!product) {
   });
 
   const productColors = document.getElementById("productColors");
+  const addBtn = document.getElementById("addToCartBtn");
+
+  function renderStock() {
+    const out = isSoldOut(product, currentColor);
+    addBtn.disabled = out;
+    addBtn.textContent = out ? t("product.soldOut") : t("product.add");
+  }
 
   function renderColors() {
     productColors.innerHTML = colorSwatchesHtml(product, currentColor);
@@ -114,6 +121,7 @@ if (!product) {
         galleryIndex = 0;
         renderColors();
         renderGallery();
+        renderStock();
       });
     });
   }
@@ -121,8 +129,10 @@ if (!product) {
   renderColors();
   renderGallery();
   renderHistory();
+  renderStock();
 
-  document.getElementById("addToCartBtn").addEventListener("click", () => {
+  addBtn.addEventListener("click", () => {
+    if (isSoldOut(product, currentColor)) return;
     addToCart(product.id, currentColor);
   });
 
@@ -130,5 +140,6 @@ if (!product) {
   document.addEventListener("rl:languagechange", () => {
     renderHistory();
     renderGallery();
+    renderStock();
   });
 }

@@ -7,6 +7,24 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const FREE_SHIPPING_FROM = 80;
 const SHIPPING_CENTS = 390;
 
+// Stock is written once, in products.js, and read from here so a sale means
+// editing one file. Loaded defensively: if the catalogue can't be reached from
+// this bundle, checkout carries on without the stock check rather than turning
+// every order away. The browser blocks sold-out items either way.
+let CATALOGUE = null;
+try {
+  CATALOGUE = require("../../products.js");
+} catch (err) {
+  console.warn("Stock check disabled — products.js not loadable:", err.message);
+}
+
+function stockFor(id, colorId) {
+  if (!CATALOGUE) return Infinity;
+  const product = CATALOGUE.PRODUCTS.find((p) => p.id === id);
+  if (!product) return Infinity;
+  return CATALOGUE.stockOf(product, colorId);
+}
+
 // Keep this in sync with products.js — prices are looked up here, never
 // trusted from the client, so someone can't tamper with the cart to pay less.
 // `colors` maps a colour id to the name that goes on the Stripe line item, so
@@ -54,6 +72,14 @@ exports.handler = async (event) => {
       if (!colorName) {
         return { statusCode: 400, body: `Unknown colour for ${id}` };
       }
+    }
+
+    const available = stockFor(id, colorId);
+    if (available <= 0) {
+      return { statusCode: 409, body: `Sold out: ${id}` };
+    }
+    if (qty > available) {
+      return { statusCode: 409, body: `Only ${available} left of ${id}` };
     }
 
     lines.push({ product, qty, colorName });

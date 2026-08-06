@@ -34,9 +34,13 @@ function mediaHtml(p) {
        <button type="button" class="card-nav card-nav--next" data-id="${p.id}" data-step="1" aria-label="${t("aria.nextPhoto")}">›</button>`
     : "";
 
+  const out = isSoldOut(p, selectedColor[p.id])
+    ? `<span class="sold-out">${t("product.soldOut")}</span>`
+    : "";
+
   return `<a href="produto.html?id=${p.id}" class="product-card__image">
       <div class="card-track" data-track="${p.id}">${slides}</div>
-    </a>${arrows}`;
+    </a>${arrows}${out}`;
 }
 
 function renderProducts() {
@@ -47,12 +51,14 @@ function renderProducts() {
         <a href="produto.html?id=${p.id}" class="product-card__name">${p.name}</a>
         ${colorSwatchesHtml(p, selectedColor[p.id])}
         <p class="product-card__price">${priceHtml(p)}</p>
-        <button class="product-card__btn" data-id="${p.id}">${t("product.add")}</button>
+        ${isSoldOut(p, selectedColor[p.id])
+          ? `<button class="product-card__btn" disabled>${t("product.soldOut")}</button>`
+          : `<button class="product-card__btn" data-id="${p.id}">${t("product.add")}</button>`}
       </div>
     </div>
   `).join("");
 
-  productGrid.querySelectorAll(".product-card__btn").forEach((btn) => {
+  productGrid.querySelectorAll(".product-card__btn[data-id]").forEach((btn) => {
     btn.addEventListener("click", () => addToCart(btn.dataset.id, selectedColor[btn.dataset.id]));
   });
 

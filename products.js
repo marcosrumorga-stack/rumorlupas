@@ -12,6 +12,7 @@ const PRODUCTS = [
         id: "preto",
         name: "Preto",
         hex: "#15130f",
+        stock: 5,
         images: [
           "images/products/eye-jacket-45/preto/2.avif",
           "images/products/eye-jacket-45/preto/1.avif",
@@ -34,6 +35,7 @@ const PRODUCTS = [
         id: "preto",
         name: "Preto",
         hex: "#15130f",
+        stock: 4,
         images: [
           "images/products/plantaris-50/preto/1.avif",
           "images/products/plantaris-50/preto/2.avif",
@@ -76,6 +78,23 @@ function productImages(product, colorId) {
   return (color ? color.images : product.images) || [];
 }
 
+// Stock lives on the colour, since a model can be out of black and still have
+// white. Leaving `stock` unset means "not being tracked" — the item stays on
+// sale. Set it to a number to have the site and the checkout honour it, and to
+// 0 to take it off sale.
+//
+//   { id: "preto", name: "Preto", hex: "#15130f", stock: 2, images: [...] }
+//
+function stockOf(product, colorId) {
+  const color = findColor(product, colorId);
+  const value = color ? color.stock : product.stock;
+  return value === undefined || value === null ? Infinity : value;
+}
+
+function isSoldOut(product, colorId) {
+  return stockOf(product, colorId) <= 0;
+}
+
 // Portuguese writes 61,43 € — and whole euros carry no decimals, matching how
 // the prices have always been shown.
 function formatPrice(value) {
@@ -108,8 +127,15 @@ function colorSwatchesHtml(product, selectedId) {
   const dots = product.colors
     .map((c) => {
       const on = c.id === selectedId;
-      return `<button type="button" class="swatch${on ? " active" : ""}" style="--swatch: ${c.hex}" data-color="${c.id}" aria-pressed="${on}" title="${c.name}"><span class="sr-only">${c.name}</span></button>`;
+      const out = isSoldOut(product, c.id);
+      return `<button type="button" class="swatch${on ? " active" : ""}${out ? " out" : ""}" style="--swatch: ${c.hex}" data-color="${c.id}" aria-pressed="${on}" title="${c.name}"><span class="sr-only">${c.name}</span></button>`;
     })
     .join("");
   return `<div class="swatches" role="group" aria-label="Cor">${dots}</div>`;
+}
+
+// The checkout function pulls the catalogue from here too, so stock is written
+// in one place rather than kept in step across two files.
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { PRODUCTS, stockOf, isSoldOut, findColor };
 }
