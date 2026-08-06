@@ -710,7 +710,9 @@ body {
   height: 100%;
   object-fit: cover;
 }
-.product-card__image[role="button"] { cursor: pointer; }
+.product-card__image { text-decoration: none; }
+.product-card__image img { transition: transform 0.35s ease; }
+.product-card:hover .product-card__image img { transform: scale(1.04); }
 .product-card__body { padding: 18px 20px 22px; }
 .product-card__name {
   display: block;
@@ -882,8 +884,30 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   color: var(--text-muted);
   font-size: 0.9rem;
 }
-.product-detail__stage img { width: 100%; height: 100%; object-fit: cover; }
 .product-detail__stage .lightbox__nav { background: rgba(255,255,255,0.9); }
+
+/* Photos side by side; the browser's own snap does the swiping */
+.gallery-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.gallery-track::-webkit-scrollbar { display: none; }
+.gallery-track img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  user-select: none;
+  -webkit-user-drag: none;
+}
 .product-detail__thumbs {
   display: flex;
   gap: 10px;
@@ -940,64 +964,7 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   .product-detail { grid-template-columns: 1fr; }
 }
 
-/* Photo lightbox */
-.lightbox {
-  position: fixed;
-  inset: 0;
-  z-index: 110;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.lightbox.open { display: flex; }
-.lightbox__backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(22,20,19,0.82);
-}
-.lightbox__box {
-  position: relative;
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 24px;
-  max-width: 560px;
-  width: 100%;
-}
-.lightbox__close {
-  position: absolute;
-  top: 10px;
-  right: 14px;
-  background: none;
-  border: none;
-  font-size: 1.8rem;
-  line-height: 1;
-  cursor: pointer;
-  color: var(--text-muted);
-  z-index: 1;
-}
-.lightbox__close:hover { color: var(--text); }
-.lightbox__name {
-  text-align: center;
-  font-weight: 600;
-  margin-bottom: 14px;
-  padding-right: 24px;
-}
-.lightbox__stage {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 1 / 1;
-  background: linear-gradient(135deg, #eeece5, #f8f7f3);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-.lightbox__stage img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
+/* Gallery arrows — kept for the product page, which reuses these classes */
 .lightbox__nav {
   position: absolute;
   top: 50%;
@@ -1019,12 +986,6 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 .lightbox__nav:hover { background: var(--surface); }
 .lightbox__nav--prev { left: 12px; }
 .lightbox__nav--next { right: 12px; }
-.lightbox__counter {
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.82rem;
-  margin-top: 12px;
-}
 
 /* Cart drawer */
 .cart-drawer {

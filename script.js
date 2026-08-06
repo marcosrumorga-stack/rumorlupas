@@ -20,11 +20,11 @@ function renderProducts() {
     const images = productImages(p, selectedColor[p.id]);
     return `
     <div class="product-card" data-product="${p.id}">
-      <div class="product-card__image"${images.length ? ` data-id="${p.id}" role="button" tabindex="0" aria-label="${t("product.photosOf")} ${p.name}"` : ""}>${
+      <a href="produto.html?id=${p.id}" class="product-card__image">${
         images.length
           ? `<img src="${images[0]}" alt="${p.name}" loading="lazy">`
-          : t("product.soon")
-      }</div>
+          : `${t("product.soon")}<span class="sr-only">${p.name}</span>`
+      }</a>
       <div class="product-card__body">
         <a href="produto.html?id=${p.id}" class="product-card__name">${p.name}</a>
         ${colorSwatchesHtml(p, selectedColor[p.id])}
@@ -37,16 +37,6 @@ function renderProducts() {
 
   productGrid.querySelectorAll(".product-card__btn").forEach((btn) => {
     btn.addEventListener("click", () => addToCart(btn.dataset.id, selectedColor[btn.dataset.id]));
-  });
-
-  productGrid.querySelectorAll(".product-card__image[data-id]").forEach((el) => {
-    el.addEventListener("click", () => openLightbox(el.dataset.id));
-    el.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        openLightbox(el.dataset.id);
-      }
-    });
   });
 
   productGrid.querySelectorAll(".swatch").forEach((btn) => {
@@ -72,57 +62,6 @@ function pickColor(productId, colorId) {
     s.setAttribute("aria-pressed", on);
   });
 }
-
-const lightbox = document.getElementById("lightbox");
-const lightboxBackdrop = document.getElementById("lightboxBackdrop");
-const lightboxClose = document.getElementById("lightboxClose");
-const lightboxPrev = document.getElementById("lightboxPrev");
-const lightboxNext = document.getElementById("lightboxNext");
-const lightboxImage = document.getElementById("lightboxImage");
-const lightboxName = document.getElementById("lightboxName");
-const lightboxCounter = document.getElementById("lightboxCounter");
-
-let lightboxImages = [];
-let lightboxIndex = 0;
-
-function openLightbox(productId) {
-  const product = PRODUCTS.find((p) => p.id === productId);
-  if (!product) return;
-  const images = productImages(product, selectedColor[productId]);
-  if (!images.length) return;
-  lightboxImages = images;
-  lightboxIndex = 0;
-  lightboxName.textContent = product.name;
-  renderLightboxImage();
-  lightbox.classList.add("open");
-}
-
-function renderLightboxImage() {
-  lightboxImage.src = lightboxImages[lightboxIndex];
-  lightboxImage.alt = lightboxName.textContent;
-  lightboxCounter.textContent = `${lightboxIndex + 1} / ${lightboxImages.length}`;
-}
-
-function lightboxGo(delta) {
-  lightboxIndex = (lightboxIndex + delta + lightboxImages.length) % lightboxImages.length;
-  renderLightboxImage();
-}
-
-function closeLightbox() {
-  lightbox.classList.remove("open");
-}
-
-lightboxBackdrop.addEventListener("click", closeLightbox);
-lightboxClose.addEventListener("click", closeLightbox);
-lightboxPrev.addEventListener("click", () => lightboxGo(-1));
-lightboxNext.addEventListener("click", () => lightboxGo(1));
-
-document.addEventListener("keydown", (e) => {
-  if (!lightbox.classList.contains("open")) return;
-  if (e.key === "Escape") closeLightbox();
-  if (e.key === "ArrowLeft") lightboxGo(-1);
-  if (e.key === "ArrowRight") lightboxGo(1);
-});
 
 renderProducts();
 
