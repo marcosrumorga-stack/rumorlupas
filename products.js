@@ -5,8 +5,8 @@ const PRODUCTS = [
   {
     id: "eye-jacket-45",
     name: "Eye Jacket Redux",
-    price: 43,
-    oldPrice: 61.43,
+    price: 49,
+    oldPrice: 70,
     colors: [
       {
         id: "preto",
@@ -46,14 +46,14 @@ const PRODUCTS = [
       },
     ],
   },
-  { id: "juliet-45", name: "Juliet", price: 43, oldPrice: 61.43 },
-  { id: "xx-45", name: "XX", price: 43, oldPrice: 61.43 },
+  { id: "juliet-45", name: "Juliet", price: 49, oldPrice: 70 },
+  { id: "xx-45", name: "XX", price: 49, oldPrice: 70 },
   { id: "plate-55", name: "Plate", price: 53, oldPrice: 75.71 },
   { id: "gascan-50", name: "Gascan", price: 49, oldPrice: 70 },
   { id: "splice-53", name: "Splice", price: 53, oldPrice: 75.71 },
-  { id: "monster-dog-47", name: "Monster Dog", price: 47, oldPrice: 67.14 },
+  { id: "monster-dog-47", name: "Monster Dog", price: 49, oldPrice: 70 },
   { id: "dartboard-50", name: "Dartboard", price: 49, oldPrice: 70 },
-  { id: "flak-2xl-45", name: "Flak 2.0 XL", price: 43, oldPrice: 61.43 },
+  { id: "flak-2xl-45", name: "Flak 2.0 XL", price: 49, oldPrice: 70 },
   { id: "pitboss-53", name: "PitBoss", price: 53, oldPrice: 75.71 },
 ];
 

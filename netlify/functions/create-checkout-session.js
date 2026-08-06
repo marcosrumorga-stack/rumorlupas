@@ -30,16 +30,16 @@ function stockFor(id, colorId) {
 // `colors` maps a colour id to the name that goes on the Stripe line item, so
 // the order says which variant to ship.
 const PRODUCTS = {
-  "eye-jacket-45":   { name: "Oakley Eye Jacket",     price: 43, colors: { preto: "Preto" } },
+  "eye-jacket-45":   { name: "Oakley Eye Jacket",     price: 49, colors: { preto: "Preto" } },
   "plantaris-50":    { name: "Oakley Plantaris",      price: 49, colors: { preto: "Preto" } },
-  "juliet-45":       { name: "Oakley Juliet",         price: 43 },
-  "xx-45":           { name: "Oakley XX",             price: 43 },
+  "juliet-45":       { name: "Oakley Juliet",         price: 49 },
+  "xx-45":           { name: "Oakley XX",             price: 49 },
   "plate-55":        { name: "Oakley Plate",          price: 53 },
   "gascan-50":       { name: "Oakley Gascan",         price: 49 },
   "splice-53":       { name: "Oakley Splice",         price: 53 },
-  "monster-dog-47":  { name: "Oakley Monster Dog",    price: 47 },
+  "monster-dog-47":  { name: "Oakley Monster Dog",    price: 49 },
   "dartboard-50":    { name: "Oakley Dartboard",      price: 49 },
-  "flak-2xl-45":     { name: "Oakley Flak 2.0 XL",    price: 43 },
+  "flak-2xl-45":     { name: "Oakley Flak 2.0 XL",    price: 49 },
   "pitboss-53":      { name: "Oakley PitBoss",        price: 53 },
 };
 
