@@ -5,7 +5,7 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 // how far the customer still is from it — but this file is what actually
 // charges, so change it here first and keep the two in step.
 const FREE_SHIPPING_FROM = 80;
-const SHIPPING_CENTS = 390;
+const SHIPPING_CENTS = 490;
 
 // Stock is written once, in products.js, and read from here so a sale means
 // editing one file. Loaded defensively: if the catalogue can't be reached from
