@@ -116,6 +116,10 @@ exports.handler = async (event) => {
       // like Apple Pay / Google Pay that aren't explicit type strings.
       line_items,
       shipping_address_collection: { allowed_countries: ["PT"] },
+      // The courier needs a phone number as well as an email to arrange
+      // delivery. Stripe makes this field required once it is enabled, and
+      // hands it back on the session as customer_details.phone.
+      phone_number_collection: { enabled: true },
       shipping_options: [
         {
           shipping_rate_data: {
