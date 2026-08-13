@@ -35,7 +35,7 @@ const PRODUCTS = [
         id: "preto",
         name: "Preto",
         hex: "#15130f",
-        stock: 4,
+        stock: 3,
         images: [
           "images/products/plantaris-50/preto/1.avif",
           "images/products/plantaris-50/preto/2.avif",
