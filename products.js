@@ -48,7 +48,7 @@ const PRODUCTS = [
   },
   { id: "juliet-45", name: "Juliet", price: 49, oldPrice: 70 },
   { id: "xx-45", name: "XX", price: 49, oldPrice: 70 },
-  { id: "plate-55", name: "Plate", price: 53, oldPrice: 75.71 },
+  { id: "plate-55", name: "Plate", price: 59, oldPrice: 84.29 },
   { id: "gascan-50", name: "Gascan", price: 49, oldPrice: 70 },
   { id: "splice-53", name: "Splice", price: 53, oldPrice: 75.71 },
   { id: "monster-dog-47", name: "Monster Dog", price: 49, oldPrice: 70 },

@@ -34,7 +34,7 @@ const PRODUCTS = {
   "plantaris-50":    { name: "Oakley Plantaris",      price: 49, colors: { preto: "Preto" } },
   "juliet-45":       { name: "Oakley Juliet",         price: 49 },
   "xx-45":           { name: "Oakley XX",             price: 49 },
-  "plate-55":        { name: "Oakley Plate",          price: 53 },
+  "plate-55":        { name: "Oakley Plate",          price: 59 },
   "gascan-50":       { name: "Oakley Gascan",         price: 49 },
   "splice-53":       { name: "Oakley Splice",         price: 53 },
   "monster-dog-47":  { name: "Oakley Monster Dog",    price: 49 },
