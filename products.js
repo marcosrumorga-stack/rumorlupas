@@ -53,14 +53,15 @@ const PRODUCTS = [
     name: "Plate",
     price: 59,
     oldPrice: 84.29,
-    // The armação is the same on five of these — what changes is the lente, so
-    // that is what the swatch shows and what the name says. Neutral lenses
-    // first, colours after, and the two different armações last.
+    // Split dots here too: armação on one side, lente on the other. Five of
+    // these share the same armação, so the lente half is what separates them.
+    // Neutral lenses first, colours after, the two other armações last.
     colors: [
       {
         id: "cinza-fosca-preta",
         name: "Cinza fosca · lente preta",
-        hex: "#1a1a1c",
+        hex: "#82807d",
+        swatch: "linear-gradient(135deg, #82807d 50%, #1a1a1c 50%)",
         stock: 1,
         images: [
           "images/products/plate-55/cinza-fosca-preta/1.jpeg",
@@ -71,7 +72,8 @@ const PRODUCTS = [
       {
         id: "cinza-fosca-espelhada",
         name: "Cinza fosca · lente espelhada",
-        hex: "#9aa0a6",
+        hex: "#82807d",
+        swatch: "linear-gradient(135deg, #82807d 50%, #9aa0a6 50%)",
         stock: 1,
         images: [
           "images/products/plate-55/cinza-fosca-espelhada/1.jpeg",
@@ -82,7 +84,8 @@ const PRODUCTS = [
       {
         id: "cinza-fosca-azul",
         name: "Cinza fosca · lente azul",
-        hex: "#1e8fd0",
+        hex: "#82807d",
+        swatch: "linear-gradient(135deg, #82807d 50%, #1e8fd0 50%)",
         stock: 2,
         images: [
           "images/products/plate-55/cinza-fosca-azul/1.jpeg",
@@ -93,7 +96,8 @@ const PRODUCTS = [
       {
         id: "cinza-fosca-amarela",
         name: "Cinza fosca · lente amarela",
-        hex: "#f0c40a",
+        hex: "#82807d",
+        swatch: "linear-gradient(135deg, #82807d 50%, #f0c40a 50%)",
         stock: 1,
         images: [
           "images/products/plate-55/cinza-fosca-amarela/1.jpeg",
@@ -104,7 +108,8 @@ const PRODUCTS = [
       {
         id: "cinza-fosca-tanzanite",
         name: "Cinza fosca · lente tanzanite",
-        hex: "#c62368",
+        hex: "#82807d",
+        swatch: "linear-gradient(135deg, #82807d 50%, #c62368 50%)",
         stock: 1,
         images: [
           "images/products/plate-55/cinza-fosca-tanzanite/1.jpeg",
@@ -116,6 +121,7 @@ const PRODUCTS = [
         id: "cinza-escura-espelhada",
         name: "Cinza escura · lente espelhada",
         hex: "#4a4744",
+        swatch: "linear-gradient(135deg, #4a4744 50%, #8d9298 50%)",
         stock: 1,
         images: [
           "images/products/plate-55/cinza-escura-espelhada/1.jpeg",
@@ -126,7 +132,8 @@ const PRODUCTS = [
       {
         id: "preta-roxa",
         name: "Preta · lente roxa",
-        hex: "#6d3f9e",
+        hex: "#15130f",
+        swatch: "linear-gradient(135deg, #15130f 50%, #6d3f9e 50%)",
         stock: 3,
         images: [
           "images/products/plate-55/preta-roxa/1.jpeg",
@@ -136,7 +143,82 @@ const PRODUCTS = [
       },
     ],
   },
-  { id: "gascan-50", name: "Gascan", price: 49, oldPrice: 70 },
+  {
+    id: "gascan-50",
+    name: "Gascan",
+    price: 49,
+    oldPrice: 70,
+    // Here both the armação and the lente vary, and two armações repeat, so a
+    // solid dot would leave two pairs looking identical on the catalogue card,
+    // where no name is shown. These carry a split dot instead: armação on one
+    // side, lente on the other.
+    colors: [
+      {
+        id: "preta-lente-preta",
+        name: "Preta · lente preta",
+        hex: "#15130f",
+        stock: 2,
+        images: [
+          "images/products/gascan-50/preta-lente-preta/1.jpeg",
+          "images/products/gascan-50/preta-lente-preta/2.jpeg",
+          "images/products/gascan-50/preta-lente-preta/3.jpeg",
+          "images/products/gascan-50/preta-lente-preta/4.jpeg",
+        ],
+      },
+      {
+        id: "preta-lente-laranja",
+        name: "Preta · lente laranja",
+        hex: "#15130f",
+        swatch: "linear-gradient(135deg, #15130f 50%, #f4741f 50%)",
+        stock: 1,
+        images: [
+          "images/products/gascan-50/preta-lente-laranja/1.jpeg",
+          "images/products/gascan-50/preta-lente-laranja/2.jpeg",
+          "images/products/gascan-50/preta-lente-laranja/3.jpeg",
+          "images/products/gascan-50/preta-lente-laranja/4.jpeg",
+        ],
+      },
+      {
+        id: "preta-transparente-lente-preta",
+        name: "Preta transparente · lente preta",
+        hex: "#6f6d70",
+        swatch: "linear-gradient(135deg, #6f6d70 50%, #15130f 50%)",
+        stock: 2,
+        images: [
+          "images/products/gascan-50/preta-transparente-lente-preta/1.jpeg",
+          "images/products/gascan-50/preta-transparente-lente-preta/2.jpeg",
+          "images/products/gascan-50/preta-transparente-lente-preta/3.jpeg",
+          "images/products/gascan-50/preta-transparente-lente-preta/4.jpeg",
+        ],
+      },
+      {
+        id: "preta-transparente-lente-espelhada",
+        name: "Preta transparente · lente espelhada",
+        hex: "#6f6d70",
+        swatch: "linear-gradient(135deg, #6f6d70 50%, #b9bec3 50%)",
+        stock: 2,
+        images: [
+          "images/products/gascan-50/preta-transparente-lente-espelhada/1.jpeg",
+          "images/products/gascan-50/preta-transparente-lente-espelhada/2.jpeg",
+          "images/products/gascan-50/preta-transparente-lente-espelhada/3.jpeg",
+          "images/products/gascan-50/preta-transparente-lente-espelhada/4.jpeg",
+        ],
+      },
+      {
+        id: "branca-transparente-lente-laranja",
+        name: "Branca transparente · lente laranja",
+        hex: "#e9e7e4",
+        swatch: "linear-gradient(135deg, #e9e7e4 50%, #f4741f 50%)",
+        stock: 1,
+        images: [
+          "images/products/gascan-50/branca-transparente-lente-laranja/1.jpeg",
+          "images/products/gascan-50/branca-transparente-lente-laranja/2.jpeg",
+          "images/products/gascan-50/branca-transparente-lente-laranja/3.jpeg",
+          "images/products/gascan-50/branca-transparente-lente-laranja/4.jpeg",
+        ],
+      },
+    ],
+  },
   { id: "splice-53", name: "Splice", price: 53, oldPrice: 75.71 },
   { id: "monster-dog-47", name: "Monster Dog", price: 49, oldPrice: 70 },
   { id: "dartboard-50", name: "Dartboard", price: 49, oldPrice: 70 },
@@ -246,13 +328,21 @@ function productHistory(product) {
   return text === key ? t("pp.historySoon") : text;
 }
 
+// Normally the dot is just the colour. A model whose variants differ in both
+// the armação and the lente can set `swatch` to any CSS background — a split
+// dot — so two variants sharing an armação are still told apart on the
+// catalogue card, where the name is not written out.
+function swatchBackground(color) {
+  return color.swatch || color.hex;
+}
+
 function colorSwatchesHtml(product, selectedId) {
   if (!hasColors(product)) return "";
   const dots = product.colors
     .map((c) => {
       const on = c.id === selectedId;
       const out = isSoldOut(product, c.id);
-      return `<button type="button" class="swatch${on ? " active" : ""}${out ? " out" : ""}" style="--swatch: ${c.hex}" data-color="${c.id}" aria-pressed="${on}" title="${c.name}"><span class="sr-only">${c.name}</span></button>`;
+      return `<button type="button" class="swatch${on ? " active" : ""}${out ? " out" : ""}" style="--swatch: ${swatchBackground(c)}" data-color="${c.id}" aria-pressed="${on}" title="${c.name}"><span class="sr-only">${c.name}</span></button>`;
     })
     .join("");
   return `<div class="swatches" role="group" aria-label="Cor">${dots}</div>`;
