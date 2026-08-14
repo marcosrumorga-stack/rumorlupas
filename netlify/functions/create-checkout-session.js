@@ -33,7 +33,9 @@ const PRODUCTS = {
   "eye-jacket-45":   { name: "Oakley Eye Jacket",     price: 49, colors: { preto: "Preto" } },
   "plantaris-50":    { name: "Oakley Plantaris",      price: 49, colors: { preto: "Preto" } },
   "juliet-45":       { name: "Oakley Juliet",         price: 49 },
-  "xx-45":           { name: "Oakley XX",             price: 49 },
+  "xx-45":           { name: "Oakley XX",             price: 49, colors: {
+    "24k-lente-esmeralda": "24K · lente esmeralda",
+  } },
   "plate-55":        { name: "Oakley Plate",          price: 59, colors: {
     // Same order as products.js: the first entry is what a pre-colour cart
     // falls back to, so the two lists must start with the same variant.

@@ -47,7 +47,27 @@ const PRODUCTS = [
     ],
   },
   { id: "juliet-45", name: "Juliet", price: 49, oldPrice: 70 },
-  { id: "xx-45", name: "XX", price: 49, oldPrice: 70 },
+  {
+    id: "xx-45",
+    name: "XX",
+    price: 49,
+    oldPrice: 70,
+    colors: [
+      {
+        id: "24k-lente-esmeralda",
+        name: "24K · lente esmeralda",
+        hex: "#c39c50",
+        swatch: "linear-gradient(135deg, #c39c50 50%, #58ac83 50%)",
+        stock: 2,
+        images: [
+          "images/products/xx-45/24k-lente-esmeralda/1.jpeg",
+          "images/products/xx-45/24k-lente-esmeralda/2.jpeg",
+          "images/products/xx-45/24k-lente-esmeralda/3.jpeg",
+          "images/products/xx-45/24k-lente-esmeralda/4.jpeg",
+        ],
+      },
+    ],
+  },
   {
     id: "plate-55",
     name: "Plate",
