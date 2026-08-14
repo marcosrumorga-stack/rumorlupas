@@ -56,7 +56,12 @@ const PRODUCTS = {
   } },
   "splice-53":       { name: "Oakley Splice",         price: 53 },
   "monster-dog-47":  { name: "Oakley Monster Dog",    price: 49 },
-  "dartboard-50":    { name: "Oakley Dartboard",      price: 49 },
+  "dartboard-50":    { name: "Oakley Dartboard",      price: 49, colors: {
+    "preta-lente-preta":         "Preta · lente preta",
+    "branca-lente-azul":         "Branca · lente azul",
+    "branca-lente-transparente": "Branca · lente transparente",
+    "castanha-lente-gold":       "Castanha · lente dourada",
+  } },
   "flak-2xl-45":     { name: "Oakley Flak 2.0 XL",    price: 49 },
   "pitboss-53":      { name: "Oakley Pit Boss II",    price: 53, colors: {
     "preta-lente-preta": "Preta · lente preta",
