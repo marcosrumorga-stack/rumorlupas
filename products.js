@@ -370,6 +370,17 @@ function productHistory(product) {
   return text === key ? t("pp.historySoon") : text;
 }
 
+// The `name` on a colour is Portuguese; the shown name comes from i18n.js under
+// `color.<id>`, so a colour reads in the visitor's language everywhere it
+// appears — the dot's tooltip, the caption on the product page, the cart line.
+// A colour with no entry there falls back to the Portuguese, so adding one
+// without translating it first still works.
+function colorName(color) {
+  const key = `color.${color.id}`;
+  const text = t(key);
+  return text === key ? color.name : text;
+}
+
 // Normally the dot is just the colour. A model whose variants differ in both
 // the armação and the lente can set `swatch` to any CSS background — a split
 // dot — so two variants sharing an armação are still told apart on the
@@ -384,7 +395,8 @@ function colorSwatchesHtml(product, selectedId) {
     .map((c) => {
       const on = c.id === selectedId;
       const out = isSoldOut(product, c.id);
-      return `<button type="button" class="swatch${on ? " active" : ""}${out ? " out" : ""}" style="--swatch: ${swatchBackground(c)}" data-color="${c.id}" aria-pressed="${on}" title="${c.name}"><span class="sr-only">${c.name}</span></button>`;
+      const label = colorName(c);
+      return `<button type="button" class="swatch${on ? " active" : ""}${out ? " out" : ""}" style="--swatch: ${swatchBackground(c)}" data-color="${c.id}" aria-pressed="${on}" title="${label}"><span class="sr-only">${label}</span></button>`;
     })
     .join("");
   return `<div class="swatches" role="group" aria-label="Cor">${dots}</div>`;

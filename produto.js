@@ -115,7 +115,7 @@ if (!product) {
   function renderColors() {
     const color = findColor(product, currentColor);
     productColors.innerHTML = colorSwatchesHtml(product, currentColor) +
-      (color ? `<p class="color-name">${color.name}</p>` : "");
+      (color ? `<p class="color-name">${colorName(color)}</p>` : "");
     productColors.querySelectorAll(".swatch").forEach((btn) => {
       btn.addEventListener("click", () => {
         currentColor = btn.dataset.color;
@@ -138,10 +138,12 @@ if (!product) {
     addToCart(product.id, currentColor);
   });
 
-  // The story and the photo captions are written by JS, so redraw on a switch.
+  // The story, the photo captions and the colour names are written by JS, so
+  // redraw on a switch.
   document.addEventListener("rl:languagechange", () => {
     renderHistory();
     renderGallery();
     renderStock();
+    renderColors();
   });
 }

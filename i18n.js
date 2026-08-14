@@ -89,6 +89,24 @@ const I18N = {
     "legal.back": "← Voltar ao site",
     "legal.notice": "Este documento só tem valor legal na versão em português.",
 
+    // Keyed by the colour's own id, not by product, so two models sharing a
+    // colour share the string. A colour with no entry here falls back to the
+    // `name` written in products.js, which is always Portuguese.
+    "color.preto": "Preto",
+    "color.24k-lente-esmeralda": "24K · lente esmeralda",
+    "color.cinza-fosca-preta": "Cinza fosca · lente preta",
+    "color.cinza-fosca-espelhada": "Cinza fosca · lente espelhada",
+    "color.cinza-fosca-azul": "Cinza fosca · lente azul",
+    "color.cinza-fosca-amarela": "Cinza fosca · lente amarela",
+    "color.cinza-fosca-tanzanite": "Cinza fosca · lente tanzanite",
+    "color.cinza-escura-espelhada": "Cinza escura · lente espelhada",
+    "color.preta-roxa": "Preta · lente roxa",
+    "color.preta-lente-preta": "Preta · lente preta",
+    "color.preta-lente-laranja": "Preta · lente laranja",
+    "color.preta-transparente-lente-preta": "Preta transparente · lente preta",
+    "color.preta-transparente-lente-espelhada": "Preta transparente · lente espelhada",
+    "color.branca-transparente-lente-laranja": "Branca transparente · lente laranja",
+
     "history.eye-jacket-45": "Lançado em 1996, o Eye Jacket foi um dos modelos que definiu a estética esportiva da Oakley nos anos 90, com sua lente envolvente e visual futurista. Rapidamente virou item de estilo fora das pistas, adotado pela cena rave e pelo streetwear da época. Essa versão \"Redux\" resgata a silhueta original com acabamento atualizado.",
     "history.plantaris-50": "O Plantaris representa a leitura mais recente da Oakley sobre o formato wrap clássico da marca, com maior cobertura lateral e um encaixe pensado tanto para performance quanto para o dia a dia. Une a herança esportiva da marca a um visual mais contemporâneo.",
     "history.juliet-45": "A Juliet integra a lendária linha X-Metal da Oakley, lançada no fim dos anos 90 e batizada em referência ao desenho técnico das lentes. Com armação metálica e visual arrojado, tornou-se peça cult no automobilismo e no streetwear, sendo um dos modelos mais colecionados da marca até hoje.",
@@ -187,6 +205,21 @@ const I18N = {
     "legal.back": "← Back to the site",
     "legal.notice": "This document is in Portuguese. Only the Portuguese version is legally binding.",
 
+    "color.preto": "Black",
+    "color.24k-lente-esmeralda": "24K · emerald lens",
+    "color.cinza-fosca-preta": "Matte grey · black lens",
+    "color.cinza-fosca-espelhada": "Matte grey · mirrored lens",
+    "color.cinza-fosca-azul": "Matte grey · blue lens",
+    "color.cinza-fosca-amarela": "Matte grey · yellow lens",
+    "color.cinza-fosca-tanzanite": "Matte grey · tanzanite lens",
+    "color.cinza-escura-espelhada": "Dark grey · mirrored lens",
+    "color.preta-roxa": "Black · purple lens",
+    "color.preta-lente-preta": "Black · black lens",
+    "color.preta-lente-laranja": "Black · orange lens",
+    "color.preta-transparente-lente-preta": "Smoke · black lens",
+    "color.preta-transparente-lente-espelhada": "Smoke · mirrored lens",
+    "color.branca-transparente-lente-laranja": "Clear · orange lens",
+
     "history.eye-jacket-45": "Released in 1996, the Eye Jacket was one of the models that defined Oakley's sporting look in the nineties, with its wraparound lens and futuristic shape. It quickly became a style piece off the track, taken up by the rave scene and the streetwear of the day. This \"Redux\" version brings back the original silhouette with an updated finish.",
     "history.plantaris-50": "The Plantaris is Oakley's most recent take on the wrap shape the brand is known for, with more coverage at the sides and a fit meant for both performance and everyday wear. It carries the brand's sporting heritage into a more contemporary look.",
     "history.juliet-45": "The Juliet belongs to Oakley's legendary X-Metal line, launched in the late nineties and named after the technical drawing of its lenses. With its metal frame and bold shape, it became a cult piece in motorsport and streetwear, and remains one of the brand's most collected models.",
@@ -284,6 +317,21 @@ const I18N = {
 
     "legal.back": "← Volver al sitio",
     "legal.notice": "Este documento está en portugués. Solo la versión en portugués tiene valor legal.",
+
+    "color.preto": "Negro",
+    "color.24k-lente-esmeralda": "24K · lente esmeralda",
+    "color.cinza-fosca-preta": "Gris mate · lente negra",
+    "color.cinza-fosca-espelhada": "Gris mate · lente espejada",
+    "color.cinza-fosca-azul": "Gris mate · lente azul",
+    "color.cinza-fosca-amarela": "Gris mate · lente amarilla",
+    "color.cinza-fosca-tanzanite": "Gris mate · lente tanzanita",
+    "color.cinza-escura-espelhada": "Gris oscuro · lente espejada",
+    "color.preta-roxa": "Negro · lente morada",
+    "color.preta-lente-preta": "Negro · lente negra",
+    "color.preta-lente-laranja": "Negro · lente naranja",
+    "color.preta-transparente-lente-preta": "Humo · lente negra",
+    "color.preta-transparente-lente-espelhada": "Humo · lente espejada",
+    "color.branca-transparente-lente-laranja": "Transparente · lente naranja",
 
     "history.eye-jacket-45": "Lanzado en 1996, el Eye Jacket fue uno de los modelos que definió la estética deportiva de Oakley en los noventa, con su lente envolvente y su aire futurista. Pronto se convirtió en pieza de estilo fuera de la pista, adoptada por la escena rave y el streetwear de la época. Esta versión \"Redux\" recupera la silueta original con un acabado actualizado.",
     "history.plantaris-50": "El Plantaris es la lectura más reciente de Oakley sobre el formato wrap clásico de la marca, con mayor cobertura lateral y un ajuste pensado tanto para el rendimiento como para el día a día. Lleva la herencia deportiva de la marca a un aspecto más contemporáneo.",
