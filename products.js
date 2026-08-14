@@ -48,7 +48,87 @@ const PRODUCTS = [
   },
   { id: "juliet-45", name: "Juliet", price: 49, oldPrice: 70 },
   { id: "xx-45", name: "XX", price: 49, oldPrice: 70 },
-  { id: "plate-55", name: "Plate", price: 59, oldPrice: 84.29 },
+  {
+    id: "plate-55",
+    name: "Plate",
+    price: 59,
+    oldPrice: 84.29,
+    // The armação is the same on five of these — what changes is the lente, so
+    // that is what the swatch shows and what the name says. Neutral lenses
+    // first, colours after, and the two different armações last.
+    colors: [
+      {
+        id: "cinza-fosca-preta",
+        name: "Cinza fosca · lente preta",
+        hex: "#1a1a1c",
+        images: [
+          "images/products/plate-55/cinza-fosca-preta/1.jpeg",
+          "images/products/plate-55/cinza-fosca-preta/2.jpeg",
+          "images/products/plate-55/cinza-fosca-preta/3.jpeg",
+        ],
+      },
+      {
+        id: "cinza-fosca-espelhada",
+        name: "Cinza fosca · lente espelhada",
+        hex: "#9aa0a6",
+        images: [
+          "images/products/plate-55/cinza-fosca-espelhada/1.jpeg",
+          "images/products/plate-55/cinza-fosca-espelhada/2.jpeg",
+          "images/products/plate-55/cinza-fosca-espelhada/3.jpeg",
+        ],
+      },
+      {
+        id: "cinza-fosca-azul",
+        name: "Cinza fosca · lente azul",
+        hex: "#1e8fd0",
+        images: [
+          "images/products/plate-55/cinza-fosca-azul/1.jpeg",
+          "images/products/plate-55/cinza-fosca-azul/2.jpeg",
+          "images/products/plate-55/cinza-fosca-azul/3.jpeg",
+        ],
+      },
+      {
+        id: "cinza-fosca-amarela",
+        name: "Cinza fosca · lente amarela",
+        hex: "#f0c40a",
+        images: [
+          "images/products/plate-55/cinza-fosca-amarela/1.jpeg",
+          "images/products/plate-55/cinza-fosca-amarela/2.jpeg",
+          "images/products/plate-55/cinza-fosca-amarela/3.jpeg",
+        ],
+      },
+      {
+        id: "cinza-fosca-tanzanite",
+        name: "Cinza fosca · lente tanzanite",
+        hex: "#c62368",
+        images: [
+          "images/products/plate-55/cinza-fosca-tanzanite/1.jpeg",
+          "images/products/plate-55/cinza-fosca-tanzanite/2.jpeg",
+          "images/products/plate-55/cinza-fosca-tanzanite/3.jpeg",
+        ],
+      },
+      {
+        id: "cinza-escura-espelhada",
+        name: "Cinza escura · lente espelhada",
+        hex: "#4a4744",
+        images: [
+          "images/products/plate-55/cinza-escura-espelhada/1.jpeg",
+          "images/products/plate-55/cinza-escura-espelhada/2.jpeg",
+          "images/products/plate-55/cinza-escura-espelhada/3.jpeg",
+        ],
+      },
+      {
+        id: "preta-roxa",
+        name: "Preta · lente roxa",
+        hex: "#6d3f9e",
+        images: [
+          "images/products/plate-55/preta-roxa/1.jpeg",
+          "images/products/plate-55/preta-roxa/2.jpeg",
+          "images/products/plate-55/preta-roxa/3.jpeg",
+        ],
+      },
+    ],
+  },
   { id: "gascan-50", name: "Gascan", price: 49, oldPrice: 70 },
   { id: "splice-53", name: "Splice", price: 53, oldPrice: 75.71 },
   { id: "monster-dog-47", name: "Monster Dog", price: 49, oldPrice: 70 },

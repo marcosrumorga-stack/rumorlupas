@@ -957,7 +957,8 @@ button.swatch { position: relative; }
   clip-path: inset(50%);
   white-space: nowrap;
 }
-.swatches { display: flex; gap: 8px; margin: -2px 0 10px; }
+/* Wraps because a model can carry a lot of variants — Plate has seven. */
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; margin: -2px 0 10px; }
 .swatch {
   width: 15px;
   height: 15px;
@@ -976,6 +977,10 @@ button.swatch.active {
 button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .product-detail__info .swatches { margin: 14px 0 4px; }
 .product-detail__info .swatch { width: 18px; height: 18px; }
+/* Several variants of a model can share an armação and differ only in the
+   lente, so the dots need a caption to be read on a phone, where there is no
+   tooltip. */
+.color-name { font-size: 0.85rem; color: var(--text-muted); margin: 0 0 2px; }
 .cart-item__color {
   display: flex;
   align-items: center;

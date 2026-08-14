@@ -113,7 +113,9 @@ if (!product) {
   }
 
   function renderColors() {
-    productColors.innerHTML = colorSwatchesHtml(product, currentColor);
+    const color = findColor(product, currentColor);
+    productColors.innerHTML = colorSwatchesHtml(product, currentColor) +
+      (color ? `<p class="color-name">${color.name}</p>` : "");
     productColors.querySelectorAll(".swatch").forEach((btn) => {
       btn.addEventListener("click", () => {
         currentColor = btn.dataset.color;

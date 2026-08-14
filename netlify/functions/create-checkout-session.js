@@ -34,7 +34,17 @@ const PRODUCTS = {
   "plantaris-50":    { name: "Oakley Plantaris",      price: 49, colors: { preto: "Preto" } },
   "juliet-45":       { name: "Oakley Juliet",         price: 49 },
   "xx-45":           { name: "Oakley XX",             price: 49 },
-  "plate-55":        { name: "Oakley Plate",          price: 59 },
+  "plate-55":        { name: "Oakley Plate",          price: 59, colors: {
+    // Same order as products.js: the first entry is what a pre-colour cart
+    // falls back to, so the two lists must start with the same variant.
+    "cinza-fosca-preta":      "Cinza fosca · lente preta",
+    "cinza-fosca-espelhada":  "Cinza fosca · lente espelhada",
+    "cinza-fosca-azul":       "Cinza fosca · lente azul",
+    "cinza-fosca-amarela":    "Cinza fosca · lente amarela",
+    "cinza-fosca-tanzanite":  "Cinza fosca · lente tanzanite",
+    "cinza-escura-espelhada": "Cinza escura · lente espelhada",
+    "preta-roxa":             "Preta · lente roxa",
+  } },
   "gascan-50":       { name: "Oakley Gascan",         price: 49 },
   "splice-53":       { name: "Oakley Splice",         price: 53 },
   "monster-dog-47":  { name: "Oakley Monster Dog",    price: 49 },
