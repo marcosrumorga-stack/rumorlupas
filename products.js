@@ -181,9 +181,18 @@ function findColor(product, colorId) {
   return product.colors.find((c) => c.id === colorId) || product.colors[0];
 }
 
+// Every model leaves in the same box — micro bag, pano and case — so the kit
+// shot is not stored per model or per colour. It is appended here, which means
+// a new model inherits it with no extra work, the same way the "Vem com" block
+// is written once. It goes last so the head-on shot stays the cover, and it is
+// skipped for a model that has no photos yet: a lone packaging photo under
+// "Foto em breve" would read as if the box were the product.
+const KIT_IMAGE = "images/products/kit.jpeg";
+
 function productImages(product, colorId) {
   const color = findColor(product, colorId);
-  return (color ? color.images : product.images) || [];
+  const own = (color ? color.images : product.images) || [];
+  return own.length ? own.concat(KIT_IMAGE) : own;
 }
 
 // Stock lives on the colour, since a model can be out of black and still have
