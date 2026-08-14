@@ -61,6 +61,7 @@ const PRODUCTS = [
         id: "cinza-fosca-preta",
         name: "Cinza fosca · lente preta",
         hex: "#1a1a1c",
+        stock: 1,
         images: [
           "images/products/plate-55/cinza-fosca-preta/1.jpeg",
           "images/products/plate-55/cinza-fosca-preta/2.jpeg",
@@ -71,6 +72,7 @@ const PRODUCTS = [
         id: "cinza-fosca-espelhada",
         name: "Cinza fosca · lente espelhada",
         hex: "#9aa0a6",
+        stock: 1,
         images: [
           "images/products/plate-55/cinza-fosca-espelhada/1.jpeg",
           "images/products/plate-55/cinza-fosca-espelhada/2.jpeg",
@@ -81,6 +83,7 @@ const PRODUCTS = [
         id: "cinza-fosca-azul",
         name: "Cinza fosca · lente azul",
         hex: "#1e8fd0",
+        stock: 2,
         images: [
           "images/products/plate-55/cinza-fosca-azul/1.jpeg",
           "images/products/plate-55/cinza-fosca-azul/2.jpeg",
@@ -91,6 +94,7 @@ const PRODUCTS = [
         id: "cinza-fosca-amarela",
         name: "Cinza fosca · lente amarela",
         hex: "#f0c40a",
+        stock: 1,
         images: [
           "images/products/plate-55/cinza-fosca-amarela/1.jpeg",
           "images/products/plate-55/cinza-fosca-amarela/2.jpeg",
@@ -101,6 +105,7 @@ const PRODUCTS = [
         id: "cinza-fosca-tanzanite",
         name: "Cinza fosca · lente tanzanite",
         hex: "#c62368",
+        stock: 1,
         images: [
           "images/products/plate-55/cinza-fosca-tanzanite/1.jpeg",
           "images/products/plate-55/cinza-fosca-tanzanite/2.jpeg",
@@ -111,6 +116,7 @@ const PRODUCTS = [
         id: "cinza-escura-espelhada",
         name: "Cinza escura · lente espelhada",
         hex: "#4a4744",
+        stock: 1,
         images: [
           "images/products/plate-55/cinza-escura-espelhada/1.jpeg",
           "images/products/plate-55/cinza-escura-espelhada/2.jpeg",
@@ -121,6 +127,7 @@ const PRODUCTS = [
         id: "preta-roxa",
         name: "Preta · lente roxa",
         hex: "#6d3f9e",
+        stock: 3,
         images: [
           "images/products/plate-55/preta-roxa/1.jpeg",
           "images/products/plate-55/preta-roxa/2.jpeg",
