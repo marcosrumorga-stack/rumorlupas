@@ -243,7 +243,26 @@ const PRODUCTS = [
   { id: "monster-dog-47", name: "Monster Dog", price: 49, oldPrice: 70 },
   { id: "dartboard-50", name: "Dartboard", price: 49, oldPrice: 70 },
   { id: "flak-2xl-45", name: "Flak 2.0 XL", price: 49, oldPrice: 70 },
-  { id: "pitboss-53", name: "PitBoss", price: 53, oldPrice: 75.71 },
+  {
+    id: "pitboss-53",
+    name: "PitBoss",
+    price: 53,
+    oldPrice: 75.71,
+    colors: [
+      {
+        id: "preta-lente-preta",
+        name: "Preta · lente preta",
+        hex: "#15130f",
+        images: [
+          "images/products/pitboss-53/preta-lente-preta/1.jpeg",
+          "images/products/pitboss-53/preta-lente-preta/2.jpeg",
+          "images/products/pitboss-53/preta-lente-preta/3.jpeg",
+          "images/products/pitboss-53/preta-lente-preta/4.jpeg",
+          "images/products/pitboss-53/preta-lente-preta/model.jpeg",
+        ],
+      },
+    ],
+  },
 ];
 
 // Categories are read off the products themselves, so there is no second list
