@@ -1,6 +1,11 @@
 // Product data only. Every translatable string — including each model's story,
 // keyed "history.<id>" — lives in i18n.js.
 
+// The Dartboard's on-model shot is the same photo for every colour, so it is
+// written once and referenced from each rather than copied four times. The
+// customer in it gave her consent to appear here.
+const DARTBOARD_MODEL = "images/products/dartboard-50/model.jpeg";
+
 const PRODUCTS = [
   {
     id: "eye-jacket-45",
@@ -257,6 +262,7 @@ const PRODUCTS = [
           "images/products/dartboard-50/preta-lente-preta/2.jpeg",
           "images/products/dartboard-50/preta-lente-preta/3.jpeg",
           "images/products/dartboard-50/preta-lente-preta/4.jpeg",
+          DARTBOARD_MODEL,
         ],
       },
       {
@@ -270,6 +276,7 @@ const PRODUCTS = [
           "images/products/dartboard-50/branca-lente-azul/2.jpeg",
           "images/products/dartboard-50/branca-lente-azul/3.jpeg",
           "images/products/dartboard-50/branca-lente-azul/4.jpeg",
+          DARTBOARD_MODEL,
         ],
       },
       {
@@ -283,6 +290,7 @@ const PRODUCTS = [
           "images/products/dartboard-50/branca-lente-transparente/2.jpeg",
           "images/products/dartboard-50/branca-lente-transparente/3.jpeg",
           "images/products/dartboard-50/branca-lente-transparente/4.jpeg",
+          DARTBOARD_MODEL,
         ],
       },
       {
@@ -296,6 +304,7 @@ const PRODUCTS = [
           "images/products/dartboard-50/castanha-lente-gold/2.jpeg",
           "images/products/dartboard-50/castanha-lente-gold/3.jpeg",
           "images/products/dartboard-50/castanha-lente-gold/4.jpeg",
+          DARTBOARD_MODEL,
         ],
       },
     ],
