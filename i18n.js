@@ -99,7 +99,7 @@ const I18N = {
     "history.monster-dog-47": "O Monster Dog nasceu da fase mais experimental do design da Oakley nos anos 2000, com uma armação larga e presença marcante. Um modelo para quem não tem medo de um visual mais ousado.",
     "history.dartboard-50": "O Dartboard traz uma lente circular ampla sobre uma armação leve, equilibrando um visual retrô com a tecnologia de lentes que a Oakley desenvolveu para uso esportivo intenso.",
     "history.flak-2xl-45": "O Flak é uma das silhuetas mais populares e duradouras da Oakley, adotado amplamente no ciclismo e no atletismo pela estabilidade e campo de visão. A versão 2.0 XL amplia o encaixe para rostos maiores, mantendo a mesma proposta de performance.",
-    "history.pitboss-53": "O PitBoss é um resgate de um dos formatos mais robustos do catálogo Oakley do início dos anos 2000, com armação espessa e presença forte — um visual que remete diretamente à estética \"Y2K\" que voltou às ruas nos últimos anos.",
+    "history.pitboss-53": "O Pit Boss II é um resgate de um dos formatos mais robustos do catálogo Oakley do início dos anos 2000, com armação espessa e presença forte — um visual que remete diretamente à estética \"Y2K\" que voltou às ruas nos últimos anos.",
   },
 
   en: {
@@ -197,7 +197,7 @@ const I18N = {
     "history.monster-dog-47": "The Monster Dog came out of Oakley's most experimental design period in the 2000s, with a wide frame and real presence. A model for anyone unafraid of a bolder look.",
     "history.dartboard-50": "The Dartboard sets a wide circular lens on a light frame, balancing a retro look with the lens technology Oakley developed for hard sporting use.",
     "history.flak-2xl-45": "The Flak is one of Oakley's most popular and enduring silhouettes, widely worn in cycling and athletics for its stability and field of view. The 2.0 XL version widens the fit for larger faces while keeping the same performance intent.",
-    "history.pitboss-53": "The PitBoss revives one of the chunkiest shapes in Oakley's early-2000s catalogue, with a thick frame and strong presence — a look that points straight back at the Y2K aesthetic that has returned to the streets in recent years.",
+    "history.pitboss-53": "The Pit Boss II revives one of the chunkiest shapes in Oakley's early-2000s catalogue, with a thick frame and strong presence — a look that points straight back at the Y2K aesthetic that has returned to the streets in recent years.",
   },
 
   es: {
@@ -295,7 +295,7 @@ const I18N = {
     "history.monster-dog-47": "El Monster Dog nació de la etapa más experimental del diseño de Oakley en los 2000, con una montura ancha y mucha presencia. Un modelo para quien no teme un aspecto más atrevido.",
     "history.dartboard-50": "El Dartboard monta una lente circular amplia sobre una montura ligera, equilibrando un aire retro con la tecnología de lentes que Oakley desarrolló para el uso deportivo intenso.",
     "history.flak-2xl-45": "El Flak es una de las siluetas más populares y duraderas de Oakley, muy usada en ciclismo y atletismo por su estabilidad y campo de visión. La versión 2.0 XL amplía el ajuste para rostros más grandes, manteniendo la misma propuesta de rendimiento.",
-    "history.pitboss-53": "El PitBoss recupera uno de los formatos más robustos del catálogo de Oakley de principios de los 2000, con montura gruesa y mucha presencia — un aire que remite directamente a la estética Y2K que ha vuelto a las calles en los últimos años.",
+    "history.pitboss-53": "El Pit Boss II recupera uno de los formatos más robustos del catálogo de Oakley de principios de los 2000, con montura gruesa y mucha presencia — un aire que remite directamente a la estética Y2K que ha vuelto a las calles en los últimos años.",
   },
 };
 

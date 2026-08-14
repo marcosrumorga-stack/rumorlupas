@@ -245,7 +245,9 @@ const PRODUCTS = [
   { id: "flak-2xl-45", name: "Flak 2.0 XL", price: 49, oldPrice: 70 },
   {
     id: "pitboss-53",
-    name: "PitBoss",
+    // The id stays as it is — it is in the product page URL and in carts
+    // already saved in people's browsers. Only the shown name changes.
+    name: "Pit Boss II",
     price: 53,
     oldPrice: 75.71,
     colors: [
@@ -253,6 +255,7 @@ const PRODUCTS = [
         id: "preta-lente-preta",
         name: "Preta · lente preta",
         hex: "#15130f",
+        stock: 2,
         images: [
           "images/products/pitboss-53/preta-lente-preta/1.jpeg",
           "images/products/pitboss-53/preta-lente-preta/2.jpeg",

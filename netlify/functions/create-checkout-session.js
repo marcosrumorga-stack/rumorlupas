@@ -58,7 +58,7 @@ const PRODUCTS = {
   "monster-dog-47":  { name: "Oakley Monster Dog",    price: 49 },
   "dartboard-50":    { name: "Oakley Dartboard",      price: 49 },
   "flak-2xl-45":     { name: "Oakley Flak 2.0 XL",    price: 49 },
-  "pitboss-53":      { name: "Oakley PitBoss",        price: 53, colors: {
+  "pitboss-53":      { name: "Oakley Pit Boss II",    price: 53, colors: {
     "preta-lente-preta": "Preta · lente preta",
   } },
 };
