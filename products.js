@@ -322,6 +322,7 @@ const PRODUCTS = [
         name: "Preta · lente espelhada",
         hex: "#15130f",
         swatch: "linear-gradient(135deg, #15130f 50%, #b9bec3 50%)",
+        stock: 1,
         images: [
           "images/products/flak-2xl-45/preta-lente-espelhada/1.jpeg",
           "images/products/flak-2xl-45/preta-lente-espelhada/2.jpeg",
@@ -333,6 +334,7 @@ const PRODUCTS = [
         id: "azul-lente-azul",
         name: "Azul · lente azul",
         hex: "#2f8fd8",
+        stock: 1,
         images: [
           "images/products/flak-2xl-45/azul-lente-azul/1.jpeg",
           "images/products/flak-2xl-45/azul-lente-azul/2.jpeg",
@@ -345,6 +347,7 @@ const PRODUCTS = [
         name: "Vermelha · lente laranja",
         hex: "#c9202b",
         swatch: "linear-gradient(135deg, #c9202b 50%, #f2a33c 50%)",
+        stock: 1,
         images: [
           "images/products/flak-2xl-45/vermelha-lente-laranja/1.jpeg",
           "images/products/flak-2xl-45/vermelha-lente-laranja/2.jpeg",
@@ -357,6 +360,7 @@ const PRODUCTS = [
         name: "Vermelha · lente preta",
         hex: "#c9202b",
         swatch: "linear-gradient(135deg, #c9202b 50%, #1a1a1c 50%)",
+        stock: 1,
         images: [
           "images/products/flak-2xl-45/vermelha-lente-preta/1.jpeg",
           "images/products/flak-2xl-45/vermelha-lente-preta/2.jpeg",
