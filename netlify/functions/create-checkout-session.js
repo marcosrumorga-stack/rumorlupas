@@ -62,7 +62,12 @@ const PRODUCTS = {
     "branca-lente-transparente": "Branca · lente transparente",
     "castanha-lente-gold":       "Castanha · lente dourada",
   } },
-  "flak-2xl-45":     { name: "Oakley Flak 2.0 XL",    price: 49 },
+  "flak-2xl-45":     { name: "Oakley Flak 2.0 XL",    price: 49, colors: {
+    "preta-lente-espelhada":  "Preta · lente espelhada",
+    "azul-lente-azul":        "Azul · lente azul",
+    "vermelha-lente-laranja": "Vermelha · lente laranja",
+    "vermelha-lente-preta":   "Vermelha · lente preta",
+  } },
   "pitboss-53":      { name: "Oakley Pit Boss II",    price: 53, colors: {
     "preta-lente-preta": "Preta · lente preta",
   } },

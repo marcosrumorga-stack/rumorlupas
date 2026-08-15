@@ -40,7 +40,7 @@ const PRODUCTS = [
         id: "preto",
         name: "Preto",
         hex: "#15130f",
-        stock: 3,
+        stock: 0,
         images: [
           "images/products/plantaris-50/preto/1.jpeg",
           "images/products/plantaris-50/preto/2.jpeg",
@@ -309,7 +309,63 @@ const PRODUCTS = [
       },
     ],
   },
-  { id: "flak-2xl-45", name: "Flak 2.0 XL", price: 49, oldPrice: 70 },
+  {
+    id: "flak-2xl-45",
+    name: "Flak 2.0 XL",
+    price: 49,
+    oldPrice: 70,
+    // The armação is black on all four; the colour in the name is the accent on
+    // the temples, which is how the shop tells them apart.
+    colors: [
+      {
+        id: "preta-lente-espelhada",
+        name: "Preta · lente espelhada",
+        hex: "#15130f",
+        swatch: "linear-gradient(135deg, #15130f 50%, #b9bec3 50%)",
+        images: [
+          "images/products/flak-2xl-45/preta-lente-espelhada/1.jpeg",
+          "images/products/flak-2xl-45/preta-lente-espelhada/2.jpeg",
+          "images/products/flak-2xl-45/preta-lente-espelhada/3.jpeg",
+          "images/products/flak-2xl-45/preta-lente-espelhada/4.jpeg",
+        ],
+      },
+      {
+        id: "azul-lente-azul",
+        name: "Azul · lente azul",
+        hex: "#2f8fd8",
+        images: [
+          "images/products/flak-2xl-45/azul-lente-azul/1.jpeg",
+          "images/products/flak-2xl-45/azul-lente-azul/2.jpeg",
+          "images/products/flak-2xl-45/azul-lente-azul/3.jpeg",
+          "images/products/flak-2xl-45/azul-lente-azul/4.jpeg",
+        ],
+      },
+      {
+        id: "vermelha-lente-laranja",
+        name: "Vermelha · lente laranja",
+        hex: "#c9202b",
+        swatch: "linear-gradient(135deg, #c9202b 50%, #f2a33c 50%)",
+        images: [
+          "images/products/flak-2xl-45/vermelha-lente-laranja/1.jpeg",
+          "images/products/flak-2xl-45/vermelha-lente-laranja/2.jpeg",
+          "images/products/flak-2xl-45/vermelha-lente-laranja/3.jpeg",
+          "images/products/flak-2xl-45/vermelha-lente-laranja/4.jpeg",
+        ],
+      },
+      {
+        id: "vermelha-lente-preta",
+        name: "Vermelha · lente preta",
+        hex: "#c9202b",
+        swatch: "linear-gradient(135deg, #c9202b 50%, #1a1a1c 50%)",
+        images: [
+          "images/products/flak-2xl-45/vermelha-lente-preta/1.jpeg",
+          "images/products/flak-2xl-45/vermelha-lente-preta/2.jpeg",
+          "images/products/flak-2xl-45/vermelha-lente-preta/3.jpeg",
+          "images/products/flak-2xl-45/vermelha-lente-preta/4.jpeg",
+        ],
+      },
+    ],
+  },
   {
     id: "pitboss-53",
     // The id stays as it is — it is in the product page URL and in carts
