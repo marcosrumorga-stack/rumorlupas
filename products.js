@@ -284,7 +284,7 @@ const PRODUCTS = [
         name: "Branca · lente transparente",
         hex: "#f2f0ed",
         swatch: "linear-gradient(135deg, #f2f0ed 50%, #ddd4c8 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/dartboard-50/branca-lente-transparente/1.jpeg",
           "images/products/dartboard-50/branca-lente-transparente/2.jpeg",
@@ -298,7 +298,7 @@ const PRODUCTS = [
         name: "Castanha · lente dourada",
         hex: "#5a3a22",
         swatch: "linear-gradient(135deg, #5a3a22 50%, #d9a44c 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/dartboard-50/castanha-lente-gold/1.jpeg",
           "images/products/dartboard-50/castanha-lente-gold/2.jpeg",
