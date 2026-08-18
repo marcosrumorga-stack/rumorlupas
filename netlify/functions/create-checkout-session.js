@@ -87,6 +87,10 @@ const PRODUCTS = {
     "vermelha-lente-laranja": "Vermelha · lente laranja",
     "vermelha-lente-preta":   "Vermelha · lente preta",
   } },
+  "holbrook":        { name: "Oakley Holbrook",       price: 49, colors: {
+    "preta-lente-preta":    "Preta · lente preta",
+    "preta-lente-vermelha": "Preta · lente vermelha",
+  } },
   "pitboss-53":      { name: "Oakley Pit Boss II",    price: 53, colors: {
     "preta-lente-preta": "Preta · lente preta",
   } },

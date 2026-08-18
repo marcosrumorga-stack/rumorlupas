@@ -124,7 +124,9 @@ const I18N = {
     "color.bege-piet-lente-dourada": "Bege PIET · lente dourada",
     "color.bege-piet-lente-preta": "Bege PIET · lente preta",
     "color.preta-brain-dead-lente-azul": "Preta BRAIN DEAD · lente azul",
+    "color.preta-lente-vermelha": "Preta · lente vermelha",
 
+    "history.holbrook": "O Holbrook é um dos desenhos mais populares da Oakley: linhas retas emprestadas dos óculos dos anos 40 e 50, hastes reforçadas e armação em O Matter. É o modelo mais fácil de usar do catálogo — passa de calções a camisa sem esforço.",
     "history.eye-jacket": "O Eye Jacket original, de 1996 — a silhueta que a versão Redux veio resgatar. Lente envolvente, armação estreita e um desenho que passou da cena rave dos anos 90 para o streetwear de hoje sem precisar de retoques. Esta unidade é da colaboração com a Brain Dead.",
     "history.eye-jacket-45": "Lançado em 1996, o Eye Jacket foi um dos modelos que definiu a estética esportiva da Oakley nos anos 90, com sua lente envolvente e visual futurista. Rapidamente virou item de estilo fora das pistas, adotado pela cena rave e pelo streetwear da época. Essa versão \"Redux\" resgata a silhueta original com acabamento atualizado.",
     "history.plantaris-50": "O Plantaris representa a leitura mais recente da Oakley sobre o formato wrap clássico da marca, com maior cobertura lateral e um encaixe pensado tanto para performance quanto para o dia a dia. Une a herança esportiva da marca a um visual mais contemporâneo.",
@@ -256,7 +258,9 @@ const I18N = {
     "color.bege-piet-lente-dourada": "PIET beige · gold lens",
     "color.bege-piet-lente-preta": "PIET beige · black lens",
     "color.preta-brain-dead-lente-azul": "BRAIN DEAD black · blue lens",
+    "color.preta-lente-vermelha": "Black · red lens",
 
+    "history.holbrook": "The Holbrook is one of Oakley's most popular shapes: straight lines borrowed from forties and fifties eyewear, reinforced temples and an O Matter frame. It is the easiest model here to wear — it goes from shorts to a shirt without trying.",
     "history.eye-jacket": "The original Eye Jacket, from 1996 — the silhouette the Redux went back to. A wraparound lens, a narrow frame and a shape that carried from the nineties rave scene into today's streetwear without needing a retouch. This one is from the Brain Dead collaboration.",
     "history.eye-jacket-45": "Released in 1996, the Eye Jacket was one of the models that defined Oakley's sporting look in the nineties, with its wraparound lens and futuristic shape. It quickly became a style piece off the track, taken up by the rave scene and the streetwear of the day. This \"Redux\" version brings back the original silhouette with an updated finish.",
     "history.plantaris-50": "The Plantaris is Oakley's most recent take on the wrap shape the brand is known for, with more coverage at the sides and a fit meant for both performance and everyday wear. It carries the brand's sporting heritage into a more contemporary look.",
@@ -388,7 +392,9 @@ const I18N = {
     "color.bege-piet-lente-dourada": "Beige PIET · lente dorada",
     "color.bege-piet-lente-preta": "Beige PIET · lente negra",
     "color.preta-brain-dead-lente-azul": "Negro BRAIN DEAD · lente azul",
+    "color.preta-lente-vermelha": "Negro · lente roja",
 
+    "history.holbrook": "El Holbrook es uno de los diseños más populares de Oakley: líneas rectas tomadas de las gafas de los años cuarenta y cincuenta, varillas reforzadas y montura de O Matter. Es el modelo más fácil de llevar del catálogo: pasa de un pantalón corto a una camisa sin esfuerzo.",
     "history.eye-jacket": "El Eye Jacket original, de 1996: la silueta que la versión Redux vino a recuperar. Lente envolvente, montura estrecha y un diseño que pasó de la escena rave de los noventa al streetwear de hoy sin necesitar retoques. Esta unidad es de la colaboración con Brain Dead.",
     "history.eye-jacket-45": "Lanzado en 1996, el Eye Jacket fue uno de los modelos que definió la estética deportiva de Oakley en los noventa, con su lente envolvente y su aire futurista. Pronto se convirtió en pieza de estilo fuera de la pista, adoptada por la escena rave y el streetwear de la época. Esta versión \"Redux\" recupera la silueta original con un acabado actualizado.",
     "history.plantaris-50": "El Plantaris es la lectura más reciente de Oakley sobre el formato wrap clásico de la marca, con mayor cobertura lateral y un ajuste pensado tanto para el rendimiento como para el día a día. Lleva la herencia deportiva de la marca a un aspecto más contemporáneo.",

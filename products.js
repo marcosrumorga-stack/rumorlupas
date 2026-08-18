@@ -556,6 +556,39 @@ const PRODUCTS = [
     ],
   },
   {
+    id: "holbrook",
+    name: "Holbrook",
+    price: 49,
+    oldPrice: 70,
+    colors: [
+      {
+        id: "preta-lente-preta",
+        name: "Preta · lente preta",
+        hex: "#15130f",
+        stock: 1,
+        images: [
+          "images/products/holbrook/preta-lente-preta/1.jpeg",
+          "images/products/holbrook/preta-lente-preta/2.jpeg",
+          "images/products/holbrook/preta-lente-preta/3.jpeg",
+          "images/products/holbrook/preta-lente-preta/4.jpeg",
+        ],
+      },
+      {
+        id: "preta-lente-vermelha",
+        name: "Preta · lente vermelha",
+        hex: "#15130f",
+        swatch: "linear-gradient(135deg, #15130f 50%, #e5401a 50%)",
+        stock: 1,
+        images: [
+          "images/products/holbrook/preta-lente-vermelha/1.jpeg",
+          "images/products/holbrook/preta-lente-vermelha/2.jpeg",
+          "images/products/holbrook/preta-lente-vermelha/3.jpeg",
+          "images/products/holbrook/preta-lente-vermelha/4.jpeg",
+        ],
+      },
+    ],
+  },
+  {
     id: "pitboss-53",
     // The id stays as it is — it is in the product page URL and in carts
     // already saved in people's browsers. Only the shown name changes.
