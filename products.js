@@ -359,7 +359,26 @@ const PRODUCTS = [
     ],
   },
   { id: "splice-53", name: "Splice", price: 53, oldPrice: 75.71 },
-  { id: "monster-dog-47", name: "Monster Dog", price: 49, oldPrice: 70 },
+  {
+    id: "monster-dog-47",
+    name: "Monster Dog",
+    price: 49,
+    oldPrice: 70,
+    colors: [
+      {
+        id: "preta-lente-preta",
+        name: "Preta · lente preta",
+        hex: "#15130f",
+        stock: 1,
+        images: [
+          "images/products/monster-dog-47/preta-lente-preta/1.jpeg",
+          "images/products/monster-dog-47/preta-lente-preta/2.jpeg",
+          "images/products/monster-dog-47/preta-lente-preta/3.jpeg",
+          "images/products/monster-dog-47/preta-lente-preta/4.jpeg",
+        ],
+      },
+    ],
+  },
   {
     id: "dartboard-50",
     name: "Dartboard",

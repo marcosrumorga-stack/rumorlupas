@@ -64,7 +64,9 @@ const PRODUCTS = {
     "branca-transparente-lente-laranja":  "Branca transparente · lente laranja",
   } },
   "splice-53":       { name: "Oakley Splice",         price: 53 },
-  "monster-dog-47":  { name: "Oakley Monster Dog",    price: 49 },
+  "monster-dog-47":  { name: "Oakley Monster Dog",    price: 49, colors: {
+    "preta-lente-preta": "Preta · lente preta",
+  } },
   "dartboard-50":    { name: "Oakley Dartboard",      price: 49, colors: {
     "preta-lente-preta":         "Preta · lente preta",
     "branca-lente-azul":         "Branca · lente azul",
