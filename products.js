@@ -375,6 +375,8 @@ const PRODUCTS = [
           "images/products/monster-dog-47/preta-lente-preta/2.jpeg",
           "images/products/monster-dog-47/preta-lente-preta/3.jpeg",
           "images/products/monster-dog-47/preta-lente-preta/4.jpeg",
+          // Worn by a customer who gave the shop the right to use the image.
+          "images/products/monster-dog-47/preta-lente-preta/model.jpeg",
         ],
       },
     ],
