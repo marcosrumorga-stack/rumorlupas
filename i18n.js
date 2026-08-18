@@ -15,7 +15,6 @@ const I18N = {
     "aria.nextPhoto": "Próxima foto",
 
     "hero.title": "Veja o mundo<br>com <span>estilo</span>",
-    "hero.subtitle": "Óculos premium, sem complicação: você escolhe o modelo, paga com segurança e recebe rapidinho em casa.",
     "hero.cta": "Ver catálogo",
     "hero.about": "Sobre a marca",
     "hero.trust1": "Proteção UV400",
@@ -151,7 +150,6 @@ const I18N = {
     "aria.nextPhoto": "Next photo",
 
     "hero.title": "See the world<br>in <span>style</span>",
-    "hero.subtitle": "Premium sunglasses, no fuss: pick your model, pay securely and have them at your door in days.",
     "hero.cta": "See the catalogue",
     "hero.about": "About the brand",
     "hero.trust1": "UV400 protection",
@@ -284,7 +282,6 @@ const I18N = {
     "aria.nextPhoto": "Foto siguiente",
 
     "hero.title": "Mira el mundo<br>con <span>estilo</span>",
-    "hero.subtitle": "Gafas premium, sin complicaciones: elige el modelo, paga con seguridad y recíbelas en casa en pocos días.",
     "hero.cta": "Ver catálogo",
     "hero.about": "Sobre la marca",
     "hero.trust1": "Protección UV400",

@@ -557,6 +557,10 @@ button.swatch { position: relative; }
   letter-spacing: -0.01em;
   line-height: 1.02;
   text-wrap: balance;
+  /* Carries the gap down to the buttons now that no subtitle sits between
+     them. On the h1 rather than on .hero__actions, which the thank-you and
+     404 pages reuse. */
+  margin-bottom: 26px;
 }
 .hero h1 span {
   position: relative;
@@ -564,13 +568,6 @@ button.swatch { position: relative; }
   background: linear-gradient(100deg, var(--accent-light), var(--accent) 55%, #8f1219);
   -webkit-background-clip: text;
   background-clip: text;
-}
-.hero__subtitle {
-  max-width: 520px;
-  margin: 16px auto 26px;
-  color: rgba(255,255,255,0.62);
-  font-size: 1rem;
-  line-height: 1.6;
 }
 .hero__actions {
   display: flex;
