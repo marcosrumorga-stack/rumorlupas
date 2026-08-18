@@ -32,7 +32,16 @@ function stockFor(id, colorId) {
 const PRODUCTS = {
   "eye-jacket-45":   { name: "Oakley Eye Jacket",     price: 49, colors: { preto: "Preto" } },
   "plantaris-50":    { name: "Oakley Plantaris",      price: 49, colors: { preto: "Preto" } },
-  "juliet-45":       { name: "Oakley Juliet",         price: 49 },
+  "juliet-45":       { name: "Oakley Juliet",         price: 49, colors: {
+    "prata-lente-preta":       "Prata · lente preta",
+    "prata-lente-espelhada":   "Prata · lente espelhada",
+    "prata-lente-azul":        "Prata · lente azul",
+    "prata-lente-roxa":        "Prata · lente roxa",
+    "cinza-escura-espelhada":  "Cinza escura · lente espelhada",
+    "cinza-escura-lente-azul": "Cinza escura · lente azul",
+    "cinza-escura-lente-rosa": "Cinza escura · lente rosa",
+    "dourada-lente-preta":     "Dourada · lente preta",
+  } },
   "xx-45":           { name: "Oakley XX",             price: 49, colors: {
     "24k-lente-esmeralda": "24K · lente esmeralda",
   } },
