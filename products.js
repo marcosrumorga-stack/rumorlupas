@@ -62,8 +62,8 @@ const PRODUCTS = [
     // products are the prices they launched at and have been wrong for a while.
     id: "eye-jacket",
     name: "Eye Jacket",
-    price: 49,
-    oldPrice: 70,
+    price: 59,
+    oldPrice: 84.29,
     colors: [
       {
         id: "preta-brain-dead-lente-azul",

@@ -36,7 +36,7 @@ const PRODUCTS = {
     "bege-piet-lente-dourada":  "Bege PIET · lente dourada",
     "bege-piet-lente-preta":    "Bege PIET · lente preta",
   } },
-  "eye-jacket":      { name: "Oakley Eye Jacket",     price: 49, colors: {
+  "eye-jacket":      { name: "Oakley Eye Jacket",     price: 59, colors: {
     "preta-brain-dead-lente-azul": "Preta BRAIN DEAD · lente azul",
   } },
   "plantaris-50":    { name: "Oakley Plantaris",      price: 49, colors: { preto: "Preto" } },
