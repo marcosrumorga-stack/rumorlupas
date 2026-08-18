@@ -249,7 +249,7 @@ const PRODUCTS = [
         name: "Cinza fosca · lente tanzanite",
         hex: "#82807d",
         swatch: "linear-gradient(135deg, #82807d 50%, #c62368 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/plate-55/cinza-fosca-tanzanite/1.jpeg",
           "images/products/plate-55/cinza-fosca-tanzanite/2.jpeg",
