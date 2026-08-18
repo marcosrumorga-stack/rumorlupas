@@ -57,6 +57,30 @@ const PRODUCTS = [
     ],
   },
   {
+    // The 1996 original, a different model from the Eye Jacket Redux above and
+    // sold alongside it. New ids carry no price number: the ones on the older
+    // products are the prices they launched at and have been wrong for a while.
+    id: "eye-jacket",
+    name: "Eye Jacket",
+    price: 49,
+    oldPrice: 70,
+    colors: [
+      {
+        id: "preta-brain-dead-lente-azul",
+        name: "Preta BRAIN DEAD · lente azul",
+        hex: "#1b1a2e",
+        swatch: "linear-gradient(135deg, #1b1a2e 50%, #2b2bc8 50%)",
+        stock: 1,
+        images: [
+          "images/products/eye-jacket/preta-brain-dead-lente-azul/1.jpeg",
+          "images/products/eye-jacket/preta-brain-dead-lente-azul/2.jpeg",
+          "images/products/eye-jacket/preta-brain-dead-lente-azul/3.jpeg",
+          "images/products/eye-jacket/preta-brain-dead-lente-azul/4.jpeg",
+        ],
+      },
+    ],
+  },
+  {
     id: "plantaris-50",
     name: "Plantaris",
     price: 49,

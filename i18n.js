@@ -124,7 +124,9 @@ const I18N = {
     "color.dourada-lente-preta": "Dourada · lente preta",
     "color.bege-piet-lente-dourada": "Bege PIET · lente dourada",
     "color.bege-piet-lente-preta": "Bege PIET · lente preta",
+    "color.preta-brain-dead-lente-azul": "Preta BRAIN DEAD · lente azul",
 
+    "history.eye-jacket": "O Eye Jacket original, de 1996 — a silhueta que a versão Redux veio resgatar. Lente envolvente, armação estreita e um desenho que passou da cena rave dos anos 90 para o streetwear de hoje sem precisar de retoques. Esta unidade é da colaboração com a Brain Dead.",
     "history.eye-jacket-45": "Lançado em 1996, o Eye Jacket foi um dos modelos que definiu a estética esportiva da Oakley nos anos 90, com sua lente envolvente e visual futurista. Rapidamente virou item de estilo fora das pistas, adotado pela cena rave e pelo streetwear da época. Essa versão \"Redux\" resgata a silhueta original com acabamento atualizado.",
     "history.plantaris-50": "O Plantaris representa a leitura mais recente da Oakley sobre o formato wrap clássico da marca, com maior cobertura lateral e um encaixe pensado tanto para performance quanto para o dia a dia. Une a herança esportiva da marca a um visual mais contemporâneo.",
     "history.juliet-45": "A Juliet integra a lendária linha X-Metal da Oakley, lançada no fim dos anos 90 e batizada em referência ao desenho técnico das lentes. Com armação metálica e visual arrojado, tornou-se peça cult no automobilismo e no streetwear, sendo um dos modelos mais colecionados da marca até hoje.",
@@ -255,7 +257,9 @@ const I18N = {
     "color.dourada-lente-preta": "Gold · black lens",
     "color.bege-piet-lente-dourada": "PIET beige · gold lens",
     "color.bege-piet-lente-preta": "PIET beige · black lens",
+    "color.preta-brain-dead-lente-azul": "BRAIN DEAD black · blue lens",
 
+    "history.eye-jacket": "The original Eye Jacket, from 1996 — the silhouette the Redux went back to. A wraparound lens, a narrow frame and a shape that carried from the nineties rave scene into today's streetwear without needing a retouch. This one is from the Brain Dead collaboration.",
     "history.eye-jacket-45": "Released in 1996, the Eye Jacket was one of the models that defined Oakley's sporting look in the nineties, with its wraparound lens and futuristic shape. It quickly became a style piece off the track, taken up by the rave scene and the streetwear of the day. This \"Redux\" version brings back the original silhouette with an updated finish.",
     "history.plantaris-50": "The Plantaris is Oakley's most recent take on the wrap shape the brand is known for, with more coverage at the sides and a fit meant for both performance and everyday wear. It carries the brand's sporting heritage into a more contemporary look.",
     "history.juliet-45": "The Juliet belongs to Oakley's legendary X-Metal line, launched in the late nineties and named after the technical drawing of its lenses. With its metal frame and bold shape, it became a cult piece in motorsport and streetwear, and remains one of the brand's most collected models.",
@@ -386,7 +390,9 @@ const I18N = {
     "color.dourada-lente-preta": "Dorado · lente negra",
     "color.bege-piet-lente-dourada": "Beige PIET · lente dorada",
     "color.bege-piet-lente-preta": "Beige PIET · lente negra",
+    "color.preta-brain-dead-lente-azul": "Negro BRAIN DEAD · lente azul",
 
+    "history.eye-jacket": "El Eye Jacket original, de 1996: la silueta que la versión Redux vino a recuperar. Lente envolvente, montura estrecha y un diseño que pasó de la escena rave de los noventa al streetwear de hoy sin necesitar retoques. Esta unidad es de la colaboración con Brain Dead.",
     "history.eye-jacket-45": "Lanzado en 1996, el Eye Jacket fue uno de los modelos que definió la estética deportiva de Oakley en los noventa, con su lente envolvente y su aire futurista. Pronto se convirtió en pieza de estilo fuera de la pista, adoptada por la escena rave y el streetwear de la época. Esta versión \"Redux\" recupera la silueta original con un acabado actualizado.",
     "history.plantaris-50": "El Plantaris es la lectura más reciente de Oakley sobre el formato wrap clásico de la marca, con mayor cobertura lateral y un ajuste pensado tanto para el rendimiento como para el día a día. Lleva la herencia deportiva de la marca a un aspecto más contemporáneo.",
     "history.juliet-45": "El Juliet forma parte de la legendaria línea X-Metal de Oakley, lanzada a finales de los noventa y bautizada en referencia al dibujo técnico de sus lentes. Con montura metálica y una forma atrevida, se convirtió en pieza de culto en el automovilismo y el streetwear, y sigue siendo uno de los modelos más coleccionados de la marca.",
