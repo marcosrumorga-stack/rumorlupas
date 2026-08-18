@@ -28,6 +28,8 @@ const I18N = {
     "product.soon": "Foto em breve",
     "product.add": "Adicionar ao carrinho",
     "product.soldOut": "Esgotado",
+    "product.lastOne": "Última unidade",
+    "product.lastOneNote": "Resta apenas 1 unidade desta cor.",
     "product.photo": "foto",
     "price.off": "de desconto",
 
@@ -158,6 +160,8 @@ const I18N = {
     "product.soon": "Photo coming soon",
     "product.add": "Add to cart",
     "product.soldOut": "Sold out",
+    "product.lastOne": "Last one",
+    "product.lastOneNote": "Only 1 left in this colour.",
     "product.photo": "photo",
     "price.off": "off",
 
@@ -285,6 +289,8 @@ const I18N = {
     "product.soon": "Foto próximamente",
     "product.add": "Añadir al carrito",
     "product.soldOut": "Agotado",
+    "product.lastOne": "Última unidad",
+    "product.lastOneNote": "Solo queda 1 unidad de este color.",
     "product.photo": "foto",
     "price.off": "de descuento",
 

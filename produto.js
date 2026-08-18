@@ -105,11 +105,17 @@ if (!product) {
 
   const productColors = document.getElementById("productColors");
   const addBtn = document.getElementById("addToCartBtn");
+  const stockNote = document.getElementById("stockNote");
 
   function renderStock() {
     const out = isSoldOut(product, currentColor);
     addBtn.disabled = out;
     addBtn.textContent = out ? t("product.soldOut") : t("product.add");
+
+    // Sits above the button, where it is read on the way to clicking it.
+    const last = !out && isLastOne(product, currentColor);
+    stockNote.hidden = !last;
+    stockNote.textContent = last ? t("product.lastOneNote") : "";
   }
 
   function renderColors() {

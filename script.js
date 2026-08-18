@@ -34,9 +34,12 @@ function mediaHtml(p) {
        <button type="button" class="card-nav card-nav--next" data-id="${p.id}" data-step="1" aria-label="${t("aria.nextPhoto")}">›</button>`
     : "";
 
+  // Sold out and last one share the corner: a colour can only ever be one.
   const out = isSoldOut(p, selectedColor[p.id])
     ? `<span class="sold-out">${t("product.soldOut")}</span>`
-    : "";
+    : isLastOne(p, selectedColor[p.id])
+      ? `<span class="last-one">${t("product.lastOne")}</span>`
+      : "";
 
   return `<a href="produto.html?id=${p.id}" class="product-card__image">
       <div class="card-track" data-track="${p.id}">${slides}</div>

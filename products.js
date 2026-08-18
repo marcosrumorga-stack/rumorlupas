@@ -605,6 +605,12 @@ function isSoldOut(product, colorId) {
   return stockOf(product, colorId) <= 0;
 }
 
+// Exactly one left. Untracked colours return Infinity, so they never say this —
+// the warning only ever appears when the number behind it is real.
+function isLastOne(product, colorId) {
+  return stockOf(product, colorId) === 1;
+}
+
 // Portuguese writes 61,43 € — and whole euros carry no decimals, matching how
 // the prices have always been shown.
 function formatPrice(value) {
