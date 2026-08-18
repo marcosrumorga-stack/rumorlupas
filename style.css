@@ -433,10 +433,12 @@ button.swatch { position: relative; }
   cursor: pointer;
 }
 
-/* Hero */
+/* Hero — kept short on purpose. Everything here is worth showing, but none of
+   it sells: the first row of lupas has to be reachable without scrolling, so
+   the spacing is the tightest that still lets the block breathe. */
 .hero {
   position: relative;
-  padding: 132px 0 116px;
+  padding: clamp(52px, 6vw, 76px) 0 clamp(44px, 5vw, 60px);
   background: #100e0d;
   overflow: hidden;
   isolation: isolate;
@@ -506,10 +508,10 @@ button.swatch { position: relative; }
   justify-content: center;
   gap: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3.4vw, 2.35rem);
+  font-size: clamp(1.35rem, 3vw, 2.05rem);
   letter-spacing: 0.02em;
   color: var(--gold);
-  margin-bottom: 26px;
+  margin-bottom: 16px;
   text-shadow:
     -2px -2px 0 var(--text),
     2px -2px 0 var(--text),
@@ -519,7 +521,7 @@ button.swatch { position: relative; }
 }
 .hero__brand span { color: #fff; }
 .hero__brand-icon {
-  height: clamp(50px, 7.4vw, 76px);
+  height: clamp(40px, 5.2vw, 58px);
   width: auto;
   display: block;
   margin-right: clamp(-6px, -0.5vw, -3px);
@@ -533,7 +535,7 @@ button.swatch { position: relative; }
   letter-spacing: 0.42em;
   font-size: 0.7rem;
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-bottom: 18px;
   text-indent: 0.42em;
 }
 .hero__rule {
@@ -543,14 +545,14 @@ button.swatch { position: relative; }
 }
 .hero__rule:last-child { background: linear-gradient(90deg, rgba(212,165,61,0.65), transparent); }
 .hero__eyebrow-logo {
-  height: 30px;
+  height: 24px;
   width: auto;
   filter: brightness(0) invert(1);
   opacity: 0.9;
 }
 .hero h1 {
   font-family: var(--font-display);
-  font-size: clamp(2.3rem, 6.4vw, 4.6rem);
+  font-size: clamp(2rem, 5.2vw, 3.7rem);
   font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.02;
@@ -565,10 +567,10 @@ button.swatch { position: relative; }
 }
 .hero__subtitle {
   max-width: 520px;
-  margin: 26px auto 40px;
+  margin: 16px auto 26px;
   color: rgba(255,255,255,0.62);
-  font-size: 1.05rem;
-  line-height: 1.65;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 .hero__actions {
   display: flex;
@@ -582,7 +584,7 @@ button.swatch { position: relative; }
   justify-content: center;
   align-items: center;
   gap: 10px 26px;
-  margin-top: 56px;
+  margin-top: 30px;
   padding: 0;
   list-style: none;
   color: rgba(255,255,255,0.42);
@@ -642,6 +644,10 @@ button.swatch { position: relative; }
 
 /* Sections */
 .section { padding: 90px 0; }
+/* The catalogue is what the visitor came for, so it starts close under the hero
+   instead of a full section's breath below it. Only the section right after the
+   hero is pulled up; the rest of the page keeps its rhythm. */
+.hero + .section { padding-top: 46px; }
 
 /* Dark band — shares the hero's visual identity */
 .section--dark {
