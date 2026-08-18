@@ -122,6 +122,8 @@ const I18N = {
     "color.cinza-escura-lente-azul": "Cinza escura · lente azul",
     "color.cinza-escura-lente-rosa": "Cinza escura · lente rosa",
     "color.dourada-lente-preta": "Dourada · lente preta",
+    "color.bege-piet-lente-dourada": "Bege PIET · lente dourada",
+    "color.bege-piet-lente-preta": "Bege PIET · lente preta",
 
     "history.eye-jacket-45": "Lançado em 1996, o Eye Jacket foi um dos modelos que definiu a estética esportiva da Oakley nos anos 90, com sua lente envolvente e visual futurista. Rapidamente virou item de estilo fora das pistas, adotado pela cena rave e pelo streetwear da época. Essa versão \"Redux\" resgata a silhueta original com acabamento atualizado.",
     "history.plantaris-50": "O Plantaris representa a leitura mais recente da Oakley sobre o formato wrap clássico da marca, com maior cobertura lateral e um encaixe pensado tanto para performance quanto para o dia a dia. Une a herança esportiva da marca a um visual mais contemporâneo.",
@@ -251,6 +253,8 @@ const I18N = {
     "color.cinza-escura-lente-azul": "Dark grey · blue lens",
     "color.cinza-escura-lente-rosa": "Dark grey · pink lens",
     "color.dourada-lente-preta": "Gold · black lens",
+    "color.bege-piet-lente-dourada": "PIET beige · gold lens",
+    "color.bege-piet-lente-preta": "PIET beige · black lens",
 
     "history.eye-jacket-45": "Released in 1996, the Eye Jacket was one of the models that defined Oakley's sporting look in the nineties, with its wraparound lens and futuristic shape. It quickly became a style piece off the track, taken up by the rave scene and the streetwear of the day. This \"Redux\" version brings back the original silhouette with an updated finish.",
     "history.plantaris-50": "The Plantaris is Oakley's most recent take on the wrap shape the brand is known for, with more coverage at the sides and a fit meant for both performance and everyday wear. It carries the brand's sporting heritage into a more contemporary look.",
@@ -380,6 +384,8 @@ const I18N = {
     "color.cinza-escura-lente-azul": "Gris oscuro · lente azul",
     "color.cinza-escura-lente-rosa": "Gris oscuro · lente rosa",
     "color.dourada-lente-preta": "Dorado · lente negra",
+    "color.bege-piet-lente-dourada": "Beige PIET · lente dorada",
+    "color.bege-piet-lente-preta": "Beige PIET · lente negra",
 
     "history.eye-jacket-45": "Lanzado en 1996, el Eye Jacket fue uno de los modelos que definió la estética deportiva de Oakley en los noventa, con su lente envolvente y su aire futurista. Pronto se convirtió en pieza de estilo fuera de la pista, adoptada por la escena rave y el streetwear de la época. Esta versión \"Redux\" recupera la silueta original con un acabado actualizado.",
     "history.plantaris-50": "El Plantaris es la lectura más reciente de Oakley sobre el formato wrap clásico de la marca, con mayor cobertura lateral y un ajuste pensado tanto para el rendimiento como para el día a día. Lleva la herencia deportiva de la marca a un aspecto más contemporáneo.",

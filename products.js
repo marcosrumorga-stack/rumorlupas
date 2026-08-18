@@ -14,18 +14,44 @@ const PRODUCTS = [
     oldPrice: 70,
     colors: [
       {
+        // Keeps the "preto" id even though the newer colours name their lente
+        // too: the id is in the product page URL and in carts already saved in
+        // people's browsers, and renaming it would turn those orders away.
         id: "preto",
         name: "Preto",
         hex: "#15130f",
-        stock: 5,
+        stock: 3,
         images: [
-          "images/products/eye-jacket-45/preto/2.jpeg",
           "images/products/eye-jacket-45/preto/1.jpeg",
+          "images/products/eye-jacket-45/preto/2.jpeg",
           "images/products/eye-jacket-45/preto/3.jpeg",
           "images/products/eye-jacket-45/preto/4.jpeg",
-          "images/products/eye-jacket-45/preto/5.jpeg",
-          "images/products/eye-jacket-45/preto/6.jpeg",
-          "images/products/eye-jacket-45/preto/model.jpeg",
+        ],
+      },
+      {
+        id: "bege-piet-lente-dourada",
+        name: "Bege PIET · lente dourada",
+        hex: "#d9c3a5",
+        swatch: "linear-gradient(135deg, #d9c3a5 50%, #a8862c 50%)",
+        stock: 1,
+        images: [
+          "images/products/eye-jacket-45/bege-piet-lente-dourada/1.jpeg",
+          "images/products/eye-jacket-45/bege-piet-lente-dourada/2.jpeg",
+          "images/products/eye-jacket-45/bege-piet-lente-dourada/3.jpeg",
+          "images/products/eye-jacket-45/bege-piet-lente-dourada/4.jpeg",
+        ],
+      },
+      {
+        id: "bege-piet-lente-preta",
+        name: "Bege PIET · lente preta",
+        hex: "#d9c3a5",
+        swatch: "linear-gradient(135deg, #d9c3a5 50%, #1a1a1c 50%)",
+        stock: 1,
+        images: [
+          "images/products/eye-jacket-45/bege-piet-lente-preta/1.jpeg",
+          "images/products/eye-jacket-45/bege-piet-lente-preta/2.jpeg",
+          "images/products/eye-jacket-45/bege-piet-lente-preta/3.jpeg",
+          "images/products/eye-jacket-45/bege-piet-lente-preta/4.jpeg",
         ],
       },
     ],

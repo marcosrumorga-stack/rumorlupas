@@ -30,7 +30,11 @@ function stockFor(id, colorId) {
 // `colors` maps a colour id to the name that goes on the Stripe line item, so
 // the order says which variant to ship.
 const PRODUCTS = {
-  "eye-jacket-45":   { name: "Oakley Eye Jacket",     price: 49, colors: { preto: "Preto" } },
+  "eye-jacket-45":   { name: "Oakley Eye Jacket",     price: 49, colors: {
+    preto:                      "Preto",
+    "bege-piet-lente-dourada":  "Bege PIET · lente dourada",
+    "bege-piet-lente-preta":    "Bege PIET · lente preta",
+  } },
   "plantaris-50":    { name: "Oakley Plantaris",      price: 49, colors: { preto: "Preto" } },
   "juliet-45":       { name: "Oakley Juliet",         price: 49, colors: {
     "prata-lente-preta":       "Prata · lente preta",
