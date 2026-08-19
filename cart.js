@@ -247,6 +247,3 @@ function handleCheckoutRedirect() {
 
 renderCart();
 handleCheckoutRedirect();
-
-// Cart rows are built in JS, so they have to be redrawn when the language changes.
-document.addEventListener("rl:languagechange", renderCart);

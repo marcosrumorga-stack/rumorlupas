@@ -630,8 +630,10 @@ function productSlug(product) {
   return `oakley-${name}`;
 }
 
-function productUrl(product) {
-  return `/lupas/${productSlug(product)}`;
+// Carries the language of the page it is linked from, so a reader browsing in
+// Spanish stays in Spanish when they open a model.
+function productUrl(product, lang) {
+  return localePath(`/lupas/${productSlug(product)}`, lang);
 }
 
 function findProductBySlug(slug) {

@@ -91,6 +91,18 @@ const I18N = {
     "legal.back": "← Voltar ao site",
     "legal.notice": "Este documento só tem valor legal na versão em português.",
 
+    // O que aparece no separador do browser e na lista de resultados do Google.
+    // A página de produto escreve os seus em produto.js, a partir do modelo.
+    "meta.home.title": "Óculos de sol Oakley em Portugal | RumorLupas",
+    "meta.home.desc": "Óculos de sol Oakley com stock em Portugal. Envio grátis acima de 80 €, entrega em 2 a 5 dias úteis. A maioria dos modelos em unidade única.",
+    "meta.terms.title": "Termos e Condições — RumorLupas",
+    "meta.terms.desc": "Termos e condições de venda da RumorLupas.",
+    "meta.privacy.title": "Política de Privacidade — RumorLupas",
+    "meta.privacy.desc": "Política de privacidade da RumorLupas.",
+    "meta.notfound.title": "Página não encontrada — RumorLupas",
+    "meta.thanks.title": "Pedido confirmado — RumorLupas",
+    "meta.thanks.desc": "Pedido confirmado na RumorLupas.",
+
     // Keyed by the colour's own id, not by product, so two models sharing a
     // colour share the string. A colour with no entry here falls back to the
     // `name` written in products.js, which is always Portuguese.
@@ -229,6 +241,16 @@ const I18N = {
     "legal.back": "← Back to the site",
     "legal.notice": "This document is in Portuguese. Only the Portuguese version is legally binding.",
 
+    "meta.home.title": "Oakley sunglasses in Portugal | RumorLupas",
+    "meta.home.desc": "Oakley sunglasses in stock in Portugal. Free shipping over 80 €, delivery in 2 to 5 working days. Most models are one of a kind.",
+    "meta.terms.title": "Terms and Conditions — RumorLupas",
+    "meta.terms.desc": "RumorLupas terms and conditions of sale.",
+    "meta.privacy.title": "Privacy Policy — RumorLupas",
+    "meta.privacy.desc": "RumorLupas privacy policy.",
+    "meta.notfound.title": "Page not found — RumorLupas",
+    "meta.thanks.title": "Order confirmed — RumorLupas",
+    "meta.thanks.desc": "Order confirmed at RumorLupas.",
+
     "color.preto": "Black",
     "color.24k-lente-esmeralda": "24K · emerald lens",
     "color.cinza-fosca-preta": "Matte grey · black lens",
@@ -364,6 +386,16 @@ const I18N = {
     "legal.back": "← Volver al sitio",
     "legal.notice": "Este documento está en portugués. Solo la versión en portugués tiene valor legal.",
 
+    "meta.home.title": "Gafas de sol Oakley en Portugal | RumorLupas",
+    "meta.home.desc": "Gafas de sol Oakley con stock en Portugal. Envío gratis a partir de 80 €, entrega en 2 a 5 días laborables. La mayoría de los modelos, en unidad única.",
+    "meta.terms.title": "Términos y Condiciones — RumorLupas",
+    "meta.terms.desc": "Términos y condiciones de venta de RumorLupas.",
+    "meta.privacy.title": "Política de Privacidad — RumorLupas",
+    "meta.privacy.desc": "Política de privacidad de RumorLupas.",
+    "meta.notfound.title": "Página no encontrada — RumorLupas",
+    "meta.thanks.title": "Pedido confirmado — RumorLupas",
+    "meta.thanks.desc": "Pedido confirmado en RumorLupas.",
+
     "color.preto": "Negro",
     "color.24k-lente-esmeralda": "24K · lente esmeralda",
     "color.cinza-fosca-preta": "Gris mate · lente negra",
@@ -413,7 +445,6 @@ const I18N = {
   },
 };
 
-const LANG_KEY = "rumorlupas_lang";
 const HTML_LANG = { pt: "pt-PT", en: "en", es: "es" };
 
 // Drawn rather than written as emoji: Windows ships no flag glyphs, so 🇵🇹
@@ -444,15 +475,39 @@ const FLAGS = {
   </svg>`,
 };
 
+// The address decides the language, and nothing else does. A page can only be
+// found in a language if that language has an address of its own — English and
+// Spanish lived behind a saved preference for a while, which meant Google only
+// ever saw the Portuguese. Portuguese keeps the bare paths; the other two sit
+// under /en and /es.
+const SITE = "https://rumorlupas.com";
+const DEFAULT_LANG = "pt";
+const PREFIXED = /^\/(en|es)(?=\/|$)/;
+
+// The legal pages are Portuguese whatever the chrome around them says - the
+// notice at the top of each one says exactly that. They are still reachable
+// under /en and /es so a reader does not lose their language by clicking
+// "Terms", but they claim a single address: no alternates, and the canonical
+// always points at the Portuguese one.
+const PT_ONLY = ["/termos.html", "/privacidade.html"];
+
+// The path with any language prefix taken off: /en/lupas/x -> /lupas/x
+function barePath(pathname) {
+  return pathname.replace(PREFIXED, "") || "/";
+}
+
+// Where a path lives in a given language. Idempotent, so passing an already
+// prefixed path back through it does not stack a second prefix.
+function localePath(path, lang) {
+  const l = lang || currentLang;
+  const bare = barePath(path.startsWith("/") ? path : `/${path}`);
+  if (l === DEFAULT_LANG) return bare;
+  return bare === "/" ? `/${l}/` : `/${l}${bare}`;
+}
+
 let currentLang = (() => {
-  try {
-    const saved = localStorage.getItem(LANG_KEY);
-    if (saved && I18N[saved]) return saved;
-  } catch {
-    // localStorage can throw in private mode; fall through to the browser hint
-  }
-  const guess = (navigator.language || "pt").slice(0, 2).toLowerCase();
-  return I18N[guess] ? guess : "pt";
+  const m = window.location.pathname.match(PREFIXED);
+  return m ? m[1] : DEFAULT_LANG;
 })();
 
 // Falls back to Portuguese, then to the key itself, so a missing string shows
@@ -473,6 +528,11 @@ function applyTranslations(root) {
   scope.querySelectorAll("[data-i18n-aria]").forEach((el) => {
     el.setAttribute("aria-label", t(el.dataset.i18nAria));
   });
+  // <meta content>. The <title> needs nothing special: it carries data-i18n and
+  // setting its text is what sets document.title.
+  scope.querySelectorAll("[data-i18n-content]").forEach((el) => {
+    el.setAttribute("content", t(el.dataset.i18nContent));
+  });
 }
 
 function syncLangButtons() {
@@ -483,19 +543,49 @@ function syncLangButtons() {
   });
 }
 
+// Switching language is a navigation now, not a redraw: the whole point is that
+// each language has an address, so the address has to change.
 function setLanguage(lang) {
-  if (!I18N[lang]) return;
-  currentLang = lang;
-  try {
-    localStorage.setItem(LANG_KEY, lang);
-  } catch {
-    // Not being able to remember the choice is not worth failing over
+  if (!I18N[lang] || lang === currentLang) return;
+  const target = localePath(barePath(window.location.pathname), lang);
+  window.location.assign(target + window.location.search + window.location.hash);
+}
+
+// Every internal link has to stay inside the language being read, or a click on
+// the logo would drop an English reader back into Portuguese without warning.
+// Absolute, mail and pure-hash links are left alone.
+function localizeLinks(root) {
+  (root || document).querySelectorAll("a[href]").forEach((a) => {
+    const raw = a.getAttribute("href");
+    if (!raw || /^(https?:|mailto:|tel:|#)/.test(raw)) return;
+    const [target, hash] = raw.split("#");
+    const clean = target.replace(/^\//, "");
+    const path = clean === "" || clean === "index.html" ? "/" : `/${clean}`;
+    a.setAttribute("href", localePath(path) + (hash ? `#${hash}` : ""));
+  });
+}
+
+// Tells Google the three addresses are the same page in different languages,
+// so they stop competing with each other and each one can rank in its own.
+function writeAlternates() {
+  const bare = barePath(window.location.pathname);
+  document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
+  if (PT_ONLY.indexOf(bare) === -1) {
+    const pairs = [["pt-PT", "pt"], ["en", "en"], ["es", "es"], ["x-default", "pt"]];
+    pairs.forEach(([hreflang, lang]) => {
+      const link = document.createElement("link");
+      link.rel = "alternate";
+      link.hreflang = hreflang;
+      link.href = SITE + localePath(bare, lang);
+      document.head.appendChild(link);
+    });
   }
-  document.documentElement.lang = HTML_LANG[lang];
-  applyTranslations();
-  syncLangButtons();
-  // Anything built by JS — product cards, the cart — redraws itself on this.
-  document.dispatchEvent(new CustomEvent("rl:languagechange"));
+
+  // Pages that set their own canonical (the product page) overwrite this later.
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) {
+    canonical.href = SITE + (PT_ONLY.indexOf(bare) === -1 ? localePath(bare) : bare);
+  }
 }
 
 document.querySelectorAll(".lang__btn").forEach((btn) => {
@@ -507,3 +597,5 @@ document.querySelectorAll(".lang__btn").forEach((btn) => {
 document.documentElement.lang = HTML_LANG[currentLang];
 applyTranslations();
 syncLangButtons();
+localizeLinks();
+writeAlternates();

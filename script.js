@@ -147,13 +147,6 @@ renderCategories();
 renderCatalogNote();
 renderProducts();
 
-// Tabs, note and cards are built in JS, so they redraw when the language changes.
-document.addEventListener("rl:languagechange", () => {
-  renderCategories();
-  renderCatalogNote();
-  renderProducts();
-});
-
 // The customer strip: arrows for the mouse, which has no sideways gesture, and
 // click-and-drag on top. Touch and trackpad already work through scroll-snap.
 const clientesStrip = document.getElementById("clientesStrip");

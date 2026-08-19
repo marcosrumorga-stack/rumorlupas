@@ -1,85 +1,422 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://rumorlupas.com/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://rumorlupas.com/lupas/oakley-eye-jacket-redux</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-eye-jacket-redux"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-eye-jacket-redux"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-eye-jacket-redux"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-eye-jacket-redux"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/lupas/oakley-eye-jacket-redux</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-eye-jacket-redux"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-eye-jacket-redux"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-eye-jacket-redux"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-eye-jacket-redux"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/lupas/oakley-eye-jacket-redux</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-eye-jacket-redux"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-eye-jacket-redux"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-eye-jacket-redux"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-eye-jacket-redux"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://rumorlupas.com/lupas/oakley-eye-jacket</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-eye-jacket"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-eye-jacket"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-eye-jacket"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-eye-jacket"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/lupas/oakley-eye-jacket</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-eye-jacket"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-eye-jacket"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-eye-jacket"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-eye-jacket"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/lupas/oakley-eye-jacket</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-eye-jacket"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-eye-jacket"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-eye-jacket"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-eye-jacket"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://rumorlupas.com/lupas/oakley-plantaris</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-plantaris"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-plantaris"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-plantaris"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-plantaris"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/lupas/oakley-plantaris</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-plantaris"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-plantaris"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-plantaris"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-plantaris"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/lupas/oakley-plantaris</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-plantaris"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-plantaris"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-plantaris"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-plantaris"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://rumorlupas.com/lupas/oakley-juliet</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-juliet"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-juliet"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-juliet"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-juliet"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/lupas/oakley-juliet</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-juliet"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-juliet"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-juliet"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-juliet"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/lupas/oakley-juliet</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-juliet"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-juliet"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-juliet"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-juliet"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://rumorlupas.com/lupas/oakley-xx</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-xx"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-xx"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-xx"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-xx"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/lupas/oakley-xx</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-xx"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-xx"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-xx"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-xx"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/lupas/oakley-xx</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-xx"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-xx"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-xx"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-xx"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://rumorlupas.com/lupas/oakley-plate</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-plate"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-plate"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-plate"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-plate"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/lupas/oakley-plate</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-plate"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-plate"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-plate"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-plate"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/lupas/oakley-plate</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-plate"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-plate"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-plate"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-plate"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://rumorlupas.com/lupas/oakley-gascan</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-gascan"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-gascan"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-gascan"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-gascan"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/lupas/oakley-gascan</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-gascan"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-gascan"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-gascan"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-gascan"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/lupas/oakley-gascan</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-gascan"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-gascan"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-gascan"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-gascan"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://rumorlupas.com/lupas/oakley-splice</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-splice"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-splice"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-splice"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-splice"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/lupas/oakley-splice</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-splice"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-splice"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-splice"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-splice"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/lupas/oakley-splice</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-splice"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-splice"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-splice"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-splice"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://rumorlupas.com/lupas/oakley-monster-dog</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-monster-dog"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-monster-dog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-monster-dog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-monster-dog"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/lupas/oakley-monster-dog</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-monster-dog"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-monster-dog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-monster-dog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-monster-dog"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/lupas/oakley-monster-dog</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-monster-dog"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-monster-dog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-monster-dog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-monster-dog"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://rumorlupas.com/lupas/oakley-dartboard</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-dartboard"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-dartboard"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-dartboard"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-dartboard"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/lupas/oakley-dartboard</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-dartboard"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-dartboard"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-dartboard"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-dartboard"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/lupas/oakley-dartboard</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-dartboard"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-dartboard"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-dartboard"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-dartboard"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://rumorlupas.com/lupas/oakley-flak-2-0-xl</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-flak-2-0-xl"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-flak-2-0-xl"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-flak-2-0-xl"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-flak-2-0-xl"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/lupas/oakley-flak-2-0-xl</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-flak-2-0-xl"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-flak-2-0-xl"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-flak-2-0-xl"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-flak-2-0-xl"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/lupas/oakley-flak-2-0-xl</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-flak-2-0-xl"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-flak-2-0-xl"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-flak-2-0-xl"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-flak-2-0-xl"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://rumorlupas.com/lupas/oakley-holbrook</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-holbrook"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-holbrook"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-holbrook"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-holbrook"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/lupas/oakley-holbrook</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-holbrook"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-holbrook"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-holbrook"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-holbrook"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/lupas/oakley-holbrook</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-holbrook"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-holbrook"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-holbrook"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-holbrook"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://rumorlupas.com/lupas/oakley-pit-boss-ii</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-pit-boss-ii"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-pit-boss-ii"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-pit-boss-ii"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-pit-boss-ii"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/lupas/oakley-pit-boss-ii</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-pit-boss-ii"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-pit-boss-ii"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-pit-boss-ii"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-pit-boss-ii"/>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/lupas/oakley-pit-boss-ii</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/lupas/oakley-pit-boss-ii"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/lupas/oakley-pit-boss-ii"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/lupas/oakley-pit-boss-ii"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/lupas/oakley-pit-boss-ii"/>
     <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

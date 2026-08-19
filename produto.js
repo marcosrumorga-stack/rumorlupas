@@ -12,7 +12,7 @@ nav.querySelectorAll("a").forEach((link) => {
 // in the sitemap Google already fetched, and in links people have sent each
 // other. Netlify redirects the old form, but the page resolves both regardless.
 const product = (function () {
-  const slug = window.location.pathname.replace(/^\/lupas\//, "").replace(/\/$/, "");
+  const slug = barePath(window.location.pathname).replace(/^\/lupas\//, "").replace(/\/$/, "");
   const bySlug = slug && findProductBySlug(slug);
   if (bySlug) return bySlug;
   const id = new URLSearchParams(window.location.search).get("id");
@@ -58,6 +58,8 @@ if (!product) {
   }
 
   function renderSeo() {
+    // In the language being read, so the three versions of a model do not
+    // compete with each other in search.
     const canonical = `${location.origin}${productUrl(product)}`;
     document.title = pageTitle();
     document.querySelector('link[rel="canonical"]').href = canonical;
@@ -237,15 +239,5 @@ if (!product) {
   addBtn.addEventListener("click", () => {
     if (isSoldOut(product, currentColor)) return;
     addToCart(product.id, currentColor);
-  });
-
-  // The story, the photo captions and the colour names are written by JS, so
-  // redraw on a switch.
-  document.addEventListener("rl:languagechange", () => {
-    renderHistory();
-    renderGallery();
-    renderStock();
-    renderColors();
-    renderSeo();
   });
 }

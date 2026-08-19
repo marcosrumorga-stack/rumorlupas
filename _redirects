@@ -17,4 +17,16 @@
 /produto.html  id=pitboss-53  /lupas/oakley-pit-boss-ii  301!
 
 # Serve the product page at its own address without changing the bar.
+/en/lupas/*  /produto.html  200
+/es/lupas/*  /produto.html  200
 /lupas/*  /produto.html  200
+
+# The translated addresses are the same files, read in another language:
+# i18n.js takes the language from the prefix that is still in the address bar.
+# The bare prefix is a real address people type, and /en/* would not match it.
+/en  /en/  301!
+/en/  /index.html  200
+/en/*  /:splat  200
+/es  /es/  301!
+/es/  /index.html  200
+/es/*  /:splat  200

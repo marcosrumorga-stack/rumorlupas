@@ -29,17 +29,57 @@ foreach ($m in [regex]::Matches($block, '(?m)^\s{2,4}(\{ )?id: "([a-z0-9.-]+)",\
 $dupes = $products | Group-Object slug | Where-Object { $_.Count -gt 1 }
 if ($dupes) { throw "Slugs repetidos: " + ($dupes.Name -join ', ') }
 
+# ---------- languages ----------
+# Portuguese keeps the bare paths; the other two sit under a prefix. Must match
+# DEFAULT_LANG and localePath() in i18n.js.
+$LANGS = @("pt", "en", "es")
+$HREFLANG = @{ pt = "pt-PT"; en = "en"; es = "es" }
+
+function Loc-Path([string]$bare, [string]$lang) {
+  if ($lang -eq "pt") { return $bare }
+  if ($bare -eq "/") { return "/$lang/" }
+  return "/$lang$bare"
+}
+
 # ---------- sitemap.xml ----------
 $today = (Get-Date).ToString("yyyy-MM-dd")
-$lines = @('<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
-function Add-Url([string]$loc, [string]$priority, [string]$freq) {
-  $script:lines += "  <url>", "    <loc>$loc</loc>", "    <lastmod>$today</lastmod>",
-                   "    <changefreq>$freq</changefreq>", "    <priority>$priority</priority>", "  </url>"
+$lines = @('<?xml version="1.0" encoding="UTF-8"?>',
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+           '        xmlns:xhtml="http://www.w3.org/1999/xhtml">')
+
+$pages = @()
+function Add-Page([string]$path, [string]$priority, [string]$freq, [string[]]$langs = $LANGS) {
+  $script:pages += [pscustomobject]@{
+    path = $path; priority = $priority; freq = $freq; langs = $langs }
 }
-Add-Url "$Site/" "1.0" "daily"
-foreach ($p in $products) { Add-Url "$Site/lupas/$($p.slug)" "0.8" "weekly" }
-Add-Url "$Site/termos.html" "0.2" "yearly"
-Add-Url "$Site/privacidade.html" "0.2" "yearly"
+Add-Page "/" "1.0" "daily"
+foreach ($p in $products) { Add-Page "/lupas/$($p.slug)" "0.8" "weekly" }
+# Portuguese only: the documents themselves are not translated, and the notice
+# at the top of each says only the Portuguese version is binding. Must match
+# PT_ONLY in i18n.js.
+Add-Page "/termos.html" "0.2" "yearly" @("pt")
+Add-Page "/privacidade.html" "0.2" "yearly" @("pt")
+
+# Each language gets an entry of its own - a page can only be found in a
+# language it has an address in - and every entry lists all three, so Google
+# reads them as one page rather than three competing for the same searches.
+foreach ($page in $pages) {
+  foreach ($lang in $page.langs) {
+    $lines += "  <url>"
+    $lines += "    <loc>$Site$(Loc-Path $page.path $lang)</loc>"
+    if ($page.langs.Count -gt 1) {
+      foreach ($alt in $page.langs) {
+        $lines += '    <xhtml:link rel="alternate" hreflang="{0}" href="{1}{2}"/>' -f
+                  $HREFLANG[$alt], $Site, (Loc-Path $page.path $alt)
+      }
+      $lines += '    <xhtml:link rel="alternate" hreflang="x-default" href="{0}{1}"/>' -f
+                $Site, (Loc-Path $page.path "pt")
+    }
+    $lines += "    <lastmod>$today</lastmod>", "    <changefreq>$($page.freq)</changefreq>",
+              "    <priority>$($page.priority)</priority>", "  </url>"
+  }
+}
+$urlCount = ($pages | ForEach-Object { $_.langs.Count } | Measure-Object -Sum).Sum
 $lines += '</urlset>'
 [System.IO.File]::WriteAllText((Join-Path $Root "sitemap.xml"),
   ($lines -join "`n") + "`n", (New-Object System.Text.UTF8Encoding($false)))
@@ -53,10 +93,27 @@ $r = @(
   "# The address each model was sold at before /lupas/ existed. Kept because it",
   "# is in the sitemap Google already fetched and in links people have shared.")
 foreach ($p in $products) { $r += "/produto.html  id=$($p.id)  /lupas/$($p.slug)  301!" }
-$r += "", "# Serve the product page at its own address without changing the bar.",
-      "/lupas/*  /produto.html  200"
+
+# The model rules come before the catch-all, or /en/lupas/x would be rewritten
+# to /lupas/x, which is not a file on disk and would 404.
+$r += "", "# Serve the product page at its own address without changing the bar."
+foreach ($lang in $LANGS | Where-Object { $_ -ne "pt" }) {
+  $r += "/$lang/lupas/*  /produto.html  200"
+}
+$r += "/lupas/*  /produto.html  200"
+
+$r += "", "# The translated addresses are the same files, read in another language:",
+      "# i18n.js takes the language from the prefix that is still in the address bar.",
+      "# The bare prefix is a real address people type, and /en/* would not match it."
+foreach ($lang in $LANGS | Where-Object { $_ -ne "pt" }) {
+  $r += "/$lang  /$lang/  301!", "/$lang/  /index.html  200", "/$lang/*  /:splat  200"
+}
 [System.IO.File]::WriteAllText((Join-Path $Root "_redirects"),
   ($r -join "`n") + "`n", (New-Object System.Text.UTF8Encoding($false)))
 
-"sitemap.xml : {0} modelos, {1} urls" -f $products.Count, ($products.Count + 3)
-"_redirects  : {0} redirecionamentos + 1 reescrita" -f $products.Count
+"sitemap.xml : {0} modelos, {1} paginas, {2} urls em {3} linguas" -f
+  $products.Count, $pages.Count, $urlCount, $LANGS.Count
+$rules = $r | Where-Object { $_ -match '\s(200|30\d!?)$' }
+"_redirects  : {0} redirecionamentos + {1} reescritas" -f
+  @($rules | Where-Object { $_ -match '30\d!?$' }).Count,
+  @($rules | Where-Object { $_ -match '200$' }).Count
