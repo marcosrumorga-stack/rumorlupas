@@ -613,6 +613,31 @@ const PRODUCTS = [
   },
 ];
 
+// The address a model is sold at: /lupas/oakley-juliet rather than
+// produto.html?id=juliet-45. It says what the page is to both Google and to
+// whoever it gets sent to on WhatsApp.
+//
+// Derived from the name rather than stored, so a new model needs nothing extra
+// — but that also means renaming a model changes its URL, and the old one then
+// needs a line in _redirects or the links already out there break.
+function productSlug(product) {
+  const name = product.name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+  return `oakley-${name}`;
+}
+
+function productUrl(product) {
+  return `/lupas/${productSlug(product)}`;
+}
+
+function findProductBySlug(slug) {
+  return PRODUCTS.find((p) => productSlug(p) === slug);
+}
+
 // Categories are read off the products themselves, so there is no second list
 // to keep in step. To open a new one, give a product a category and add a
 // "category.<id>" string to i18n.js — the tab appears on its own:

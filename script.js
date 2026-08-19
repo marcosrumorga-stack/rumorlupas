@@ -22,7 +22,7 @@ PRODUCTS.forEach((p) => {
 function mediaHtml(p) {
   const images = productImages(p, selectedColor[p.id]);
   if (!images.length) {
-    return `<a href="produto.html?id=${p.id}" class="product-card__image">${t("product.soon")}<span class="sr-only">${p.name}</span></a>`;
+    return `<a href="${productUrl(p)}" class="product-card__image">${t("product.soon")}<span class="sr-only">${p.name}</span></a>`;
   }
 
   const slides = images
@@ -41,7 +41,7 @@ function mediaHtml(p) {
       ? `<span class="last-one">${t("product.lastOne")}</span>`
       : "";
 
-  return `<a href="produto.html?id=${p.id}" class="product-card__image">
+  return `<a href="${productUrl(p)}" class="product-card__image">
       <div class="card-track" data-track="${p.id}">${slides}</div>
     </a>${arrows}${out}`;
 }
@@ -85,7 +85,7 @@ function renderProducts() {
     <div class="product-card" data-product="${p.id}">
       <div class="product-card__media">${mediaHtml(p)}</div>
       <div class="product-card__body">
-        <a href="produto.html?id=${p.id}" class="product-card__name">${p.name}</a>
+        <a href="${productUrl(p)}" class="product-card__name">${p.name}</a>
         ${colorSwatchesHtml(p, selectedColor[p.id])}
         <p class="product-card__price">${priceHtml(p)}</p>
         ${isSoldOut(p, selectedColor[p.id])

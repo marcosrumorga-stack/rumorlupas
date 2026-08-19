@@ -7,9 +7,17 @@ nav.querySelectorAll("a").forEach((link) => {
   link.addEventListener("click", () => nav.classList.remove("open"));
 });
 
-const params = new URLSearchParams(window.location.search);
-const productId = params.get("id");
-const product = PRODUCTS.find((p) => p.id === productId);
+// Two ways in. /lupas/oakley-juliet is the address the shop publishes; the old
+// produto.html?id=juliet-45 is still answered because it is loose in the world —
+// in the sitemap Google already fetched, and in links people have sent each
+// other. Netlify redirects the old form, but the page resolves both regardless.
+const product = (function () {
+  const slug = window.location.pathname.replace(/^\/lupas\//, "").replace(/\/$/, "");
+  const bySlug = slug && findProductBySlug(slug);
+  if (bySlug) return bySlug;
+  const id = new URLSearchParams(window.location.search).get("id");
+  return PRODUCTS.find((p) => p.id === id);
+})();
 
 const productDetail = document.getElementById("productDetail");
 const productNotFound = document.getElementById("productNotFound");
@@ -19,18 +27,39 @@ if (!product) {
 } else {
   productDetail.hidden = false;
 
-  document.getElementById("pageTitle").textContent = `${product.name} — RumorLupas`;
   let currentColor = defaultColorId(product);
+
+  // Nobody searches "Juliet". They search "oakley juliet portugal" — so the tab
+  // and the search result lead with Oakley, and carry the two things that decide
+  // a click: how much choice there is, and the price.
+  function pageTitle() {
+    const colours = hasColors(product) ? product.colors : [];
+    const left = colours.length
+      ? colours.filter((c) => !isSoldOut(product, c.id))
+      : (isSoldOut(product, null) ? [] : [null]);
+
+    if (colours.length && !left.length) {
+      return `Oakley ${product.name} — ${t("product.soldOut").toLowerCase()} | RumorLupas`;
+    }
+    const price = formatPrice(product.price);
+    if (left.length > 1) {
+      return `Oakley ${product.name} — ${left.length} ${t("seo.colours")}, ${price} | RumorLupas`;
+    }
+    return `Oakley ${product.name} — ${price} | RumorLupas`;
+  }
 
   // Google runs the page's script before indexing it, so the model's own name,
   // price and stock can be filled in here. Social previews still cannot — those
   // crawlers do not run scripts, which is why the og: tags stay generic.
+  // Off the origin, not off location.href: at /lupas/<modelo> a relative path
+  // would resolve inside /lupas/ and point at images that are not there.
   function absolute(path) {
-    return new URL(path, location.href).href;
+    return new URL(path, `${location.origin}/`).href;
   }
 
   function renderSeo() {
-    const canonical = `${location.origin}/produto.html?id=${product.id}`;
+    const canonical = `${location.origin}${productUrl(product)}`;
+    document.title = pageTitle();
     document.querySelector('link[rel="canonical"]').href = canonical;
     document.querySelector('meta[name="description"]').content =
       `${product.name} — ${formatPrice(product.price)}. ${productHistory(product)}`.slice(0, 300);

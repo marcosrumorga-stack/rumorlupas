@@ -30,6 +30,7 @@ const I18N = {
     "product.lastOne": "Última unidade",
     "product.lastOneNote": "Resta apenas 1 unidade desta cor.",
     "product.photo": "foto",
+    "seo.colours": "cores",
     "price.off": "de desconto",
 
     "about.title": "Sobre a <span class=\"brandmark\"><img src=\"images/boar-icon.png\" alt=\"\" class=\"brandmark__icon\">RUMOR<span>LUPAS</span></span>",
@@ -167,6 +168,7 @@ const I18N = {
     "product.lastOne": "Last one",
     "product.lastOneNote": "Only 1 left in this colour.",
     "product.photo": "photo",
+    "seo.colours": "colours",
     "price.off": "off",
 
     "about.title": "About <span class=\"brandmark\"><img src=\"images/boar-icon.png\" alt=\"\" class=\"brandmark__icon\">RUMOR<span>LUPAS</span></span>",
@@ -301,6 +303,7 @@ const I18N = {
     "product.lastOne": "Última unidad",
     "product.lastOneNote": "Solo queda 1 unidad de este color.",
     "product.photo": "foto",
+    "seo.colours": "colores",
     "price.off": "de descuento",
 
     "about.title": "Sobre <span class=\"brandmark\"><img src=\"images/boar-icon.png\" alt=\"\" class=\"brandmark__icon\">RUMOR<span>LUPAS</span></span>",

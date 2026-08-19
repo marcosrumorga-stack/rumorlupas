@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- This page is also served at /lupas/<modelo>, where a relative "style.css"
+     would resolve to /lupas/style.css and 404. Everything relative below hangs
+     off the root instead. -->
+<base href="/">
 <title id="pageTitle">Produto — RumorLupas</title>
 <meta name="description" content="Detalhes, fotos e história do modelo — RumorLupas.">
 <!-- Both filled in per model by produto.js, which Google runs before indexing. -->
