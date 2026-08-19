@@ -9,12 +9,18 @@
 /produto.html  id=xx-45  /lupas/oakley-xx  301!
 /produto.html  id=plate-55  /lupas/oakley-plate  301!
 /produto.html  id=gascan-50  /lupas/oakley-gascan  301!
-/produto.html  id=splice-53  /lupas/oakley-splice  301!
 /produto.html  id=monster-dog-47  /lupas/oakley-monster-dog  301!
 /produto.html  id=dartboard-50  /lupas/oakley-dartboard  301!
 /produto.html  id=flak-2xl-45  /lupas/oakley-flak-2-0-xl  301!
 /produto.html  id=holbrook  /lupas/oakley-holbrook  301!
 /produto.html  id=pitboss-53  /lupas/oakley-pit-boss-ii  301!
+
+# Pulled from sale, expected back: 302 and not 301, so the address is not
+# written off. Each language goes to its own catalogue.
+/produto.html  id=splice-53  /  302!
+/lupas/oakley-splice  /  302!
+/en/lupas/oakley-splice  /en/  302!
+/es/lupas/oakley-splice  /es/  302!
 
 # Serve the product page at its own address without changing the bar.
 /en/lupas/*  /produto.html  200

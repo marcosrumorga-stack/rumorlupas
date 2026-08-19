@@ -10,6 +10,16 @@ param(
   [string]$Site = "https://rumorlupas.com"
 )
 
+# Models pulled from sale but expected back. Their pages are gone, so both the
+# old and the new address are sent to the catalogue with a 302 - a temporary
+# code, because a 301 tells Google the address is finished for good and it
+# would have to earn its place again on the way back. Without this, produto.html
+# still answers 200 and shows "produto nao encontrado", which reads to Google
+# as a broken page rather than a deliberate one.
+$RETIRED = @(
+  @{ id = "splice-53"; slug = "oakley-splice" }
+)
+
 $source = [System.IO.File]::ReadAllText(
   (Resolve-Path (Join-Path $Root "products.js")), [System.Text.Encoding]::UTF8)
 
@@ -93,6 +103,20 @@ $r = @(
   "# The address each model was sold at before /lupas/ existed. Kept because it",
   "# is in the sitemap Google already fetched and in links people have shared.")
 foreach ($p in $products) { $r += "/produto.html  id=$($p.id)  /lupas/$($p.slug)  301!" }
+
+# Before the catch-all below, or /lupas/<retirado> would be rewritten to
+# produto.html and answer 200 with "produto nao encontrado".
+if ($RETIRED.Count) {
+  $r += "", "# Pulled from sale, expected back: 302 and not 301, so the address is not",
+        "# written off. Each language goes to its own catalogue."
+  foreach ($x in $RETIRED) {
+    $r += "/produto.html  id=$($x.id)  /  302!"
+    $r += "/lupas/$($x.slug)  /  302!"
+    foreach ($lang in $LANGS | Where-Object { $_ -ne "pt" }) {
+      $r += "/$lang/lupas/$($x.slug)  /$lang/  302!"
+    }
+  }
+}
 
 # The model rules come before the catch-all, or /en/lupas/x would be rewritten
 # to /lupas/x, which is not a file on disk and would 404.

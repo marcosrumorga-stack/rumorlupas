@@ -408,7 +408,10 @@ const PRODUCTS = [
       },
     ],
   },
-  { id: "splice-53", name: "Splice", price: 53, oldPrice: 75.71 },
+  // Out of the shop for now — it never got photos or stock. Uncommenting gives
+  // it back its place in the catalogue, the sitemap and the checkout; then drop
+  // "splice-53" from RETIRED in tools/sitemap.ps1 and run the script.
+  // { id: "splice-53", name: "Splice", price: 53, oldPrice: 75.71 },
   {
     id: "monster-dog-47",
     name: "Monster Dog",

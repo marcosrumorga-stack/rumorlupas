@@ -71,7 +71,11 @@ const PRODUCTS = {
     "preta-transparente-lente-espelhada": "Preta transparente · lente espelhada",
     "branca-transparente-lente-laranja":  "Branca transparente · lente laranja",
   } },
-  "splice-53":       { name: "Oakley Splice",         price: 53 },
+  // Out of the shop for now, so it has to leave this table too, not just
+  // products.js: stockFor() returns Infinity for an id the catalogue no longer
+  // has, so a model left here alone would sell without limit. Dropping it makes
+  // the line unknown and the cart skips it. Bring both back together.
+  // "splice-53":       { name: "Oakley Splice",         price: 53 },
   "monster-dog-47":  { name: "Oakley Monster Dog",    price: 49, colors: {
     "preta-lente-preta": "Preta · lente preta",
   } },
