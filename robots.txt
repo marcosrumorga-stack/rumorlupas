@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# The thank-you page is per-order and carries a checkout reference, so it is
+# kept out of search. It also says noindex in its own markup.
+Disallow: /obrigado.html
+
+Sitemap: https://rumorlupas.com/sitemap.xml

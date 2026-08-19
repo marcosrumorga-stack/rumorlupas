@@ -22,6 +22,71 @@ if (!product) {
   document.getElementById("pageTitle").textContent = `${product.name} — RumorLupas`;
   let currentColor = defaultColorId(product);
 
+  // Google runs the page's script before indexing it, so the model's own name,
+  // price and stock can be filled in here. Social previews still cannot — those
+  // crawlers do not run scripts, which is why the og: tags stay generic.
+  function absolute(path) {
+    return new URL(path, location.href).href;
+  }
+
+  function renderSeo() {
+    const canonical = `${location.origin}/produto.html?id=${product.id}`;
+    document.querySelector('link[rel="canonical"]').href = canonical;
+    document.querySelector('meta[name="description"]').content =
+      `${product.name} — ${formatPrice(product.price)}. ${productHistory(product)}`.slice(0, 300);
+
+    const anyLeft = hasColors(product)
+      ? product.colors.some((c) => !isSoldOut(product, c.id))
+      : !isSoldOut(product, null);
+
+    const data = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: `Oakley ${product.name}`,
+      sku: product.id,
+      image: productImages(product, currentColor).map(absolute),
+      description: productHistory(product),
+      brand: { "@type": "Brand", name: "Oakley" },
+      offers: {
+        "@type": "Offer",
+        url: canonical,
+        priceCurrency: "EUR",
+        price: product.price.toFixed(2),
+        itemCondition: "https://schema.org/NewCondition",
+        availability: anyLeft
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+        seller: { "@type": "Organization", name: "RumorLupas" },
+        shippingDetails: {
+          "@type": "OfferShippingDetails",
+          shippingRate: { "@type": "MonetaryAmount", value: "4.90", currency: "EUR" },
+          shippingDestination: { "@type": "DefinedRegion", addressCountry: "PT" },
+          deliveryTime: {
+            "@type": "ShippingDeliveryTime",
+            handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 1, unitCode: "DAY" },
+            transitTime: { "@type": "QuantitativeValue", minValue: 2, maxValue: 5, unitCode: "DAY" },
+          },
+        },
+        hasMerchantReturnPolicy: {
+          "@type": "MerchantReturnPolicy",
+          applicableCountry: "PT",
+          returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+          merchantReturnDays: 14,
+          returnMethod: "https://schema.org/ReturnByMail",
+        },
+      },
+    };
+
+    let tag = document.getElementById("productSchema");
+    if (!tag) {
+      tag = document.createElement("script");
+      tag.type = "application/ld+json";
+      tag.id = "productSchema";
+      document.head.appendChild(tag);
+    }
+    tag.textContent = JSON.stringify(data);
+  }
+
   document.getElementById("productName").textContent = product.name;
   const priceEl = document.getElementById("productPrice");
   const historyEl = document.getElementById("productHistory");
@@ -138,6 +203,7 @@ if (!product) {
   renderGallery();
   renderHistory();
   renderStock();
+  renderSeo();
 
   addBtn.addEventListener("click", () => {
     if (isSoldOut(product, currentColor)) return;
@@ -151,5 +217,6 @@ if (!product) {
     renderGallery();
     renderStock();
     renderColors();
+    renderSeo();
   });
 }
