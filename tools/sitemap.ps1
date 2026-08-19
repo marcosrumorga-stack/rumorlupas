@@ -104,9 +104,11 @@ $r += "/lupas/*  /produto.html  200"
 
 $r += "", "# The translated addresses are the same files, read in another language:",
       "# i18n.js takes the language from the prefix that is still in the address bar.",
-      "# The bare prefix is a real address people type, and /en/* would not match it."
+      "# Netlify ignores the trailing slash when it matches, so the first rule",
+      "# answers both /en and /en/. Do not add a /en -> /en/ redirect: it matches",
+      "# /en/ as well and the address redirects to itself, forever."
 foreach ($lang in $LANGS | Where-Object { $_ -ne "pt" }) {
-  $r += "/$lang  /$lang/  301!", "/$lang/  /index.html  200", "/$lang/*  /:splat  200"
+  $r += "/$lang/  /index.html  200", "/$lang/*  /:splat  200"
 }
 [System.IO.File]::WriteAllText((Join-Path $Root "_redirects"),
   ($r -join "`n") + "`n", (New-Object System.Text.UTF8Encoding($false)))

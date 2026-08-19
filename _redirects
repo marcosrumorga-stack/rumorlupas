@@ -23,10 +23,10 @@
 
 # The translated addresses are the same files, read in another language:
 # i18n.js takes the language from the prefix that is still in the address bar.
-# The bare prefix is a real address people type, and /en/* would not match it.
-/en  /en/  301!
+# Netlify ignores the trailing slash when it matches, so the first rule
+# answers both /en and /en/. Do not add a /en -> /en/ redirect: it matches
+# /en/ as well and the address redirects to itself, forever.
 /en/  /index.html  200
 /en/*  /:splat  200
-/es  /es/  301!
 /es/  /index.html  200
 /es/*  /:splat  200
