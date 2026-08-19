@@ -39,7 +39,7 @@
 <main class="legal" lang="pt-PT">
   <a href="index.html" class="back-link" data-i18n="legal.back">← Voltar ao site</a>
   <h1>Política de Privacidade</h1>
-  <p class="updated">Última atualização: 03/08/2026</p>
+  <p class="updated">Última atualização: 19/08/2026</p>
   <p class="legal__notice" data-i18n="legal.notice">Este documento só tem valor legal na versão em português.</p>
 
   <p>A RumorLupas ("nós") respeita a sua privacidade e está empenhada em proteger os seus dados pessoais. Esta política explica que informação recolhemos, para que fins, e quais os seus direitos.</p>
@@ -66,6 +66,7 @@
   <ul>
     <li><strong>Stripe</strong> — processamento de pagamentos</li>
     <li><strong>Netlify</strong> — alojamento do site</li>
+    <li><strong>Cloudflare Web Analytics</strong> — estatísticas de visitas ao site</li>
     <li><strong>CTT</strong> (ou transportadora equivalente) — entrega da encomenda</li>
   </ul>
   <p>Não vendemos os seus dados a terceiros.</p>
@@ -76,10 +77,13 @@
   <h2>6. Os seus direitos</h2>
   <p>Ao abrigo do RGPD, tem direito a aceder, corrigir, apagar ou pedir a portabilidade dos seus dados, e a opor-se ao tratamento. Para exercer estes direitos, contacte-nos em <a href="mailto:rumorlupas@gmail.com">rumorlupas@gmail.com</a>.</p>
 
-  <h2>7. Cookies</h2>
-  <p>O site utiliza armazenamento local do navegador para manter o carrinho de compras. O checkout do Stripe pode utilizar cookies próprios necessários ao processamento seguro do pagamento.</p>
+  <h2>7. Estatísticas de visitas</h2>
+  <p>Usamos o <strong>Cloudflare Web Analytics</strong> para saber quantas pessoas visitam o site e que páginas veem. Esta ferramenta <strong>não utiliza cookies</strong> e não recolhe qualquer identificador que permita reconhecê-lo individualmente ou seguir a sua atividade noutros sites. Os dados são agregados e anónimos: mostram-nos totais, não pessoas.</p>
 
-  <h2>8. Alterações a esta política</h2>
+  <h2>8. Cookies</h2>
+  <p>O site utiliza armazenamento local do navegador para manter o carrinho de compras. O checkout do Stripe pode utilizar cookies próprios necessários ao processamento seguro do pagamento. Não usamos cookies de publicidade nem de seguimento.</p>
+
+  <h2>9. Alterações a esta política</h2>
   <p>Podemos atualizar esta política periodicamente. A data no topo desta página indica a versão mais recente.</p>
 </main>
 
@@ -91,5 +95,8 @@
 
 <script src="i18n.js"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<!-- Cloudflare Web Analytics: cookieless, so no consent banner is needed. Named
+     in the privacy policy under "Estatisticas de visitas". -->
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7babb0dbf8f743deabd085b1b0d2b462"}'></script>
 </body>
 </html>
