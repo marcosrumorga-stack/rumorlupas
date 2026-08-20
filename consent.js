@@ -14,7 +14,10 @@
 // script, no storage. A banner asking permission for a tracker that does not
 // exist is worse than no banner, so the two switch on together.
 
-const PIXEL_ID = ""; // <- Meta pixel ID (about 15 digits) goes here
+// Meta's own snippet ships with a <noscript> tracking image as a fallback.
+// It is deliberately not reproduced here: it would fire on load, before
+// anyone had answered, which is the one thing this file exists to prevent.
+const PIXEL_ID = "2302089550197792";
 
 const CONSENT_KEY = "rumorlupas_consent";
 const CONSENT_VERSION = 1;
