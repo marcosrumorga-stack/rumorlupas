@@ -27,6 +27,12 @@
 /es/lupas/*  /produto.html  200
 /lupas/*  /produto.html  200
 
+# The Meta catalogue feed. Generated per request from products.js rather
+# than kept as a file, so a sale cannot leave a sold pair being advertised
+# until someone remembers to regenerate it. The address is the one already
+# registered in Commerce Manager, so it has to keep working.
+/meta-feed.csv  /.netlify/functions/meta-feed  200
+
 # The translated addresses are the same files, read in another language:
 # i18n.js takes the language from the prefix that is still in the address bar.
 # Netlify ignores the trailing slash when it matches, so the first rule

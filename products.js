@@ -784,7 +784,9 @@ function colorSwatchesHtml(product, selectedId) {
 }
 
 // The checkout function pulls the catalogue from here too, so stock is written
-// in one place rather than kept in step across two files.
+// in one place rather than kept in step across two files. productSlug goes with
+// it so the Meta feed builds the same addresses the site sells at, rather than
+// a second copy of the rule that could drift.
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { PRODUCTS, stockOf, isSoldOut, findColor, productCategory };
+  module.exports = { PRODUCTS, stockOf, isSoldOut, findColor, productCategory, productSlug };
 }

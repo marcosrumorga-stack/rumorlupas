@@ -535,6 +535,9 @@ function localePath(path, lang) {
 }
 
 let currentLang = (() => {
+  // Also loaded by the Meta feed function, where there is no address bar and
+  // Portuguese is the right answer.
+  if (typeof window === "undefined") return DEFAULT_LANG;
   const m = window.location.pathname.match(PREFIXED);
   return m ? m[1] : DEFAULT_LANG;
 })();
@@ -617,6 +620,15 @@ function writeAlternates() {
   }
 }
 
+// Everything below touches the page, so it only runs in a browser. Under Node
+// - the Meta feed function requires this file for its Portuguese strings -
+// the tables above are all that is wanted.
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { I18N, DEFAULT_LANG };
+}
+
+if (typeof document !== "undefined") {
+
 document.querySelectorAll(".lang__btn").forEach((btn) => {
   const flag = FLAGS[btn.dataset.lang];
   if (flag) btn.innerHTML = `${flag}<span class="lang__code">${btn.textContent.trim()}</span>`;
@@ -628,3 +640,5 @@ applyTranslations();
 syncLangButtons();
 localizeLinks();
 writeAlternates();
+
+}
