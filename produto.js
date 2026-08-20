@@ -27,7 +27,19 @@ if (!product) {
 } else {
   productDetail.hidden = false;
 
-  let currentColor = defaultColorId(product);
+  // ?cor= lets a link point at one variant. The Meta catalogue sells each
+  // colour as its own item, so an ad for the blue Juliet has to open on the
+  // blue Juliet - landing on the default colour reads as the wrong product.
+  // An unknown or sold-through colour falls back rather than showing nothing.
+  let currentColor = (function () {
+    const wanted = new URLSearchParams(window.location.search).get("cor");
+    // Checked against the list rather than through findColor, which never
+    // reports a miss - it falls back to the first colour so that old carts
+    // saved without one still resolve. Trusting it here left a mistyped
+    // ?cor= selecting nothing at all.
+    const known = wanted && hasColors(product) && product.colors.some((c) => c.id === wanted);
+    return known ? wanted : defaultColorId(product);
+  })();
 
   // Nobody searches "Juliet". They search "oakley juliet portugal" — so the tab
   // and the search result lead with Oakley, and carry the two things that decide
