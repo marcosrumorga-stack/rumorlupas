@@ -395,9 +395,33 @@ button.swatch { position: relative; }
   .lang__flag { width: 15px; }
   .header__actions { gap: 8px; }
 }
-@media (max-width: 400px) {
+/* 460 and not 400: between those two the switcher still spelled out PT/EN/ES
+   and the header ran 8px past the viewport - a band that covers a lot of real
+   phones held upright. The flags alone say the same thing in half the width. */
+@media (max-width: 460px) {
   .lang__code { display: none; }
   .lang__btn { padding: 5px; }
+}
+/* Below this the logo and the controls stop fitting on one line and the whole
+   page slides sideways - measured at 15px over at a 345px viewport and 55px at
+   305px, which is what made the page scroll horizontally on small phones.
+   Nothing is hidden: the brand and the three controls just get smaller. */
+@media (max-width: 380px) {
+  .container { padding-left: 14px; padding-right: 14px; }
+  .logo { font-size: 0.95rem; }
+  .logo__icon { height: 30px; }
+  .header__actions { gap: 6px; }
+  .cart-toggle svg { width: 19px; height: 19px; }
+  .nav-toggle { font-size: 1.3rem; }
+}
+/* The folding phones' cover screen, around 265px of viewport. Rare, but it is
+   the width at which the header still ran 40px over. */
+@media (max-width: 300px) {
+  .logo { font-size: 0.8rem; }
+  .logo__icon { height: 24px; }
+  .lang__flag { width: 13px; }
+  .lang__btn { padding: 4px; }
+  .header__actions { gap: 4px; }
 }
 .cart-toggle {
   position: relative;
