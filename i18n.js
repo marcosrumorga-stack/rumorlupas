@@ -103,6 +103,17 @@ const I18N = {
     "meta.thanks.title": "Pedido confirmado — RumorLupas",
     "meta.thanks.desc": "Pedido confirmado na RumorLupas.",
 
+    // Recusar tem de ser tão fácil como aceitar - por isso os dois botões são
+    // iguais e o texto não empurra para nenhum lado.
+    "consent.text": "Usamos cookies da Meta para perceber se a nossa publicidade funciona. Só os ativamos se concordar, e o site funciona exatamente igual se recusar.",
+    "consent.more": "Saber mais",
+    "consent.accept": "Aceitar",
+    "consent.reject": "Recusar",
+    "consent.change": "Alterar a minha escolha",
+    "consent.state.accept": "Aceitou os cookies de publicidade.",
+    "consent.state.reject": "Recusou os cookies de publicidade.",
+    "consent.state.none": "Ainda não escolheu.",
+
     // Keyed by the colour's own id, not by product, so two models sharing a
     // colour share the string. A colour with no entry here falls back to the
     // `name` written in products.js, which is always Portuguese.
@@ -251,6 +262,15 @@ const I18N = {
     "meta.thanks.title": "Order confirmed — RumorLupas",
     "meta.thanks.desc": "Order confirmed at RumorLupas.",
 
+    "consent.text": "We use Meta cookies to see whether our advertising works. They are only switched on if you agree, and the site works exactly the same if you decline.",
+    "consent.more": "Find out more",
+    "consent.accept": "Accept",
+    "consent.reject": "Decline",
+    "consent.change": "Change my choice",
+    "consent.state.accept": "You accepted advertising cookies.",
+    "consent.state.reject": "You declined advertising cookies.",
+    "consent.state.none": "You have not chosen yet.",
+
     "color.preto": "Black",
     "color.24k-lente-esmeralda": "24K · emerald lens",
     "color.cinza-fosca-preta": "Matte grey · black lens",
@@ -395,6 +415,15 @@ const I18N = {
     "meta.notfound.title": "Página no encontrada — RumorLupas",
     "meta.thanks.title": "Pedido confirmado — RumorLupas",
     "meta.thanks.desc": "Pedido confirmado en RumorLupas.",
+
+    "consent.text": "Usamos cookies de Meta para saber si nuestra publicidad funciona. Solo se activan si estás de acuerdo, y el sitio funciona exactamente igual si los rechazas.",
+    "consent.more": "Saber más",
+    "consent.accept": "Aceptar",
+    "consent.reject": "Rechazar",
+    "consent.change": "Cambiar mi elección",
+    "consent.state.accept": "Aceptaste las cookies publicitarias.",
+    "consent.state.reject": "Rechazaste las cookies publicitarias.",
+    "consent.state.none": "Todavía no has elegido.",
 
     "color.preto": "Negro",
     "color.24k-lente-esmeralda": "24K · lente esmeralda",

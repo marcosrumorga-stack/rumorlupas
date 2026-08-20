@@ -42,7 +42,7 @@
 <main class="legal" lang="pt-PT">
   <a href="index.html" class="back-link" data-i18n="legal.back">← Voltar ao site</a>
   <h1>Política de Privacidade</h1>
-  <p class="updated">Última atualização: 19/08/2026</p>
+  <p class="updated">Última atualização: 20/08/2026</p>
   <p class="legal__notice" data-i18n="legal.notice">Este documento só tem valor legal na versão em português.</p>
 
   <p>A RumorLupas ("nós") respeita a sua privacidade e está empenhada em proteger os seus dados pessoais. Esta política explica que informação recolhemos, para que fins, e quais os seus direitos.</p>
@@ -70,6 +70,7 @@
     <li><strong>Stripe</strong> — processamento de pagamentos</li>
     <li><strong>Netlify</strong> — alojamento do site</li>
     <li><strong>Cloudflare Web Analytics</strong> — estatísticas de visitas ao site</li>
+    <li><strong>Meta Platforms Ireland Limited</strong> — medição da nossa publicidade no Facebook e no Instagram, <strong>apenas se autorizar</strong> (ver secção 8)</li>
     <li><strong>CTT</strong> (ou transportadora equivalente) — entrega da encomenda</li>
   </ul>
   <p>Não vendemos os seus dados a terceiros.</p>
@@ -83,10 +84,19 @@
   <h2>7. Estatísticas de visitas</h2>
   <p>Usamos o <strong>Cloudflare Web Analytics</strong> para saber quantas pessoas visitam o site e que páginas veem. Esta ferramenta <strong>não utiliza cookies</strong> e não recolhe qualquer identificador que permita reconhecê-lo individualmente ou seguir a sua atividade noutros sites. Os dados são agregados e anónimos: mostram-nos totais, não pessoas.</p>
 
-  <h2>8. Cookies</h2>
-  <p>O site utiliza armazenamento local do navegador para manter o carrinho de compras. O checkout do Stripe pode utilizar cookies próprios necessários ao processamento seguro do pagamento. Não usamos cookies de publicidade nem de seguimento.</p>
+  <h2>8. Cookies de publicidade (píxel da Meta)</h2>
+  <p>Fazemos publicidade no Facebook e no Instagram. Para saber se essa publicidade dá resultado, o site pode carregar o <strong>píxel da Meta</strong>, uma ferramenta da <strong>Meta Platforms Ireland Limited</strong>.</p>
+  <p>Quando ativo, o píxel regista que visitou o nosso site e que páginas viu, e envia essa informação à Meta. A Meta pode associá-la à sua conta de Facebook ou Instagram, caso tenha uma, e utilizá-la também para os seus próprios fins. Os dados podem ser transferidos para os Estados Unidos, ao abrigo do <em>EU-U.S. Data Privacy Framework</em>.</p>
+  <p><strong>O píxel só é carregado se nos der autorização expressa.</strong> Enquanto não escolher, ou se recusar, nenhum dado é enviado à Meta. A base legal deste tratamento é o seu consentimento (artigo 6.º, n.º 1, alínea a, do RGPD), que pode retirar a qualquer momento sem prejuízo para a utilização do site — todas as funcionalidades, incluindo a compra, funcionam exatamente da mesma forma.</p>
+  <p id="consentControl" hidden>
+    <span id="consentState"></span>
+    <button type="button" class="consent__inline" id="consentChange"></button>
+  </p>
 
-  <h2>9. Alterações a esta política</h2>
+  <h2>9. Outros cookies e armazenamento</h2>
+  <p>O site utiliza armazenamento local do navegador para manter o carrinho de compras e para guardar a resposta que deu sobre os cookies de publicidade. Nenhum dos dois contém identificadores nem sai do seu navegador. O checkout do Stripe pode utilizar cookies próprios necessários ao processamento seguro do pagamento. As estatísticas de visitas (secção 7) não usam cookies.</p>
+
+  <h2>10. Alterações a esta política</h2>
   <p>Podemos atualizar esta política periodicamente. A data no topo desta página indica a versão mais recente.</p>
 </main>
 
@@ -97,6 +107,7 @@
 </footer>
 
 <script src="i18n.js"></script>
+<script src="consent.js"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 <!-- Cloudflare Web Analytics: cookieless, so no consent banner is needed. Named
      in the privacy policy under "Estatisticas de visitas". -->
