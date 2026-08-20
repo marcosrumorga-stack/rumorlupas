@@ -4,8 +4,15 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 // Shipping rules. The threshold is repeated in cart.js so the drawer can show
 // how far the customer still is from it — but this file is what actually
 // charges, so change it here first and keep the two in step.
-const FREE_SHIPPING_FROM = 80;
-const SHIPPING_CENTS = 490;
+// Zones, rates and the free-shipping threshold live in shipping.js, read by
+// the cart drawer too, so the price quoted and the price charged cannot drift.
+const {
+  FREE_SHIPPING_FROM, SHIPPING_COUNTRIES, zoneFor, shippingCentsFor,
+} = require("../../shipping.js");
+
+// Falls back to Portugal when the browser sends nothing - an older cart still
+// open in someone's tab has no country field.
+const DEFAULT_COUNTRY = "PT";
 
 // Stock is written once, in products.js, and read from here so a sale means
 // editing one file. Loaded defensively: if the catalogue can't be reached from
@@ -106,8 +113,11 @@ exports.handler = async (event) => {
   }
 
   let cart;
+  let country;
   try {
-    cart = JSON.parse(event.body).cart;
+    const payload = JSON.parse(event.body);
+    cart = payload.cart;
+    country = payload.country;
   } catch {
     return { statusCode: 400, body: "Invalid request body" };
   }
@@ -160,7 +170,14 @@ exports.handler = async (event) => {
 
   // Worked out from the resolved lines, never from a total sent by the client.
   const subtotal = lines.reduce((sum, { product, qty }) => sum + product.price * qty, 0);
-  const freeShipping = subtotal >= FREE_SHIPPING_FROM;
+
+  // The browser sends which country the customer chose, and the rate is worked
+  // out here from it - the amount is never taken from the request. An unknown
+  // or missing country falls back to Portugal rather than shipping free.
+  const destination = zoneFor(country) ? String(country).toUpperCase() : DEFAULT_COUNTRY;
+  const zone = zoneFor(destination);
+  const shippingCents = shippingCentsFor(destination, subtotal);
+  const freeShipping = shippingCents === 0;
 
   const siteUrl = process.env.URL || "http://localhost:8888";
 
@@ -172,7 +189,13 @@ exports.handler = async (event) => {
       // (Settings -> Payment methods) automatically, including wallets
       // like Apple Pay / Google Pay that aren't explicit type strings.
       line_items,
-      shipping_address_collection: { allowed_countries: ["PT"] },
+      // Every country the shop serves stays selectable, so a customer who
+      // picked the wrong one in the cart is not trapped - but the rate below
+      // belongs to what they chose, so Stripe is told to keep them in the same
+      // zone rather than letting a Portuguese rate pay for a German parcel.
+      shipping_address_collection: {
+        allowed_countries: zone ? zone.countries : SHIPPING_COUNTRIES,
+      },
       // The courier needs a phone number as well as an email to arrange
       // delivery. Stripe makes this field required once it is enabled, and
       // hands it back on the session as customer_details.phone.
@@ -181,11 +204,13 @@ exports.handler = async (event) => {
         {
           shipping_rate_data: {
             type: "fixed_amount",
-            fixed_amount: { amount: freeShipping ? 0 : SHIPPING_CENTS, currency: "eur" },
-            display_name: freeShipping ? "Envio grátis — Portugal" : "Envio CTT — Portugal",
+            fixed_amount: { amount: shippingCents, currency: "eur" },
+            // Portuguese on purpose, like the line items: this text is what
+            // the shop reads when packing, and the function has no language.
+            display_name: freeShipping ? "Envio grátis" : "Envio",
             delivery_estimate: {
-              minimum: { unit: "business_day", value: 2 },
-              maximum: { unit: "business_day", value: 5 },
+              minimum: { unit: "business_day", value: zone.days[0] },
+              maximum: { unit: "business_day", value: zone.days[1] },
             },
           },
         },

@@ -131,13 +131,24 @@
         <span id="cartTotal">0 €</span>
       </div>
       <button class="btn btn--primary cart-drawer__checkout" id="checkoutBtn" data-i18n="cart.checkout">Finalizar compra</button>
-      <p class="cart-drawer__note" data-i18n="cart.note">Pagamento seguro via Stripe · Envio para Portugal (4,90 €)</p>
+      <label class="cart-ship">
+
+        <span data-i18n="cart.country">Enviar para</span>
+
+        <select id="shipCountry"></select>
+
+      </label>
+
+      <!-- Written by renderShipCost() in cart.js: the text depends on the country
+      chosen above, so it cannot be a fixed data-i18n string. -->
+      <p class="cart-drawer__note"></p>
     </div>
   </div>
 </div>
 
 <script src="i18n.js"></script>
 <script src="consent.js"></script>
+<script src="shipping.js"></script>
 <script src="products.js"></script>
 <script src="cart.js"></script>
 <script src="produto.js"></script>

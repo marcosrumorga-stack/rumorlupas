@@ -65,10 +65,52 @@ function removeFromCart(id) {
   renderCart();
 }
 
-// Mirrors FREE_SHIPPING_FROM in netlify/functions/create-checkout-session.js.
-// That file is what charges; this one only tells the customer how close they
-// are. If one changes, change both.
-const FREE_SHIPPING_FROM = 80;
+// FREE_SHIPPING_FROM and the zone rates come from shipping.js, which the
+// checkout function reads too - the price quoted here and the price charged
+// there are now the same number rather than two copies kept in step by hand.
+
+const COUNTRY_KEY = "rumorlupas_country";
+
+function savedCountry() {
+  try {
+    const stored = localStorage.getItem(COUNTRY_KEY);
+    if (stored && zoneFor(stored)) return stored;
+  } catch {
+    /* private browsing: the choice lasts for this page only */
+  }
+  return "PT";
+}
+
+let shipCountry = savedCountry();
+
+// Country names come from the browser in whatever language is being read,
+// rather than from 27 names written out three times in i18n.js.
+function countryName(code, lang) {
+  try {
+    return new Intl.DisplayNames([lang], { type: "region" }).of(code);
+  } catch {
+    return code;
+  }
+}
+
+function renderCountrySelect() {
+  const select = document.getElementById("shipCountry");
+  if (!select) return;
+
+  const names = SHIPPING_COUNTRIES
+    .map((code) => ({ code, name: countryName(code, currentLang) }))
+    .sort((a, b) => a.name.localeCompare(b.name, currentLang));
+
+  select.innerHTML = names
+    .map((c) => `<option value="${c.code}"${c.code === shipCountry ? " selected" : ""}>${c.name}</option>`)
+    .join("");
+
+  select.onchange = () => {
+    shipCountry = select.value;
+    try { localStorage.setItem(COUNTRY_KEY, shipCountry); } catch { /* ignore */ }
+    renderCart();
+  };
+}
 
 function cartTotal() {
   return cartLines().reduce((sum, line) => sum + line.product.price * line.qty, 0);
@@ -113,7 +155,25 @@ function renderCart() {
   }
 
   cartTotalEl.textContent = formatPrice(cartTotal());
+  renderCountrySelect();
   renderShipProgress();
+  renderShipCost();
+}
+
+// What the chosen country actually costs, and how long it takes. Written into
+// the note under the button so the customer sees it before Stripe, not after.
+function renderShipCost() {
+  const note = document.querySelector(".cart-drawer__note");
+  if (!note) return;
+
+  const zone = zoneFor(shipCountry);
+  if (!zone) return;
+
+  const cents = shippingCentsFor(shipCountry, cartTotal());
+  const price = cents === 0 ? t("cart.shipFree") : formatPrice(cents / 100);
+
+  note.textContent = `${t("cart.note")} · ${price} · ${
+    t("cart.shipDays").replace("{a}", zone.days[0]).replace("{b}", zone.days[1])}`;
 }
 
 function renderShipProgress() {
@@ -162,7 +222,7 @@ checkoutBtn.addEventListener("click", async () => {
     const res = await fetch("/.netlify/functions/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ cart }),
+      body: JSON.stringify({ cart, country: shipCountry }),
     });
     if (res.status === 409) {
       const detail = await res.json().catch(() => null);

@@ -100,19 +100,33 @@ if (!product) {
           ? "https://schema.org/InStock"
           : "https://schema.org/OutOfStock",
         seller: { "@type": "Organization", name: "RumorLupas" },
-        shippingDetails: {
+        // One entry per shipping zone, built from shipping.js so the rates
+        // Google shows are the rates the checkout charges.
+        shippingDetails: SHIPPING_ZONES.map((zone) => ({
           "@type": "OfferShippingDetails",
-          shippingRate: { "@type": "MonetaryAmount", value: "4.90", currency: "EUR" },
-          shippingDestination: { "@type": "DefinedRegion", addressCountry: "PT" },
+          shippingRate: {
+            "@type": "MonetaryAmount",
+            value: (zone.cents / 100).toFixed(2),
+            currency: "EUR",
+          },
+          shippingDestination: zone.countries.map((code) => ({
+            "@type": "DefinedRegion",
+            addressCountry: code,
+          })),
           deliveryTime: {
             "@type": "ShippingDeliveryTime",
             handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 1, unitCode: "DAY" },
-            transitTime: { "@type": "QuantitativeValue", minValue: 2, maxValue: 5, unitCode: "DAY" },
+            transitTime: {
+              "@type": "QuantitativeValue",
+              minValue: zone.days[0], maxValue: zone.days[1], unitCode: "DAY",
+            },
           },
-        },
+        })),
         hasMerchantReturnPolicy: {
           "@type": "MerchantReturnPolicy",
-          applicableCountry: "PT",
+          // The 14-day right of withdrawal is EU law, so it holds in every
+          // country the shop now ships to, not just Portugal.
+          applicableCountry: SHIPPING_COUNTRIES,
           returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
           merchantReturnDays: 14,
           returnMethod: "https://schema.org/ReturnByMail",
