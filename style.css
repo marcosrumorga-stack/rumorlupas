@@ -1510,25 +1510,3 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 .review__head strong { color: var(--text); }
 .review__head time { color: var(--text-muted); font-size: 0.82rem; }
 .review__text { color: var(--text-muted); line-height: 1.65; }
-
-/* Trust block. Sits right after the prices, where the doubt forms. Two columns
-   on a wide screen, one on a phone — no icons, because each line earns its
-   place by what it says, not by decoration. */
-.trust__list {
-  list-style: none;
-  padding: 0;
-  margin: 8px auto 0;
-  max-width: 940px;
-  display: grid;
-  gap: 26px 40px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-.trust__list li {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding-left: 16px;
-  border-left: 2px solid var(--accent);
-}
-.trust__list strong { font-size: 1rem; }
-.trust__list span { color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; }
