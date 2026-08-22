@@ -639,6 +639,41 @@ function productUrl(product, lang) {
   return localePath(`/lupas/${productSlug(product)}`, lang);
 }
 
+// ---------------------------------------------------------------------------
+// Reviews.
+//
+// A product carries them as `reviews: [...]`, alongside its colours:
+//
+//   reviews: [
+//     { name: "Ana", rating: 5, date: "2026-08-14",
+//       text: "Chegaram em tres dias e sao mesmo como nas fotos." },
+//   ],
+//
+// **Only ever write a review a customer actually wrote.** Google penalises
+// fabricated review markup, and unlike most SEO shortcuts this one is a lie a
+// customer can catch. A model with no reviews shows no section and emits no
+// rating fields - absent is correct, invented is not.
+//
+// First names only, matching the customer photos: a surname in a public page
+// is personal data nobody agreed to publish. Keep the text in the language the
+// customer wrote it in; a translated review stops being their words.
+// ---------------------------------------------------------------------------
+
+function productReviews(product) {
+  return (product.reviews || []).filter(
+    (r) => r && r.text && r.rating >= 1 && r.rating <= 5);
+}
+
+// Rounded to one decimal, the precision Google shows. Null when there is
+// nothing to average, so callers have to handle "no reviews" explicitly
+// rather than printing a zero.
+function averageRating(product) {
+  const reviews = productReviews(product);
+  if (!reviews.length) return null;
+  const sum = reviews.reduce((total, r) => total + r.rating, 0);
+  return Math.round((sum / reviews.length) * 10) / 10;
+}
+
 function findProductBySlug(slug) {
   return PRODUCTS.find((p) => productSlug(p) === slug);
 }

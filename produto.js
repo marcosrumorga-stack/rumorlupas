@@ -134,6 +134,33 @@ if (!product) {
       },
     };
 
+    // Only when real reviews exist. Search Console asks for these two fields on
+    // every product, but they are a claim about what customers said - a model
+    // nobody has reviewed yet correctly has neither, and inventing them is the
+    // kind of markup Google penalises.
+    const reviews = productReviews(product);
+    if (reviews.length) {
+      data.aggregateRating = {
+        "@type": "AggregateRating",
+        ratingValue: averageRating(product),
+        reviewCount: reviews.length,
+        bestRating: 5,
+        worstRating: 1,
+      };
+      data.review = reviews.map((r) => ({
+        "@type": "Review",
+        author: { "@type": "Person", name: r.name },
+        datePublished: r.date,
+        reviewBody: r.text,
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: r.rating,
+          bestRating: 5,
+          worstRating: 1,
+        },
+      }));
+    }
+
     let tag = document.getElementById("productSchema");
     if (!tag) {
       tag = document.createElement("script");
@@ -150,6 +177,69 @@ if (!product) {
   function renderHistory() {
     priceEl.innerHTML = priceHtml(product);
     historyEl.textContent = productHistory(product);
+  }
+
+  // Reviews are quoted text someone else wrote. Escaped rather than trusted:
+  // a customer typing "<3" or an ampersand should not be able to break the
+  // page, never mind anything worse.
+  function esc(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  // Stars drawn as filled and empty glyphs rather than images, so they carry
+  // into the page's own colour and need no extra request.
+  function starsHtml(rating) {
+    const full = "★".repeat(rating);
+    const empty = "☆".repeat(5 - rating);
+    return `<span class="stars" aria-hidden="true">${full}${empty}</span>`;
+  }
+
+  function renderReviews() {
+    const el = document.getElementById("productReviews");
+    if (!el) return;
+
+    const reviews = productReviews(product);
+    if (!reviews.length) {
+      el.hidden = true;
+      el.innerHTML = "";
+      return;
+    }
+
+    const average = averageRating(product);
+    const newest = reviews.slice().sort((a, b) => String(b.date).localeCompare(String(a.date)));
+
+    el.hidden = false;
+    el.innerHTML = `
+      <h2>${t("pp.reviews")}</h2>
+      <p class="reviews__summary">
+        ${starsHtml(Math.round(average))}
+        <strong>${average.toLocaleString(HTML_LANG[currentLang] || "pt-PT",
+          { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</strong>
+        <span>${t(reviews.length === 1 ? "pp.reviewCountOne" : "pp.reviewCount")
+          .replace("{n}", reviews.length)}</span>
+      </p>
+      ${newest.map((r) => `
+        <article class="review">
+          <p class="review__head">
+            ${starsHtml(r.rating)}
+            <strong>${esc(r.name)}</strong>
+            <time datetime="${esc(r.date)}">${formatReviewDate(r.date)}</time>
+          </p>
+          <p class="review__text">${esc(r.text)}</p>
+        </article>
+      `).join("")}
+    `;
+  }
+
+  // Month and year is enough: a review from "agosto de 2026" reads as recent
+  // without pinning the customer to a day they bought something.
+  function formatReviewDate(iso) {
+    const date = new Date(`${iso}T00:00:00`);
+    if (isNaN(date)) return iso;
+    return date.toLocaleDateString(HTML_LANG[currentLang] || "pt-PT",
+      { month: "long", year: "numeric" });
   }
 
   // The photos sit side by side in a scroll-snapping strip, so swiping is the
@@ -259,6 +349,7 @@ if (!product) {
   renderColors();
   renderGallery();
   renderHistory();
+  renderReviews();
   renderStock();
   renderSeo();
 

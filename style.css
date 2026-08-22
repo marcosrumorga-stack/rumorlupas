@@ -1474,3 +1474,39 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   cursor: pointer;
 }
 .cart-ship select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Customer reviews. Hidden entirely when a model has none — Google requires
+   review markup to match something the visitor can actually read, so the
+   section and the schema appear and disappear together. */
+.reviews { margin-top: 38px; }
+.reviews h2 { font-size: 1.2rem; margin-bottom: 14px; }
+.reviews__summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+.reviews__summary strong { color: var(--text); font-size: 1.05rem; }
+.stars {
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  font-size: 0.98rem;
+  white-space: nowrap;
+}
+.review {
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+}
+.review__head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+  font-size: 0.88rem;
+}
+.review__head strong { color: var(--text); }
+.review__head time { color: var(--text-muted); font-size: 0.82rem; }
+.review__text { color: var(--text-muted); line-height: 1.65; }
