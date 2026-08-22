@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="meta.revThanks.title">Avaliação enviada — RumorLupas</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="images/boar-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .revthanks { max-width: 560px; margin: 0 auto; padding: 130px 24px 110px; text-align: center; }
+  .revthanks h1 { font-size: clamp(1.7rem, 3vw, 2.2rem); margin-bottom: 14px; }
+  .revthanks p { color: var(--text-muted); line-height: 1.7; margin-bottom: 28px; }
+</style>
+</head>
+<body>
+
+<p class="announce" data-i18n="ship.bar">Envio grátis em pedidos acima de 80 €</p>
+<header class="header">
+  <div class="container header__inner">
+    <a href="index.html" class="logo"><img src="images/boar-icon.png" alt="" class="logo__icon">RUMOR<span>LUPAS</span></a>
+    <div class="lang" role="group" data-i18n-aria="aria.lang" aria-label="Idioma">
+      <button type="button" class="lang__btn" data-lang="pt">PT</button>
+      <button type="button" class="lang__btn" data-lang="en">EN</button>
+      <button type="button" class="lang__btn" data-lang="es">ES</button>
+    </div>
+  </div>
+</header>
+
+<main class="revthanks">
+  <h1 data-i18n="revThanks.title">Obrigado!</h1>
+  <p data-i18n="revThanks.text">A sua avaliação chegou. Vamos lê-la e, se a publicarmos, aparece na página do modelo com o seu primeiro nome.</p>
+  <a href="index.html" class="btn btn--primary" data-i18n="thanks.back">Voltar ao catálogo</a>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <p>&copy; <span id="year"></span> RumorLupas. <span data-i18n="footer.rights">Todos os direitos reservados.</span></p>
+  </div>
+</footer>
+
+<script src="i18n.js"></script>
+<script src="consent.js"></script>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7babb0dbf8f743deabd085b1b0d2b462"}'></script>
+</body>
+</html>
