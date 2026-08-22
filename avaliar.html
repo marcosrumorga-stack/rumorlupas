@@ -76,7 +76,11 @@
        is emailed, rather than being published straight to the page. Reviews
        are quoted words from real customers, so a person reads each one before
        it goes up — an open form on the internet publishes spam otherwise. -->
-  <form name="avaliacao" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/obrigado-avaliacao.html">
+  <!-- Both `netlify` and `data-netlify` are accepted; carrying the two costs
+       nothing and the panel's own example uses the bare one. Detection also
+       has to be switched on in the project configuration, and it runs at
+       deploy time - turning it on does nothing until the next deploy. -->
+  <form name="avaliacao" method="POST" netlify data-netlify="true" data-netlify-honeypot="bot-field" action="/obrigado-avaliacao.html">
     <input type="hidden" name="form-name" value="avaliacao">
     <p class="hp"><label>Não preencher: <input name="bot-field"></label></p>
 
