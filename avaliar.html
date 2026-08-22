@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title data-i18n="meta.review.title">Deixar uma avaliação — RumorLupas</title>
-<meta name="description" data-i18n-content="meta.review.desc" content="Conte como foram as suas lupas RumorLupas.">
+<meta name="description" data-i18n-content="meta.review.desc" content="Conte como foram suas lupas RumorLupas.">
 <!-- Not for search: this address is sent to customers who already bought.
      Indexing it would invite strangers to review what they never received. -->
 <meta name="robots" content="noindex">
@@ -69,8 +69,8 @@
 
 <main class="review-form">
   <a href="index.html" class="back-link" data-i18n="legal.back">← Voltar ao site</a>
-  <h1 data-i18n="rev.title">Como foram as suas lupas?</h1>
-  <p class="review-form__intro" data-i18n="rev.intro">Duas linhas chegam. O que escrever aqui pode aparecer na página do modelo, para ajudar quem está a decidir — e é lido por uma pessoa antes de ser publicado.</p>
+  <h1 data-i18n="rev.title">Como foram suas lupas?</h1>
+  <p class="review-form__intro" data-i18n="rev.intro">Duas linhas já bastam. O que você escrever aqui pode aparecer na página do modelo, pra ajudar quem está decidindo — e é lido por uma pessoa antes de ir pro site.</p>
 
   <!-- Handled by Netlify: the submission lands in the site's Forms panel and
        is emailed, rather than being published straight to the page. Reviews
@@ -87,18 +87,18 @@
     <div class="field">
       <label for="revName" data-i18n="rev.name">Primeiro nome</label>
       <input type="text" id="revName" name="nome" required maxlength="40" autocomplete="given-name">
-      <small data-i18n="rev.nameNote">Só o primeiro nome. Não publicamos apelidos.</small>
+      <small data-i18n="rev.nameNote">Só o primeiro nome. Não publicamos sobrenomes.</small>
     </div>
 
     <div class="field">
-      <label for="revModel" data-i18n="rev.model">Que modelo comprou?</label>
+      <label for="revModel" data-i18n="rev.model">Qual modelo você comprou?</label>
       <select id="revModel" name="modelo" required>
         <option value="" data-i18n="rev.modelPick">Escolha o modelo</option>
       </select>
     </div>
 
     <div class="field">
-      <label data-i18n="rev.rating">Que nota dá?</label>
+      <label data-i18n="rev.rating">Que nota você dá?</label>
       <div class="rate">
         <input type="radio" id="r5" name="estrelas" value="5" required><label for="r5" title="5">★</label>
         <input type="radio" id="r4" name="estrelas" value="4"><label for="r4" title="4">★</label>
@@ -109,13 +109,13 @@
     </div>
 
     <div class="field">
-      <label for="revText" data-i18n="rev.text">A sua avaliação</label>
+      <label for="revText" data-i18n="rev.text">Sua avaliação</label>
       <textarea id="revText" name="texto" required maxlength="600"></textarea>
     </div>
 
     <label class="consent-line">
       <input type="checkbox" name="autorizacao" required>
-      <span data-i18n="rev.consent">Autorizo a RumorLupas a publicar o meu primeiro nome e o texto desta avaliação no site.</span>
+      <span data-i18n="rev.consent">Autorizo a RumorLupas a publicar meu primeiro nome e o texto desta avaliação no site.</span>
     </label>
 
     <button type="submit" class="btn btn--primary" data-i18n="rev.send">Enviar avaliação</button>
