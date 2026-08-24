@@ -326,7 +326,8 @@ if (!product) {
 
     // Sits above the button, where it is read on the way to clicking it.
     const last = !out && isLastOne(product, currentColor);
-    stockNote.hidden = !last;
+    // Left in the flow rather than hidden: the CSS reserves its line, so the
+    // buy button below does not move when this appears.
     stockNote.textContent = last ? t("product.lastOneNote") : "";
   }
 

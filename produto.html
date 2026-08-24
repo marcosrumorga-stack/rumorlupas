@@ -25,9 +25,7 @@
 <meta property="og:image:alt" content="RumorLupas — óculos de sol premium">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="images/boar-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/bungee-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -75,7 +73,7 @@
         <h1 id="productName"></h1>
         <div id="productColors"></div>
         <p class="product-detail__price" id="productPrice"></p>
-        <p class="stock-note" id="stockNote" hidden></p>
+        <p class="stock-note" id="stockNote"></p>
         <button class="btn btn--primary" id="addToCartBtn" data-i18n="product.add">Adicionar ao carrinho</button>
         <ul class="assurances">
           <li>

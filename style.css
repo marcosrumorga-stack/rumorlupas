@@ -1,3 +1,27 @@
+/* Bungee, served from this site rather than fonts.googleapis.com. It used to
+   come from Google with font-display: swap, which meant headings drew in a
+   fallback and then jumped when the real face arrived - Bungee is a heavy
+   display face and the two occupy very different widths. That jump was a
+   large part of the layout shift Cloudflare was reporting on real visits.
+   Same origin means no second DNS and TLS handshake, and the preload in each
+   page head starts the download with the stylesheet instead of after it.
+   Bungee is under the SIL Open Font License, which permits this. */
+@font-face {
+  font-family: "Bungee";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/bungee-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Bungee";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/bungee-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 :root {
   --bg: #faf8f6;
   --bg-alt: #f2ece9;
@@ -118,11 +142,17 @@ body {
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
+/* The line sits above the buy button and only appears for a colour down to its
+   last unit — which it used to do by unhiding after the script ran, pushing the
+   button down the page at the exact moment someone was reaching for it. The
+   space is now always reserved, so nothing moves whether the note is there or
+   not. It costs one empty line on the colours that have stock. */
 .stock-note {
   display: flex;
   align-items: center;
   gap: 7px;
   margin: 0 0 12px;
+  min-height: 1.35rem;
   color: var(--accent);
   font-size: 0.88rem;
   font-weight: 600;
@@ -135,6 +165,8 @@ body {
   background: var(--accent);
   flex: none;
 }
+/* No dot while the line is empty. */
+.stock-note:empty::before { display: none; }
 .product-card__btn:disabled {
   cursor: not-allowed;
   opacity: 0.45;
@@ -840,6 +872,10 @@ button.swatch { position: relative; }
 .shades {
   position: absolute;
   width: 130px;
+  /* 130 wide at the viewBox's 100:40 ratio. Stated rather than derived, so the
+     browser reserves the box before the SVG is parsed instead of resizing it
+     afterwards — this was the largest single layout shift on the home page. */
+  height: 52px;
   fill: none;
   stroke: var(--text);
   stroke-width: 2.5;
