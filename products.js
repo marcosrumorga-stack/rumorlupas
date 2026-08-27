@@ -70,7 +70,7 @@ const PRODUCTS = [
         name: "Preta BRAIN DEAD · lente azul",
         hex: "#1b1a2e",
         swatch: "linear-gradient(135deg, #1b1a2e 50%, #2b2bc8 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/eye-jacket/preta-brain-dead-lente-azul/1.jpeg",
           "images/products/eye-jacket/preta-brain-dead-lente-azul/2.jpeg",
