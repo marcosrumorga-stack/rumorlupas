@@ -444,7 +444,7 @@ const PRODUCTS = [
         id: "preta-lente-preta",
         name: "Preta · lente preta",
         hex: "#15130f",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/dartboard-50/preta-lente-preta/1.jpeg",
           "images/products/dartboard-50/preta-lente-preta/2.jpeg",
