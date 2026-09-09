@@ -24,6 +24,25 @@ const productNotFound = document.getElementById("productNotFound");
 
 if (!product) {
   productNotFound.hidden = false;
+
+  // /lupas/* is rewritten to this page for any slug at all, so a made-up
+  // address answers 200 with "produto não encontrado" — a soft 404, which
+  // Google may index. It cannot answer a real 404 from a static rewrite, so
+  // it says noindex instead, and drops the canonical rather than pointing
+  // every wrong address at /produto.html.
+  const noindex = document.createElement("meta");
+  noindex.name = "robots";
+  noindex.content = "noindex";
+  document.head.appendChild(noindex);
+
+  // i18n.js runs first and writes both the canonical and the hreflang set, so
+  // they have to be taken back out here — a noindex page should not be
+  // advertising translated versions of itself.
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.remove();
+  document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
+
+  document.title = t("pp.notFound");
 } else {
   productDetail.hidden = false;
 
