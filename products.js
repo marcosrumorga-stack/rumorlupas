@@ -20,7 +20,7 @@ const PRODUCTS = [
         id: "preto",
         name: "Preto",
         hex: "#15130f",
-        stock: 3,
+        stock: 1,
         images: [
           "images/products/eye-jacket-45/preto/1.jpeg",
           "images/products/eye-jacket-45/preto/2.jpeg",
@@ -46,7 +46,7 @@ const PRODUCTS = [
         name: "Bege PIET · lente preta",
         hex: "#d9c3a5",
         swatch: "linear-gradient(135deg, #d9c3a5 50%, #1a1a1c 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/eye-jacket-45/bege-piet-lente-preta/1.jpeg",
           "images/products/eye-jacket-45/bege-piet-lente-preta/2.jpeg",
@@ -115,7 +115,7 @@ const PRODUCTS = [
         name: "Prata · lente preta",
         hex: "#b8b2a6",
         swatch: "linear-gradient(135deg, #b8b2a6 50%, #1a1a1c 50%)",
-        stock: 4,
+        stock: 1,
         images: [
           "images/products/juliet-45/prata-lente-preta/1.jpeg",
           "images/products/juliet-45/prata-lente-preta/2.jpeg",
@@ -128,7 +128,7 @@ const PRODUCTS = [
         name: "Prata · lente espelhada",
         hex: "#b8b2a6",
         swatch: "linear-gradient(135deg, #b8b2a6 50%, #cdd2d6 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/juliet-45/prata-lente-espelhada/1.jpeg",
           "images/products/juliet-45/prata-lente-espelhada/2.jpeg",
@@ -167,7 +167,7 @@ const PRODUCTS = [
         name: "Cinza escura · lente espelhada",
         hex: "#4a4744",
         swatch: "linear-gradient(135deg, #4a4744 50%, #cdd2d6 50%)",
-        stock: 3,
+        stock: 2,
         images: [
           "images/products/juliet-45/cinza-escura-espelhada/1.jpeg",
           "images/products/juliet-45/cinza-escura-espelhada/2.jpeg",
@@ -227,7 +227,7 @@ const PRODUCTS = [
         name: "24K · lente esmeralda",
         hex: "#c39c50",
         swatch: "linear-gradient(135deg, #c39c50 50%, #58ac83 50%)",
-        stock: 2,
+        stock: 1,
         images: [
           "images/products/xx-45/24k-lente-esmeralda/1.jpeg",
           "images/products/xx-45/24k-lente-esmeralda/2.jpeg",
@@ -251,7 +251,7 @@ const PRODUCTS = [
         name: "Cinza fosca · lente preta",
         hex: "#82807d",
         swatch: "linear-gradient(135deg, #82807d 50%, #1a1a1c 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/plate-55/cinza-fosca-preta/1.jpeg",
           "images/products/plate-55/cinza-fosca-preta/2.jpeg",
@@ -263,7 +263,7 @@ const PRODUCTS = [
         name: "Cinza fosca · lente espelhada",
         hex: "#82807d",
         swatch: "linear-gradient(135deg, #82807d 50%, #9aa0a6 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/plate-55/cinza-fosca-espelhada/1.jpeg",
           "images/products/plate-55/cinza-fosca-espelhada/2.jpeg",
@@ -311,7 +311,7 @@ const PRODUCTS = [
         name: "Cinza escura · lente espelhada",
         hex: "#4a4744",
         swatch: "linear-gradient(135deg, #4a4744 50%, #8d9298 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/plate-55/cinza-escura-espelhada/1.jpeg",
           "images/products/plate-55/cinza-escura-espelhada/2.jpeg",
@@ -323,7 +323,7 @@ const PRODUCTS = [
         name: "Preta · lente roxa",
         hex: "#15130f",
         swatch: "linear-gradient(135deg, #15130f 50%, #6d3f9e 50%)",
-        stock: 3,
+        stock: 2,
         images: [
           "images/products/plate-55/preta-roxa/1.jpeg",
           "images/products/plate-55/preta-roxa/2.jpeg",
@@ -346,7 +346,7 @@ const PRODUCTS = [
         id: "preta-lente-preta",
         name: "Preta · lente preta",
         hex: "#15130f",
-        stock: 2,
+        stock: 1,
         images: [
           "images/products/gascan-50/preta-lente-preta/1.jpeg",
           "images/products/gascan-50/preta-lente-preta/2.jpeg",
@@ -372,7 +372,7 @@ const PRODUCTS = [
         name: "Preta transparente · lente preta",
         hex: "#6f6d70",
         swatch: "linear-gradient(135deg, #6f6d70 50%, #15130f 50%)",
-        stock: 2,
+        stock: 1,
         images: [
           "images/products/gascan-50/preta-transparente-lente-preta/1.jpeg",
           "images/products/gascan-50/preta-transparente-lente-preta/2.jpeg",
@@ -385,7 +385,7 @@ const PRODUCTS = [
         name: "Preta transparente · lente espelhada",
         hex: "#6f6d70",
         swatch: "linear-gradient(135deg, #6f6d70 50%, #b9bec3 50%)",
-        stock: 2,
+        stock: 1,
         images: [
           "images/products/gascan-50/preta-transparente-lente-espelhada/1.jpeg",
           "images/products/gascan-50/preta-transparente-lente-espelhada/2.jpeg",
@@ -422,7 +422,7 @@ const PRODUCTS = [
         id: "preta-lente-preta",
         name: "Preta · lente preta",
         hex: "#15130f",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/monster-dog-47/preta-lente-preta/1.jpeg",
           "images/products/monster-dog-47/preta-lente-preta/2.jpeg",
@@ -510,7 +510,7 @@ const PRODUCTS = [
         name: "Preta · lente espelhada",
         hex: "#15130f",
         swatch: "linear-gradient(135deg, #15130f 50%, #b9bec3 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/flak-2xl-45/preta-lente-espelhada/1.jpeg",
           "images/products/flak-2xl-45/preta-lente-espelhada/2.jpeg",
