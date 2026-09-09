@@ -14,7 +14,7 @@ const {
 // answer was only a preview: the code is checked again here against the cart
 // this function resolved, so a code typed straight into the request, or one
 // that expired while the tab sat open, never reaches Stripe.
-const { typedCode, checkCoupon } = require("../../coupons.js");
+const { typedCode, checkCoupon } = require("./lib/coupons.js");
 
 // Falls back to Portugal when the browser sends nothing - an older cart still
 // open in someone's tab has no country field.

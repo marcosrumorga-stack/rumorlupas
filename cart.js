@@ -116,42 +116,173 @@ function cartTotal() {
   return cartLines().reduce((sum, line) => sum + line.product.price * line.qty, 0);
 }
 
-// The code the customer typed, kept across pages the way the cart itself is.
-// Whether it still applies is never stored - that is worked out again on every
-// render, so a code that expires, or a cart that drops under a minimum, stops
-// counting on its own.
+// Discount codes. The browser cannot read the list - it lives behind the
+// functions so a code stays something you are told rather than something you
+// can look up - so the drawer asks check-coupon.js and keeps the answer.
+//
+// What is kept is the rule, not just the code: ten per cent, no minimum, ends
+// on the 31st. With that in hand the drawer recalculates as pairs go in and out
+// of the cart without asking again, and the discount still moves the instant a
+// quantity button is pressed. It only ever tells someone who already typed the
+// code correctly what that code is worth, which is not a secret from them.
 const COUPON_KEY = "rumorlupas_coupon";
+const COUPON_URL = "/.netlify/functions/check-coupon";
 
-function savedCouponCode() {
+function savedCouponRule() {
   try {
-    return localStorage.getItem(COUPON_KEY) || "";
+    const rule = JSON.parse(localStorage.getItem(COUPON_KEY));
+    // Carts saved before the codes moved to the server hold a bare string.
+    // Nothing to salvage from one, and revalidate() would only ask again.
+    return rule && typeof rule === "object" && rule.code ? rule : null;
   } catch {
-    /* private browsing: the code lasts for this page only */
-    return "";
+    /* private browsing, or a half-written entry */
+    return null;
   }
 }
 
-let couponCode = savedCouponCode();
+let couponRule = savedCouponRule();
+let couponCode = couponRule ? couponRule.code : "";
+// What was last submitted, kept so a refused code stays in the field for the
+// customer to see their own typo instead of an empty box.
+let couponTyped = "";
+// Set while a typed code has been refused, cleared as soon as another is tried.
+let couponError = null;
+let couponPending = false;
 
-function setCouponCode(code) {
-  couponCode = code;
+function storeCouponRule(rule) {
+  couponRule = rule;
+  couponCode = rule ? rule.code : "";
   try {
-    if (code) localStorage.setItem(COUPON_KEY, code);
+    if (rule) localStorage.setItem(COUPON_KEY, JSON.stringify(rule));
     else localStorage.removeItem(COUPON_KEY);
   } catch { /* ignore */ }
 }
 
-// null when nothing is typed, otherwise the same verdict the checkout function
-// will reach - both sides ask coupons.js, so the drawer cannot promise a
-// discount the server then refuses.
-function couponState() {
-  if (!couponCode) return null;
-  return checkCoupon(couponCode, cartTotal());
+// Trim only, and only at the ends. The server compares codes exactly, so
+// tidying anything else here would let the drawer accept what checkout refuses.
+function typedCode(value) {
+  return String(value || "").trim();
 }
 
-// Cents, matching coupons.js. Zero unless a code is typed, valid, and worth
-// money off the products - a free-shipping code is worth nothing here and
-// shows up in renderShipCost() instead.
+// Mirrors discountCentsFor() in netlify/functions/lib/coupons.js, which the
+// browser can no longer read. Kept to a few lines for exactly that reason - the
+// server works the same sum out again from its own table before charging, so
+// this copy only has to be right enough to show a number.
+function ruleDiscountCents(rule, subtotal) {
+  if (!rule || rule.freeShipping) return 0;
+  const subtotalCents = Math.round(subtotal * 100);
+  const raw = rule.type === "percent"
+    ? Math.round(subtotalCents * rule.value / 100)
+    : Math.round(rule.value * 100);
+  return Math.max(0, Math.min(raw, subtotalCents));
+}
+
+// null when nothing is applied. The two conditions rechecked here are the two
+// that can turn true while the tab sits open: the cart dropping under the
+// minimum, and the end date passing.
+function couponState() {
+  if (couponError) return { ok: false, ...couponError };
+  if (!couponRule) return null;
+
+  const subtotal = cartTotal();
+  if (subtotal < (couponRule.minimum || 0)) {
+    return { ok: false, reason: "minimum", minimum: couponRule.minimum };
+  }
+  if (couponRule.until && Date.now() > Date.parse(`${couponRule.until}T23:59:59Z`)) {
+    return { ok: false, reason: "expired" };
+  }
+
+  return {
+    ok: true,
+    code: couponRule.code,
+    discountCents: ruleDiscountCents(couponRule, subtotal),
+    freeShipping: Boolean(couponRule.freeShipping),
+  };
+}
+
+async function applyCoupon(code) {
+  couponError = null;
+  couponTyped = code;
+
+  if (!code) {
+    storeCouponRule(null);
+    renderCart();
+    return;
+  }
+
+  couponPending = true;
+  renderCart();
+
+  try {
+    const res = await fetch(COUPON_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code, subtotal: cartTotal() }),
+    });
+    if (!res.ok) throw new Error("check failed");
+    const verdict = await res.json();
+
+    if (verdict.ok) {
+      storeCouponRule({
+        code: verdict.code,
+        type: verdict.type,
+        value: verdict.value,
+        minimum: verdict.minimum,
+        until: verdict.until,
+        freeShipping: verdict.freeShipping,
+      });
+    } else {
+      storeCouponRule(null);
+      couponError = { reason: verdict.reason, minimum: verdict.minimum };
+    }
+  } catch {
+    storeCouponRule(null);
+    couponError = { reason: "offline" };
+  }
+
+  couponPending = false;
+  renderCart();
+}
+
+// The stored rule paints the drawer straight away; this then checks it is still
+// the rule, so a percentage edited in coupons.js reaches an open tab instead of
+// showing yesterday's number until the customer reaches Stripe. Runs once per
+// page and only for the few visitors carrying a code. A network failure leaves
+// what is stored alone: checkout asks again, and dropping a good code because
+// the wifi blinked would be the worse mistake.
+async function revalidateCoupon() {
+  if (!couponRule) return;
+  try {
+    const res = await fetch(COUPON_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: couponRule.code, subtotal: cartTotal() }),
+    });
+    if (!res.ok) return;
+    const verdict = await res.json();
+
+    if (verdict.ok) {
+      storeCouponRule({
+        code: verdict.code,
+        type: verdict.type,
+        value: verdict.value,
+        minimum: verdict.minimum,
+        until: verdict.until,
+        freeShipping: verdict.freeShipping,
+      });
+    } else {
+      storeCouponRule(null);
+      couponError = { reason: verdict.reason, minimum: verdict.minimum };
+    }
+    renderCart();
+  } catch {
+    /* offline - keep what is stored */
+  }
+}
+
+// Cents. Zero unless a code is applied, still valid, and worth money off the
+// products - a free-shipping code is worth nothing here and shows up in
+// renderShipCost() instead.
 function couponDiscountCents() {
   const state = couponState();
   return state && state.ok ? state.discountCents : 0;
@@ -223,6 +354,10 @@ function syncCouponButton() {
   const apply = document.getElementById("couponApply");
   if (!input || !apply) return;
 
+  if (couponPending) {
+    apply.textContent = t("coupon.checking");
+    return;
+  }
   const state = couponState();
   const unchanged = typedCode(input.value) === couponCode;
   apply.textContent = t(state && state.ok && unchanged ? "coupon.remove" : "coupon.apply");
@@ -241,15 +376,17 @@ function renderCoupon() {
   const state = couponState();
 
   // Not while they are mid-word: rewriting the field under a customer's cursor
-  // is how a typed code turns into a typo.
-  if (document.activeElement !== input) input.value = couponCode;
+  // is how a typed code turns into a typo. A refused code keeps what was typed,
+  // so the customer can see their own mistake instead of an empty box.
+  if (document.activeElement !== input) input.value = couponCode || couponTyped;
+  apply.disabled = couponPending;
   syncCouponButton();
 
   row.hidden = true;
   msg.textContent = "";
   msg.className = "cart-coupon__msg";
 
-  if (!state) return;
+  if (couponPending || !state) return;
 
   if (!state.ok) {
     msg.className = "cart-coupon__msg cart-coupon__msg--bad";
@@ -335,19 +472,20 @@ if (couponForm) {
 
   couponForm.addEventListener("submit", (e) => {
     e.preventDefault();
+    if (couponPending) return;
     const typed = typedCode(input.value);
     // Pressing it while the field still holds the applied code means remove;
     // anything else means apply what is written. An empty field is a removal
     // too, which is what clearing it and pressing Enter looks like.
-    setCouponCode(typed && typed !== couponCode ? typed : "");
+    applyCoupon(typed && typed !== couponCode ? typed : "");
     input.blur();
-    renderCart();
   });
 
   // Typing again after a rejection clears the complaint, so the message under
   // the field always belongs to what is written in it.
   input.addEventListener("input", () => {
     const msg = document.getElementById("couponMsg");
+    couponError = null;
     syncCouponButton();
     if (couponCode || !msg) return;
     msg.textContent = "";
@@ -382,7 +520,8 @@ checkoutBtn.addEventListener("click", async () => {
       if (detail && detail.error === "coupon") {
         checkoutBtn.disabled = false;
         checkoutBtn.textContent = t("cart.checkout");
-        setCouponCode("");
+        storeCouponRule(null);
+        couponError = { reason: detail.reason, minimum: detail.minimum };
         renderCart();
         openCart();
         showNotice(detail.reason === "minimum"
@@ -465,3 +604,6 @@ function handleCheckoutRedirect() {
 
 renderCart();
 handleCheckoutRedirect();
+// After the first paint, never before it: the drawer draws from the stored
+// rule immediately and this only corrects it if the rule has since changed.
+revalidateCoupon();

@@ -76,6 +76,8 @@ const I18N = {
     "coupon.expired": "Esse cupom já expirou.",
     "coupon.minimum": "Esse cupom vale a partir de {x} em produtos.",
     "coupon.exhausted": "Esse cupom já atingiu o limite de usos.",
+    "coupon.checking": "A verificar...",
+    "coupon.offline": "Não conseguimos verificar o cupom. Tente novamente.",
 
     "thanks.eyebrow": "Pedido confirmado",
     "thanks.title": "Obrigado pela compra!",
@@ -267,6 +269,8 @@ const I18N = {
     "coupon.expired": "That code has expired.",
     "coupon.minimum": "That code applies from {x} of products.",
     "coupon.exhausted": "That code has reached its limit.",
+    "coupon.checking": "Checking...",
+    "coupon.offline": "We couldn't check that code. Please try again.",
 
     "thanks.eyebrow": "Order confirmed",
     "thanks.title": "Thank you for your order",
@@ -451,6 +455,8 @@ const I18N = {
     "coupon.expired": "Ese cupón ya caducó.",
     "coupon.minimum": "Ese cupón se aplica a partir de {x} en productos.",
     "coupon.exhausted": "Ese cupón ya alcanzó su límite de usos.",
+    "coupon.checking": "Comprobando...",
+    "coupon.offline": "No pudimos comprobar el cupón. Inténtalo de nuevo.",
 
     "thanks.eyebrow": "Pedido confirmado",
     "thanks.title": "¡Gracias por tu compra!",

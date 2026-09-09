@@ -1,8 +1,18 @@
-// Discount codes, written once and read by both sides: the cart drawer, to show
-// the customer what a code is worth before they pay, and the checkout function,
-// to actually take it off. Same arrangement as shipping.js - what the browser
-// works out is a preview, and the function works it out again from this table
-// rather than trusting any number that arrived in the request.
+// Discount codes. This file lives under netlify/functions on purpose: the
+// publish directory is the repo root, so anything left beside index.html is a
+// URL anyone can open. It started out there, next to shipping.js, and the codes
+// could be read by typing /coupons.js into a browser. A code meant to be handed
+// out one person at a time cannot be published, so the table moved behind the
+// functions and the browser now asks instead of reading.
+//
+// lib/ rather than the functions directory itself: Netlify turns every file at
+// the top of that directory into an endpoint, and this one has no handler.
+//
+// Two functions read it. check-coupon.js answers the cart drawer - given a code
+// and a subtotal it returns the verdict, so a wrong code learns nothing except
+// that it is wrong. create-checkout-session.js reads it again when the payment
+// is made, because a verdict that travelled through a browser is a claim and
+// not proof.
 //
 // A code is one entry below:
 //
@@ -114,6 +124,10 @@ function checkCoupon(code, subtotal) {
     ok: true,
     coupon,
     code: coupon.code,
+    // Reported on success too, not only when it blocks: the drawer is told the
+    // rule once and then recalculates as pairs go in and out of the cart, so it
+    // needs to know the floor it must not fall under.
+    minimum,
     discountCents: discountCentsFor(coupon, subtotal),
     freeShipping: coupon.type === "shipping",
   };
