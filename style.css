@@ -1524,8 +1524,11 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   min-width: 0;
   font: inherit;
   font-size: 0.9rem;
+  /* No text-transform here on purpose. Codes are matched exactly, so drawing a
+     lowercase code in capitals would show the customer a code that looks right
+     and then tell them it does not exist. The field shows what was typed; the
+     keyboard is asked for capitals instead, by autocapitalize on the input. */
   letter-spacing: 0.04em;
-  text-transform: uppercase;
   color: var(--text);
   padding: 10px 12px;
   border: 1px solid var(--border);
@@ -1534,7 +1537,6 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 }
 .cart-coupon__input::placeholder {
   letter-spacing: normal;
-  text-transform: none;
   color: var(--text-muted);
 }
 .cart-coupon__input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

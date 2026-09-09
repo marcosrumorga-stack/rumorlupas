@@ -224,7 +224,7 @@ function syncCouponButton() {
   if (!input || !apply) return;
 
   const state = couponState();
-  const unchanged = normalizeCode(input.value) === couponCode;
+  const unchanged = typedCode(input.value) === couponCode;
   apply.textContent = t(state && state.ok && unchanged ? "coupon.remove" : "coupon.apply");
 }
 
@@ -335,7 +335,7 @@ if (couponForm) {
 
   couponForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    const typed = normalizeCode(input.value);
+    const typed = typedCode(input.value);
     // Pressing it while the field still holds the applied code means remove;
     // anything else means apply what is written. An empty field is a removal
     // too, which is what clearing it and pressing Enter looks like.

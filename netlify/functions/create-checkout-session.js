@@ -14,7 +14,7 @@ const {
 // answer was only a preview: the code is checked again here against the cart
 // this function resolved, so a code typed straight into the request, or one
 // that expired while the tab sat open, never reaches Stripe.
-const { normalizeCode, checkCoupon } = require("../../coupons.js");
+const { typedCode, checkCoupon } = require("../../coupons.js");
 
 // Falls back to Portugal when the browser sends nothing - an older cart still
 // open in someone's tab has no country field.
@@ -125,7 +125,7 @@ function stripeCouponId(coupon) {
   for (let i = 0; i < rule.length; i++) {
     hash = (hash * 31 + rule.charCodeAt(i)) >>> 0;
   }
-  return `rl_${normalizeCode(coupon.code)}_${hash.toString(36)}`;
+  return `rl_${coupon.code}_${hash.toString(36)}`;
 }
 
 // Made on first use rather than by hand in the dashboard, so a code is live the
@@ -139,7 +139,7 @@ async function stripeCouponFor(coupon) {
     /* first order on this rule - fall through and create it */
   }
 
-  const params = { id, name: normalizeCode(coupon.code), duration: "once" };
+  const params = { id, name: coupon.code, duration: "once" };
   if (coupon.type === "percent") {
     params.percent_off = coupon.value;
   } else {
@@ -250,7 +250,7 @@ exports.handler = async (event) => {
   let couponFreeShipping = false;
   let appliedCode = null;
 
-  if (normalizeCode(couponCode)) {
+  if (typedCode(couponCode)) {
     const check = checkCoupon(couponCode, subtotal);
     if (!check.ok) return couponRefusal(check.reason, check.minimum);
 

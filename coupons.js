@@ -6,7 +6,7 @@
 //
 // A code is one entry below:
 //
-//   code         what the customer types. Matched without case or spaces.
+//   code         what the customer types, matched exactly as written here.
 //   type         "percent"  - value is the percentage off
 //                "amount"   - value is euros off
 //                "shipping" - the parcel travels free, whatever the cart holds
@@ -28,27 +28,43 @@
 // free-shipping code an `until` date instead of a usage cap.
 
 const COUPONS = [
-  // Nothing is live yet. Uncomment, edit, and the code works the moment the
-  // site deploys - there is nothing to create in Stripe by hand.
+  // 10 % off the products. The cap is roughly the whole shop - 49 units as of
+  // September 2026 - so a code that escapes onto a voucher site cannot outrun
+  // the stock behind it, and the end date closes the campaign on its own if
+  // nobody remembers to.
+  { code: "FRONTOFF", type: "percent", value: 10, until: "2026-12-31", maxUses: 50,
+    note: "10% nos produtos, campanha de lancamento" },
+
+  // More shapes, for when the next campaign comes round. Uncomment, edit, and
+  // the code works the moment the site deploys - there is nothing to create in
+  // Stripe by hand.
   //
-  // { code: "BEMVINDO10", type: "percent",  value: 10, until: "2026-12-31", maxUses: 100,
-  //   note: "Primeira compra, divulgado no Instagram" },
-  // { code: "PAR5",       type: "amount",   value: 5,  minSubtotal: 90,
+  // { code: "PAR5",   type: "amount",   value: 5, minSubtotal: 90,
   //   note: "5 euros para quem leva dois pares" },
-  // { code: "PORTES",     type: "shipping",            until: "2026-10-31",
+  // { code: "PORTES", type: "shipping",           until: "2026-10-31",
   //   note: "Envio gratis, campanha de outubro" },
 ];
 
-// Typed by a person, so it arrives with stray spaces and in whatever case the
-// phone keyboard felt like. Only the letters and digits are compared.
-function normalizeCode(code) {
-  return String(code || "").trim().toUpperCase().replace(/\s+/g, "");
+// A code has to be written exactly as it is published - FRONTOFF, one word, in
+// capitals - so the comparison below is exact. "frontoff" and "FRONT OFF" are
+// refused like any other wrong code.
+//
+// The one thing forgiven is whitespace at the ends, which is what a paste
+// drags in and what a phone's space bar adds after the last letter. It is
+// invisible on screen, so refusing it would look to the customer like the shop
+// rejecting a code they can see is right.
+//
+// Whoever loosens this again: take the text-transform off .cart-coupon__input
+// at the same time, or the field will show a lowercase code in capitals and
+// then deny it exists.
+function typedCode(code) {
+  return String(code || "").trim();
 }
 
 function findCoupon(code) {
-  const wanted = normalizeCode(code);
+  const wanted = typedCode(code);
   if (!wanted) return null;
-  return COUPONS.find((c) => normalizeCode(c.code) === wanted) || null;
+  return COUPONS.find((c) => c.code === wanted) || null;
 }
 
 // A fixed-amount code has a floor of its own: Stripe refuses a discount larger
@@ -97,12 +113,12 @@ function checkCoupon(code, subtotal) {
   return {
     ok: true,
     coupon,
-    code: normalizeCode(coupon.code),
+    code: coupon.code,
     discountCents: discountCentsFor(coupon, subtotal),
     freeShipping: coupon.type === "shipping",
   };
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { COUPONS, normalizeCode, findCoupon, checkCoupon, discountCentsFor };
+  module.exports = { COUPONS, typedCode, findCoupon, checkCoupon, discountCentsFor };
 }
