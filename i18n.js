@@ -1,6 +1,7 @@
 // Every translatable string on the site lives here, so adding a language means
 // editing this one file. Markup carries data-i18n="<key>" (text), data-i18n-html
-// (when the string contains inline tags) or data-i18n-aria (aria-label).
+// (when the string contains inline tags), data-i18n-aria (aria-label) or
+// data-i18n-placeholder (a form field's placeholder).
 // Scripts that build markup at runtime call t("<key>") instead.
 
 const I18N = {
@@ -65,6 +66,16 @@ const I18N = {
     "cart.canceled": "Pagamento cancelado. Seu carrinho continua salvo.",
     "stock.adjusted": "Só restam {n} unidades de {name}. Ajustamos seu carrinho.",
     "stock.soldOut": "{name} esgotou e saiu do seu carrinho.",
+    "coupon.placeholder": "Cupom de desconto",
+    "coupon.apply": "Aplicar",
+    "coupon.remove": "Remover",
+    "coupon.discount": "Desconto",
+    "coupon.ok": "Cupom {code} aplicado.",
+    "coupon.okShip": "Cupom {code} aplicado: envio grátis.",
+    "coupon.unknown": "Esse cupom não existe. Confira as letras.",
+    "coupon.expired": "Esse cupom já expirou.",
+    "coupon.minimum": "Esse cupom vale a partir de {x} em produtos.",
+    "coupon.exhausted": "Esse cupom já atingiu o limite de usos.",
 
     "thanks.eyebrow": "Pedido confirmado",
     "thanks.title": "Obrigado pela compra!",
@@ -246,6 +257,16 @@ const I18N = {
     "cart.canceled": "Payment canceled. Your cart has been kept.",
     "stock.adjusted": "Only {n} left of {name}. We've adjusted your cart.",
     "stock.soldOut": "{name} sold out and has left your cart.",
+    "coupon.placeholder": "Discount code",
+    "coupon.apply": "Apply",
+    "coupon.remove": "Remove",
+    "coupon.discount": "Discount",
+    "coupon.ok": "Code {code} applied.",
+    "coupon.okShip": "Code {code} applied: free shipping.",
+    "coupon.unknown": "That code doesn't exist. Check the spelling.",
+    "coupon.expired": "That code has expired.",
+    "coupon.minimum": "That code applies from {x} of products.",
+    "coupon.exhausted": "That code has reached its limit.",
 
     "thanks.eyebrow": "Order confirmed",
     "thanks.title": "Thank you for your order",
@@ -420,6 +441,16 @@ const I18N = {
     "cart.canceled": "Pago cancelado. Tu carrito sigue guardado.",
     "stock.adjusted": "Solo quedan {n} unidades de {name}. Ajustamos tu carrito.",
     "stock.soldOut": "{name} se agotó y salió de tu carrito.",
+    "coupon.placeholder": "Cupón de descuento",
+    "coupon.apply": "Aplicar",
+    "coupon.remove": "Quitar",
+    "coupon.discount": "Descuento",
+    "coupon.ok": "Cupón {code} aplicado.",
+    "coupon.okShip": "Cupón {code} aplicado: envío gratis.",
+    "coupon.unknown": "Ese cupón no existe. Revisa las letras.",
+    "coupon.expired": "Ese cupón ya caducó.",
+    "coupon.minimum": "Ese cupón se aplica a partir de {x} en productos.",
+    "coupon.exhausted": "Ese cupón ya alcanzó su límite de usos.",
 
     "thanks.eyebrow": "Pedido confirmado",
     "thanks.title": "¡Gracias por tu compra!",
@@ -619,6 +650,9 @@ function applyTranslations(root) {
   });
   scope.querySelectorAll("[data-i18n-aria]").forEach((el) => {
     el.setAttribute("aria-label", t(el.dataset.i18nAria));
+  });
+  scope.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    el.setAttribute("placeholder", t(el.dataset.i18nPlaceholder));
   });
   // <meta content>. The <title> needs nothing special: it carries data-i18n and
   // setting its text is what sets document.title.

@@ -128,6 +128,21 @@
     <div class="cart-drawer__items" id="cartItems"></div>
     <div class="cart-drawer__footer">
       <div class="ship-progress" id="shipProgress" hidden></div>
+
+      <!-- A form, so Enter on a phone keyboard applies the code. Filled and
+      judged by renderCoupon() in cart.js against the table in coupons.js. -->
+      <form class="cart-coupon" id="couponForm">
+        <input class="cart-coupon__input" id="couponInput" type="text"
+               autocomplete="off" autocapitalize="characters" spellcheck="false"
+               data-i18n-placeholder="coupon.placeholder" placeholder="Cupom de desconto">
+        <button class="cart-coupon__apply" id="couponApply" type="submit" data-i18n="coupon.apply">Aplicar</button>
+      </form>
+      <p class="cart-coupon__msg" id="couponMsg" role="status"></p>
+
+      <div class="cart-drawer__discount" id="cartDiscount" hidden>
+        <span class="cart-drawer__discount-label"></span>
+        <span class="cart-drawer__discount-value"></span>
+      </div>
       <div class="cart-drawer__total">
         <span data-i18n="cart.total">Total</span>
         <span id="cartTotal">0 €</span>
@@ -151,6 +166,7 @@
 <script src="i18n.js"></script>
 <script src="consent.js"></script>
 <script src="shipping.js"></script>
+<script src="coupons.js"></script>
 <script src="products.js"></script>
 <script src="cart.js"></script>
 <script src="produto.js"></script>

@@ -75,9 +75,11 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 // Reaching this page means Stripe took the payment, so the cart has served its
 // purpose. Cleared here rather than on the way out, so an abandoned checkout
-// still finds the basket intact.
+// still finds the basket intact. The coupon goes with it: a code that has been
+// spent should not sit waiting in the next order.
 try {
   localStorage.removeItem("rumorlupas_cart");
+  localStorage.removeItem("rumorlupas_coupon");
 } catch {
   // Private mode — nothing to clear
 }

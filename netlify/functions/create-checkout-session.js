@@ -10,6 +10,12 @@ const {
   FREE_SHIPPING_FROM, SHIPPING_COUNTRIES, zoneFor, shippingCentsFor,
 } = require("../../shipping.js");
 
+// Discount codes, from the same table the cart drawer read. The browser's
+// answer was only a preview: the code is checked again here against the cart
+// this function resolved, so a code typed straight into the request, or one
+// that expired while the tab sat open, never reaches Stripe.
+const { normalizeCode, checkCoupon } = require("../../coupons.js");
+
 // Falls back to Portugal when the browser sends nothing - an older cart still
 // open in someone's tab has no country field.
 const DEFAULT_COUNTRY = "PT";
@@ -107,6 +113,62 @@ const PRODUCTS = {
   } },
 };
 
+// Stripe wants a coupon object of its own, and the rule lives in coupons.js -
+// so the object is named after the rule. Change the percentage, the cap or the
+// kind and the name changes with it, which means an edit to coupons.js can
+// never be paid out at yesterday's rate. The flip side, worth knowing before
+// raising a cap on a live code: the redemption counter belongs to the object,
+// so a new name starts counting from zero again.
+function stripeCouponId(coupon) {
+  const rule = `${coupon.type}|${coupon.value}|${coupon.maxUses || 0}`;
+  let hash = 0;
+  for (let i = 0; i < rule.length; i++) {
+    hash = (hash * 31 + rule.charCodeAt(i)) >>> 0;
+  }
+  return `rl_${normalizeCode(coupon.code)}_${hash.toString(36)}`;
+}
+
+// Made on first use rather than by hand in the dashboard, so a code is live the
+// moment coupons.js deploys and there is no second place to keep in step.
+async function stripeCouponFor(coupon) {
+  const id = stripeCouponId(coupon);
+
+  try {
+    return (await stripe.coupons.retrieve(id)).id;
+  } catch {
+    /* first order on this rule - fall through and create it */
+  }
+
+  const params = { id, name: normalizeCode(coupon.code), duration: "once" };
+  if (coupon.type === "percent") {
+    params.percent_off = coupon.value;
+  } else {
+    // currency belongs to amount_off only; sending it alongside percent_off is
+    // an error rather than something Stripe ignores.
+    params.amount_off = Math.round(coupon.value * 100);
+    params.currency = "eur";
+  }
+  if (coupon.maxUses) params.max_redemptions = coupon.maxUses;
+
+  try {
+    return (await stripe.coupons.create(params)).id;
+  } catch (err) {
+    // Two customers checking out in the same second both find it missing and
+    // both try to create it. The loser reads the winner's copy instead of
+    // failing an order over a race.
+    if (err && err.code === "resource_already_exists") return id;
+    throw err;
+  }
+}
+
+function couponRefusal(reason, minimum) {
+  return {
+    statusCode: 409,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ error: "coupon", reason, minimum: minimum || 0 }),
+  };
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
@@ -114,10 +176,12 @@ exports.handler = async (event) => {
 
   let cart;
   let country;
+  let couponCode;
   try {
     const payload = JSON.parse(event.body);
     cart = payload.cart;
     country = payload.country;
+    couponCode = payload.coupon;
   } catch {
     return { statusCode: 400, body: "Invalid request body" };
   }
@@ -176,7 +240,36 @@ exports.handler = async (event) => {
   // or missing country falls back to Portugal rather than shipping free.
   const destination = zoneFor(country) ? String(country).toUpperCase() : DEFAULT_COUNTRY;
   const zone = zoneFor(destination);
-  const shippingCents = shippingCentsFor(destination, subtotal);
+
+  // The coupon is read against the subtotal this function worked out from the
+  // catalogue, not against any total the browser sent - so emptying the cart
+  // down to one pair after a 90-euro code was accepted does not get past here.
+  // Refused as JSON, with the reason, so the drawer can say what is wrong
+  // instead of showing a bare failure.
+  let discounts;
+  let couponFreeShipping = false;
+  let appliedCode = null;
+
+  if (normalizeCode(couponCode)) {
+    const check = checkCoupon(couponCode, subtotal);
+    if (!check.ok) return couponRefusal(check.reason, check.minimum);
+
+    appliedCode = check.code;
+    couponFreeShipping = check.freeShipping;
+    if (!check.freeShipping) {
+      try {
+        discounts = [{ coupon: await stripeCouponFor(check.coupon) }];
+      } catch (err) {
+        return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
+      }
+    }
+  }
+
+  // A free-shipping code zeroes the rate here rather than through Stripe: a
+  // Stripe coupon comes off the products, and this one has to come off the
+  // postage. The 80-euro threshold is still read from the undiscounted
+  // subtotal, which is what shippingCentsFor() is given.
+  const shippingCents = couponFreeShipping ? 0 : shippingCentsFor(destination, subtotal);
   const freeShipping = shippingCents === 0;
 
   const siteUrl = process.env.URL || "http://localhost:8888";
@@ -189,6 +282,13 @@ exports.handler = async (event) => {
       // (Settings -> Payment methods) automatically, including wallets
       // like Apple Pay / Google Pay that aren't explicit type strings.
       line_items,
+      // Left out entirely when no code was used: Stripe reads an empty
+      // discounts array as "no discount and no promotion field", which is the
+      // same thing, but an undefined key is the honest way to say nothing.
+      ...(discounts ? { discounts } : {}),
+      // So the dashboard says which code brought the order in - the only place
+      // the shop can tell a campaign apart from an ordinary sale.
+      ...(appliedCode ? { metadata: { cupom: appliedCode } } : {}),
       // Every country the shop serves stays selectable, so a customer who
       // picked the wrong one in the cart is not trapped - but the rate below
       // belongs to what they chose, so Stripe is told to keep them in the same
@@ -226,6 +326,12 @@ exports.handler = async (event) => {
       body: JSON.stringify({ url: session.url }),
     };
   } catch (err) {
+    // The usage cap is counted by Stripe, so this is where a code running out
+    // shows up - at the last customer, mid-checkout. Say so plainly and let
+    // them buy without it, rather than turning the order away as a failure.
+    if (err && (err.code === "coupon_expired" || err.code === "coupon_limit_reached")) {
+      return couponRefusal("exhausted");
+    }
     return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
   }
 };

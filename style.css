@@ -1511,6 +1511,68 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 }
 .cart-ship select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+/* Discount code. Deliberately quieter than the checkout button below it: a
+   customer with a code goes looking for the field, and one without should not
+   be told twice that a better price exists somewhere. */
+.cart-coupon {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.cart-coupon__input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.cart-coupon__input::placeholder {
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--text-muted);
+}
+.cart-coupon__input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cart-coupon__apply {
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text);
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.cart-coupon__apply:hover { border-color: var(--text-muted); }
+.cart-coupon__apply:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Reserved whether or not there is anything to say, so applying a code does
+   not shove the total and the button down the drawer. */
+.cart-coupon__msg {
+  min-height: 1.15rem;
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.cart-coupon__msg--good { color: #1c7c46; }
+.cart-coupon__msg--bad { color: var(--accent); }
+
+.cart-drawer__discount {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #1c7c46;
+}
+.cart-drawer__discount-value { font-weight: 600; }
+
 /* Customer reviews. Hidden entirely when a model has none — Google requires
    review markup to match something the visitor can actually read, so the
    section and the schema appear and disappear together. */
