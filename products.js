@@ -33,7 +33,7 @@ const PRODUCTS = [
         name: "Bege PIET · lente dourada",
         hex: "#d9c3a5",
         swatch: "linear-gradient(135deg, #d9c3a5 50%, #a8862c 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/eye-jacket-45/bege-piet-lente-dourada/1.jpeg",
           "images/products/eye-jacket-45/bege-piet-lente-dourada/2.jpeg",
@@ -275,7 +275,7 @@ const PRODUCTS = [
         name: "Cinza fosca · lente azul",
         hex: "#82807d",
         swatch: "linear-gradient(135deg, #82807d 50%, #1e8fd0 50%)",
-        stock: 2,
+        stock: 1,
         images: [
           "images/products/plate-55/cinza-fosca-azul/1.jpeg",
           "images/products/plate-55/cinza-fosca-azul/2.jpeg",
