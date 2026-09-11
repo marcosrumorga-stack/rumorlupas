@@ -100,9 +100,11 @@ const PRODUCTS = {
   } },
   "flak-2xl-45":     { name: "Oakley Flak 2.0 XL",    price: 49, colors: {
     "preta-lente-espelhada":  "Preta · lente espelhada",
-    "azul-lente-azul":        "Azul · lente azul",
-    "vermelha-lente-laranja": "Vermelha · lente laranja",
-    "vermelha-lente-preta":   "Vermelha · lente preta",
+    // Armação, hastes, lente - the same wording as the shop, so the order says
+    // which of the four to pack. All four frames are black.
+    "azul-lente-azul":        "Preta, hastes azuis · lente azul",
+    "vermelha-lente-laranja": "Preta, hastes vermelhas · lente laranja",
+    "vermelha-lente-preta":   "Preta, hastes vermelhas · lente preta",
   } },
   "holbrook":        { name: "Oakley Holbrook",       price: 49, colors: {
     "preta-lente-preta":    "Preta · lente preta",

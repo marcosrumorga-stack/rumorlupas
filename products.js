@@ -502,8 +502,19 @@ const PRODUCTS = [
     name: "Flak 2.0 XL",
     price: 49,
     oldPrice: 70,
-    // The armação is black on all four; the colour in the name is the accent on
-    // the temples, which is how the shop tells them apart.
+    // The armação is black on all four. What tells them apart is the lens and
+    // the colour of the temples, so the names say all three: armação, hastes,
+    // lente. They used to name only the temple colour ("Vermelha · lente
+    // preta"), which reads as a red frame - it misled the shop's own stock
+    // count in September 2026, so it would mislead a buyer too.
+    //
+    // The ids keep the old wording on purpose. They are in saved carts, in the
+    // ?cor= address of each colour and in the photo folders; only what is
+    // shown changed.
+    //
+    // The dots follow the site's rule, armação on one half and lente on the
+    // other, which makes all four black on the left. The temples do not fit in
+    // a two-part dot; the photos and the name carry them.
     colors: [
       {
         id: "preta-lente-espelhada",
@@ -520,8 +531,9 @@ const PRODUCTS = [
       },
       {
         id: "azul-lente-azul",
-        name: "Azul · lente azul",
-        hex: "#2f8fd8",
+        name: "Preta, hastes azuis · lente azul",
+        hex: "#15130f",
+        swatch: "linear-gradient(135deg, #15130f 50%, #2f8fd8 50%)",
         stock: 1,
         images: [
           "images/products/flak-2xl-45/azul-lente-azul/1.jpeg",
@@ -532,9 +544,9 @@ const PRODUCTS = [
       },
       {
         id: "vermelha-lente-laranja",
-        name: "Vermelha · lente laranja",
-        hex: "#c9202b",
-        swatch: "linear-gradient(135deg, #c9202b 50%, #f2a33c 50%)",
+        name: "Preta, hastes vermelhas · lente laranja",
+        hex: "#15130f",
+        swatch: "linear-gradient(135deg, #15130f 50%, #f2a33c 50%)",
         stock: 1,
         images: [
           "images/products/flak-2xl-45/vermelha-lente-laranja/1.jpeg",
@@ -545,9 +557,10 @@ const PRODUCTS = [
       },
       {
         id: "vermelha-lente-preta",
-        name: "Vermelha · lente preta",
-        hex: "#c9202b",
-        swatch: "linear-gradient(135deg, #c9202b 50%, #1a1a1c 50%)",
+        name: "Preta, hastes vermelhas · lente preta",
+        // Black frame, black lens: the two halves would be the same colour,
+        // so no split - the site's rule for that case.
+        hex: "#15130f",
         stock: 1,
         images: [
           "images/products/flak-2xl-45/vermelha-lente-preta/1.jpeg",
