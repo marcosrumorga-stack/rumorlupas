@@ -1,0 +1,31 @@
+# RumorLupas
+
+> Online shop selling Oakley sunglasses ("lupas"), based in Portugal and shipping to every country in the European Union.
+
+Every model ships with a micro bag, a cleaning cloth and a case, and all have UV400 protection. Most colours are single units and stock changes often, so a product's own page is the only reliable source for its price and whether it is still available.
+
+Shipping is priced by destination and free on any order of 80 € or more, everywhere:
+
+- Portugal: 4.90 €, 2 to 5 working days
+- Spain: 9.90 €, 3 to 7 working days
+- The other 25 EU countries: 14.90 €, 5 to 10 working days
+
+The shop does not ship outside the EU. Customers have 14 calendar days from receipt to return an item without giving a reason, provided it comes back unused and in the condition it arrived; returns start by email. Products carry the 3-year legal guarantee of conformity under Portuguese law. Payment is taken in euros through Stripe.
+
+The site is in Portuguese, English and Spanish. Contact: rumorlupas@gmail.com
+
+## Shop
+
+- [Catalogue](https://rumorlupas.com/#catalogo): every model, with its colours, price and stock
+- [Catalogue in English](https://rumorlupas.com/en/#catalogo)
+- [Catálogo en español](https://rumorlupas.com/es/#catalogo)
+
+## Policies
+
+- [Terms and conditions](https://rumorlupas.com/termos.html): sale, shipping, returns and guarantee. Legally binding in Portuguese only.
+- [Privacy policy](https://rumorlupas.com/privacidade.html): what is collected and why, including the opt-in advertising cookies.
+
+## Optional
+
+- [Sitemap](https://rumorlupas.com/sitemap.xml): every product page, in all three languages
+- [Instagram](https://instagram.com/rumorlupas): new arrivals and customer photos

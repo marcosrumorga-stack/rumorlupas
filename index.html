@@ -67,6 +67,11 @@
   </div>
 </header>
 
+<!-- Everything between the header and the footer. A screen reader's "skip to
+     main content" and a search engine both look for this one landmark to find
+     the page itself; the legal pages always had it, this one did not. -->
+<main>
+
 <section class="hero">
   <div class="hero__decor" aria-hidden="true">
     <div class="band__glow"></div>
@@ -326,6 +331,8 @@
     </a>
   </div>
 </section>
+
+</main>
 
 <footer class="footer">
   <div class="container footer__inner">
