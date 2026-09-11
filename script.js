@@ -17,6 +17,24 @@ PRODUCTS.forEach((p) => {
   photoIndex[p.id] = 0;
 });
 
+// How wide a card is, measured on the live grid rather than read off the CSS -
+// the grid is minmax(230px, 1fr), so the column count and the card width both
+// move with the screen:
+//
+//   under 540   one column    290 at 320, 345 at 375, 470 at 520
+//   540 - 799   two columns   232 at 540, 342 at 760
+//   800 - 1099  three         233 at 800, 307 at 1024
+//   1100 up     four          about 248, held by the container's max width
+//
+// Each line below sits a little above the real width, never under it. Over
+// costs a few kilobytes; under is the one mistake a srcset can make that a
+// customer can see, because the browser then picks a copy too small to be sharp.
+const CARD_SIZES =
+  "(max-width: 539px) calc(100vw - 30px), " +
+  "(max-width: 799px) calc(50vw - 20px), " +
+  "(max-width: 1099px) calc(33vw - 10px), " +
+  "250px";
+
 // The photos sit in a scroll-snapping strip inside the link, so a swipe or an
 // arrow leafs through them while a plain click still opens the product.
 function mediaHtml(p) {
@@ -26,7 +44,7 @@ function mediaHtml(p) {
   }
 
   const slides = images
-    .map((src, i) => `<img src="${src}" alt="${p.name}"${i ? ' loading="lazy"' : ""}>`)
+    .map((src, i) => `<img src="${sizedImage(src, 800)}" srcset="${imageSrcset(src)}" sizes="${CARD_SIZES}" alt="${p.name}"${i ? ' loading="lazy"' : ""}>`)
     .join("");
 
   const arrows = images.length > 1

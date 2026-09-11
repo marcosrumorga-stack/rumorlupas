@@ -316,7 +316,7 @@ function renderCart() {
       return `
         <div class="cart-item">
           <div class="cart-item__thumb">${
-            images.length ? `<img src="${images[0]}" alt="">` : ""
+            images.length ? `<img src="${thumbImage(images[0])}" alt="">` : ""
           }</div>
           <div class="cart-item__info">
             <p class="cart-item__name">${product.name}</p>

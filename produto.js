@@ -278,13 +278,27 @@ if (!product) {
       return;
     }
 
+    // The stage, measured on the live page: one column up to 760 wide, where
+    // it is the width of the screen less its margins (347 at 375, 712 at 760),
+    // then two columns, where it grows from 333 to a ceiling of 512. As with
+    // the catalogue, each figure sits a little above the real one - over costs
+    // bytes, under costs sharpness.
+    const stageSizes =
+      "(max-width: 760px) calc(100vw - 28px), " +
+      "(max-width: 1119px) calc(50vw - 40px), " +
+      "520px";
+
     galleryTrack.innerHTML = images.map((src, i) => `
-      <img src="${src}" alt="${product.name} — ${t("product.photo")} ${i + 1}"${i ? ' loading="lazy"' : ""}>
+      <img src="${sizedImage(src, 800)}" srcset="${imageSrcset(src)}" sizes="${stageSizes}" alt="${product.name} — ${t("product.photo")} ${i + 1}"${i ? ' loading="lazy"' : ""}>
     `).join("");
 
+    // These are 64 pixels. They used to point at the full photos, and being
+    // in view under the stage they loaded at once - fetching every original
+    // of the colour to draw five stamps, and undoing the lazy loading of the
+    // gallery above them.
     galleryThumbs.innerHTML = images.map((src, i) => `
       <button class="product-detail__thumb" data-index="${i}">
-        <img src="${src}" alt="" loading="lazy">
+        <img src="${thumbImage(src)}" alt="" loading="lazy">
       </button>
     `).join("");
 

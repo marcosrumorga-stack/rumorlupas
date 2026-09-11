@@ -736,6 +736,39 @@ function productImages(product, colorId) {
   return own.length ? own.concat(KIT_IMAGE) : own;
 }
 
+// Smaller copies of every product photo, made by tools/resize.ps1 under
+// images/sized/<width>/ with the same path below that. The paths above stay the
+// originals, and the places that need a big picture - the Google markup and the
+// Meta feed - keep reading them straight from productImages().
+//
+// The copies are for the places that draw a photo smaller than it was shot.
+// On a computer the catalogue card is about 250 pixels; on a phone it is a
+// single column, 345 at 375 wide, and a phone draws two or three real pixels
+// for each of those. So the originals were never too big for every screen -
+// only for most of them - which is why this is a srcset and not a swap.
+function sizedImage(src, width) {
+  return src.replace(/^images\/products\//, `images/sized/${width}/`);
+}
+
+// For a photo shown in a box `sizes` wide. The browser takes the smallest entry
+// that still covers the box at the screen's density, so a laptop gets the 480,
+// most phones the 800, and the densest screens the original.
+//
+// The original is labelled 1200w because nearly all of them are. A handful of
+// Juliet reshoots are a little wider and get fetched slightly larger than they
+// need; the Plate (900) and Plantaris (680) photos are narrower, and for those
+// the resize tool copied the original rather than enlarge it. Either way no
+// screen gets a softer picture than it did before this.
+function imageSrcset(src) {
+  return `${sizedImage(src, 480)} 480w, ${sizedImage(src, 800)} 800w, ${src} 1200w`;
+}
+
+// The 64-pixel thumbnails under the product gallery and the 56-pixel ones in
+// the cart. 200 covers them at three device pixels per CSS pixel.
+function thumbImage(src) {
+  return sizedImage(src, 200);
+}
+
 // Stock lives on the colour, since a model can be out of black and still have
 // white. Leaving `stock` unset means "not being tracked" — the item stays on
 // sale. Set it to a number to have the site and the checkout honour it, and to
