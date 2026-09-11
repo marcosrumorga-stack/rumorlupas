@@ -726,8 +726,22 @@ function hasColors(product) {
   return Boolean(product.colors && product.colors.length);
 }
 
+// The colour a model opens on - its catalogue card, its own page, and the photo
+// in a shared link's preview. The first one that can still be bought, or the
+// first of all when none can.
+//
+// It used to be the first colour regardless. Once a model's lead colour sold
+// out, its catalogue card said "Esgotado" and its page opened on a disabled
+// button, while the colours still in stock sat one tap away where nobody looked.
+// In September 2026 that was the Plate, the Dartboard and the Flak - six pairs
+// for sale behind a sold-out sign.
+//
+// Only the opening choice. findColor() still falls back to the first colour,
+// because that is what a cart saved before colours existed actually holds.
 function defaultColorId(product) {
-  return hasColors(product) ? product.colors[0].id : null;
+  if (!hasColors(product)) return null;
+  const available = product.colors.find((c) => !isSoldOut(product, c.id));
+  return (available || product.colors[0]).id;
 }
 
 function findColor(product, colorId) {
