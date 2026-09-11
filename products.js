@@ -796,6 +796,70 @@ function thumbImage(src) {
   return sizedImage(src, 200);
 }
 
+// How wide the product page draws its main photo, measured on the live page:
+// one column up to 760 wide, where it is the screen less its margins (347 at
+// 375, 712 at 760), then two columns, growing from 333 to a ceiling of 512.
+// Each figure sits a little above the real one - overshooting costs bytes,
+// undershooting costs sharpness.
+//
+// It lives here because two places must say exactly the same thing: the <img>
+// produto.js builds, and the preload the edge function puts in the head so the
+// browser can start fetching that photo without waiting for the scripts. If
+// the two disagree, the browser fetches the photo twice.
+const GALLERY_SIZES =
+  "(max-width: 760px) calc(100vw - 28px), " +
+  "(max-width: 1119px) calc(50vw - 40px), " +
+  "520px";
+
+// The picture a shared link shows: 1200x630, cropped around the lupas by
+// tools/resize.ps1 from each colour's head-on photo. The photos themselves are
+// 3:4 portraits, and Facebook, Instagram and WhatsApp cut a link preview to a
+// wide band through the middle - which on these photos can run through the
+// lenses. Only the head-on photo, 1.jpeg, gets one; anything else falls back
+// to the photo itself, which still previews, just cropped by the platform.
+function ogImage(src) {
+  return /\/1\.jpeg$/.test(src) ? src.replace(/^images\/products\//, "images/og/") : src;
+}
+
+// The product page's <title> and description, written here rather than in
+// produto.js because two places need exactly the same words: the page, which
+// Google reads after running it, and the edge function that writes the head
+// for link previews, whose crawlers run nothing. `tr` looks a key up in the
+// language being served - t() in the browser, the I18N table on the server.
+//
+// Nobody searches "Juliet"; they search "oakley juliet portugal". So the title
+// leads with Oakley and carries the two things that decide a click: how much
+// choice is left, and the price.
+function productPageTitle(product, tr) {
+  const colours = hasColors(product) ? product.colors : [];
+  const left = colours.length
+    ? colours.filter((c) => !isSoldOut(product, c.id))
+    : (isSoldOut(product, null) ? [] : [null]);
+
+  if (colours.length && !left.length) {
+    return `Oakley ${product.name} — ${tr("product.soldOut").toLowerCase()} | RumorLupas`;
+  }
+  const price = formatPrice(product.price);
+  if (left.length > 1) {
+    return `Oakley ${product.name} — ${left.length} ${tr("seo.colours")}, ${price} | RumorLupas`;
+  }
+  return `Oakley ${product.name} — ${price} | RumorLupas`;
+}
+
+function productPageDescription(product, tr) {
+  const key = `history.${product.id}`;
+  const history = tr(key) === key ? tr("pp.historySoon") : tr(key);
+  const full = `${product.name} — ${formatPrice(product.price)}. ${history}`;
+  if (full.length <= 300) return full;
+
+  // On the last whole word, not at the 300th character. This used to end the
+  // Juliet with "colecionados da marca ate hoj", which only Google saw; it is
+  // now also the line under a link shared by message.
+  const cut = full.slice(0, 300);
+  const lastSpace = cut.lastIndexOf(" ");
+  return `${(lastSpace > 200 ? cut.slice(0, lastSpace) : cut).replace(/[.,;:\s]+$/, "")}…`;
+}
+
 // Stock lives on the colour, since a model can be out of black and still have
 // white. Leaving `stock` unset means "not being tracked" — the item stays on
 // sale. Set it to a number to have the site and the checkout honour it, and to
@@ -883,5 +947,12 @@ function colorSwatchesHtml(product, selectedId) {
 // it so the Meta feed builds the same addresses the site sells at, rather than
 // a second copy of the rule that could drift.
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { PRODUCTS, stockOf, isSoldOut, findColor, productCategory, productSlug };
+  // The checkout function, the Meta feed and the link-preview edge function all
+  // read the catalogue from here rather than keeping a copy.
+  module.exports = {
+    PRODUCTS, stockOf, isSoldOut, findColor, productCategory, productSlug,
+    findProductBySlug, hasColors, defaultColorId, productImages, ogImage,
+    formatPrice, productPageTitle, productPageDescription,
+    sizedImage, imageSrcset, GALLERY_SIZES,
+  };
 }

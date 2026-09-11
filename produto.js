@@ -60,28 +60,11 @@ if (!product) {
     return known ? wanted : defaultColorId(product);
   })();
 
-  // Nobody searches "Juliet". They search "oakley juliet portugal" — so the tab
-  // and the search result lead with Oakley, and carry the two things that decide
-  // a click: how much choice there is, and the price.
-  function pageTitle() {
-    const colours = hasColors(product) ? product.colors : [];
-    const left = colours.length
-      ? colours.filter((c) => !isSoldOut(product, c.id))
-      : (isSoldOut(product, null) ? [] : [null]);
-
-    if (colours.length && !left.length) {
-      return `Oakley ${product.name} — ${t("product.soldOut").toLowerCase()} | RumorLupas`;
-    }
-    const price = formatPrice(product.price);
-    if (left.length > 1) {
-      return `Oakley ${product.name} — ${left.length} ${t("seo.colours")}, ${price} | RumorLupas`;
-    }
-    return `Oakley ${product.name} — ${price} | RumorLupas`;
-  }
-
   // Google runs the page's script before indexing it, so the model's own name,
-  // price and stock can be filled in here. Social previews still cannot — those
-  // crawlers do not run scripts, which is why the og: tags stay generic.
+  // price and stock can be filled in here. Link previews cannot run scripts;
+  // for those, netlify/edge-functions/product-preview.js writes the same title
+  // and description into the head before the page leaves the server, from the
+  // same two functions in products.js, so the two never disagree.
   // Off the origin, not off location.href: at /lupas/<modelo> a relative path
   // would resolve inside /lupas/ and point at images that are not there.
   function absolute(path) {
@@ -92,10 +75,9 @@ if (!product) {
     // In the language being read, so the three versions of a model do not
     // compete with each other in search.
     const canonical = `${location.origin}${productUrl(product)}`;
-    document.title = pageTitle();
+    document.title = productPageTitle(product, t);
     document.querySelector('link[rel="canonical"]').href = canonical;
-    document.querySelector('meta[name="description"]').content =
-      `${product.name} — ${formatPrice(product.price)}. ${productHistory(product)}`.slice(0, 300);
+    document.querySelector('meta[name="description"]').content = productPageDescription(product, t);
 
     const anyLeft = hasColors(product)
       ? product.colors.some((c) => !isSoldOut(product, c.id))
@@ -278,18 +260,13 @@ if (!product) {
       return;
     }
 
-    // The stage, measured on the live page: one column up to 760 wide, where
-    // it is the width of the screen less its margins (347 at 375, 712 at 760),
-    // then two columns, where it grows from 333 to a ceiling of 512. As with
-    // the catalogue, each figure sits a little above the real one - over costs
-    // bytes, under costs sharpness.
-    const stageSizes =
-      "(max-width: 760px) calc(100vw - 28px), " +
-      "(max-width: 1119px) calc(50vw - 40px), " +
-      "520px";
-
+    // The first photo is the page's largest element, so it decides the score
+    // Google measures. The edge function preloads exactly this srcset and
+    // sizes - GALLERY_SIZES, shared with it through products.js - so the
+    // browser can start fetching it while the scripts are still arriving.
+    // fetchpriority tells it to go ahead of them.
     galleryTrack.innerHTML = images.map((src, i) => `
-      <img src="${sizedImage(src, 800)}" srcset="${imageSrcset(src)}" sizes="${stageSizes}" alt="${product.name} — ${t("product.photo")} ${i + 1}"${i ? ' loading="lazy"' : ""}>
+      <img src="${sizedImage(src, 800)}" srcset="${imageSrcset(src)}" sizes="${GALLERY_SIZES}" alt="${product.name} — ${t("product.photo")} ${i + 1}"${i ? ' loading="lazy"' : ' fetchpriority="high"'}>
     `).join("");
 
     // These are 64 pixels. They used to point at the full photos, and being
