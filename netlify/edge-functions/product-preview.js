@@ -20,18 +20,44 @@
 // checkout and the Meta feed read, so there is no second copy of the catalogue
 // to keep in step.
 //
-// It fails open. Any error at all, and the page goes out exactly as it is
-// today: a worse preview, never a broken page.
+// It fails open, twice over. An error inside the handler sends the page out
+// exactly as it is today. An error before the handler even runs is covered by
+// onError: "bypass" in the config at the bottom - without it Netlify's default
+// is to answer with an error page, which here would mean product pages that do
+// not load at all.
 
-import catalogue from "../../products.js";
-import strings from "../../i18n.js";
+// products.js and i18n.js are browser scripts: top-level consts and functions,
+// and a CommonJS guard at the end for the Node functions. Edge functions run in
+// Deno, which treats every .js file as an ES module - so importing them gives a
+// module with no exports, and the first version of this file, which did just
+// that, would not have started. They are fetched from the deploy instead and
+// run in a function scope that supplies `module`, so their own guard hands the
+// exports back.
+//
+// `window` and `document` are passed in as undefined on purpose. i18n.js reads
+// the page's address when it thinks it is in a browser, and Deno has at times
+// defined a global `window`; shadowing both keeps the scripts on their
+// server-side path whatever the runtime does.
+let loading;
 
-const {
-  findProductBySlug, hasColors, defaultColorId, findColor, productImages,
-  imageSrcset, sizedImage, ogImage, formatPrice, isSoldOut,
-  productPageTitle, productPageDescription, productSlug, GALLERY_SIZES,
-} = catalogue;
-const { I18N } = strings;
+function runScript(source) {
+  const module = { exports: {} };
+  new Function("module", "exports", "window", "document", source)(module, module.exports, undefined, undefined);
+  return module.exports;
+}
+
+function loadCatalogue(origin) {
+  if (!loading) {
+    loading = Promise.all(["/products.js", "/i18n.js"].map(async (path) => {
+      const res = await fetch(new URL(path, origin));
+      if (!res.ok) throw new Error(`${path} answered ${res.status}`);
+      return res.text();
+    })).then(([products, i18n]) => ({ catalogue: runScript(products), strings: runScript(i18n) }))
+      // A failed load is not kept: the next request tries again.
+      .catch((error) => { loading = undefined; throw error; });
+  }
+  return loading;
+}
 
 const SITE = "https://rumorlupas.com";
 const HTML_LANG = { pt: "pt-PT", en: "en", es: "es" };
@@ -65,12 +91,24 @@ export default async (request, context) => {
   if (!match) return;
 
   const lang = match[1] || "pt";
+
+  let catalogue;
+  let strings;
   let product;
   try {
-    product = findProductBySlug(match[2]);
-  } catch {
+    ({ catalogue, strings } = await loadCatalogue(url.origin));
+    product = catalogue.findProductBySlug(match[2]);
+  } catch (error) {
+    console.error("product-preview: catalogue", error && error.message);
     return;
   }
+
+  const {
+    hasColors, defaultColorId, findColor, productImages, imageSrcset, sizedImage,
+    ogImage, isSoldOut, productPageTitle, productPageDescription, productSlug,
+    GALLERY_SIZES,
+  } = catalogue;
+  const { I18N } = strings;
   // An address that names no model: produto.js already answers that one, with
   // a noindex and a "produto nao encontrado".
   if (!product) return;
@@ -166,4 +204,8 @@ export default async (request, context) => {
 
 export const config = {
   path: ["/lupas/*", "/en/lupas/*", "/es/lupas/*"],
+  // If the function cannot run at all, serve the page without it. Netlify's
+  // default is to answer with an error, which would take the product pages
+  // down over what is only an improvement to them.
+  onError: "bypass",
 };
