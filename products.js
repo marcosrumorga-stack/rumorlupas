@@ -115,7 +115,7 @@ const PRODUCTS = [
         name: "Prata · lente preta",
         hex: "#b8b2a6",
         swatch: "linear-gradient(135deg, #b8b2a6 50%, #1a1a1c 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/juliet-45/prata-lente-preta/1.jpeg",
           "images/products/juliet-45/prata-lente-preta/2.jpeg",
