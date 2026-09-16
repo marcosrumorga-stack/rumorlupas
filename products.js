@@ -627,6 +627,42 @@ const PRODUCTS = [
       },
     ],
   },
+  {
+    // The first thing the shop sells that is not a lupa. Its category is what
+    // gives it a tab of its own, an address under /camisas/ and a title that
+    // leads with "Camisa" rather than "Oakley" - see CATEGORY_SETUP.
+    //
+    // It comes last in this list on purpose: the order of the tabs is the
+    // order the categories first appear here, and the lupas come first.
+    id: "brasil-26-27",
+    name: "Brasil 26/27",
+    category: "camisas",
+    price: 35,
+    // Five euros more to have a name and a number printed on the back. The
+    // surcharge is charged by the checkout function from its own copy of this
+    // number, never from anything the browser sends.
+    personalisation: 5,
+    // One set of photos for every size: the same shirt, five cuts of it.
+    images: [
+      "images/products/brasil-26-27/1.jpeg",
+      "images/products/brasil-26-27/2.jpeg",
+      "images/products/brasil-26-27/3.jpeg",
+      "images/products/brasil-26-27/4.jpeg",
+      "images/products/brasil-26-27/5.jpeg",
+      "images/products/brasil-26-27/6.jpeg",
+      "images/products/brasil-26-27/7.jpeg",
+    ],
+    // No stock number anywhere here, which means untracked rather than zero:
+    // every size sells, nothing ever reads as a last unit, and the scarcity
+    // the lupas show is never claimed for something ordered in when it sells.
+    colors: [
+      { id: "s", name: "S" },
+      { id: "m", name: "M" },
+      { id: "l", name: "L" },
+      { id: "xl", name: "XL" },
+      { id: "xxl", name: "XXL" },
+    ],
+  },
 ];
 
 // The address a model is sold at: /lupas/oakley-juliet rather than
@@ -643,13 +679,16 @@ function productSlug(product) {
     .replace(/[̀-ͯ]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
-  return `oakley-${name}`;
+  // The prefix belongs to the category, not to every product. It is "oakley-"
+  // for the lupas because that is what people search and what their addresses
+  // already say; a shirt needs nothing in front of its own name.
+  return `${productSetup(product).slugPrefix}${name}`;
 }
 
 // Carries the language of the page it is linked from, so a reader browsing in
 // Spanish stays in Spanish when they open a model.
 function productUrl(product, lang) {
-  return localePath(`/lupas/${productSlug(product)}`, lang);
+  return localePath(`/${productSetup(product).path}/${productSlug(product)}`, lang);
 }
 
 // ---------------------------------------------------------------------------
@@ -699,8 +738,55 @@ function findProductBySlug(slug) {
 //
 const DEFAULT_CATEGORY = "lupas";
 
+// What each category owns: where its products live, what their addresses are
+// built from, the word its titles lead with, and whether the kit - the micro
+// bag, the cloth and the case - goes with them.
+//
+// The lupas keep exactly what they have always had. Their addresses are
+// indexed by Google, shared in messages and sitting in people's history, and
+// the "oakley-" is inside them; nothing here may move them. A new category
+// gets its own path instead of being filed under "lupas", which is the shop's
+// word for sunglasses and means nothing for a shirt.
+//
+// tools/sitemap.ps1 writes the sitemap and the redirects from this same file
+// but cannot read JavaScript, so it carries a copy of the two fields it needs.
+// Change a path or a prefix here and change it there in the same commit.
+// `variants` is what the choice under a product actually is. The machinery is
+// the same either way - one list, one stock number each, one id in the cart
+// key - but a lupa is chosen by colour and a shirt by size, so the dots become
+// labelled pills and the title counts sizes instead of colours.
+const CATEGORY_SETUP = {
+  lupas: {
+    path: "lupas", slugPrefix: "oakley-", titleWord: "Oakley", kit: true,
+    variants: "colour", countWord: "seo.colours", groupLabel: "aria.colour",
+  },
+  camisas: {
+    path: "camisas", slugPrefix: "", titleWord: "Camisa", kit: false,
+    variants: "size", countWord: "seo.sizes", groupLabel: "aria.size",
+    // Ordered in from the supplier, who ships in batches, so the shop sells
+    // them two at a time. The rule counts every shirt in the order together:
+    // two different shirts pass, one shirt beside a pair of lupas does not.
+    minimum: 2,
+    // Not held on a shelf: the supplier takes three to six days to dispatch
+    // and seven to fifteen to arrive, so ten to twenty-one all told. Counted
+    // in calendar days, which is how they count them - the lupas promise
+    // working days and the two are never said in the same breath.
+    deliveryDays: [10, 21],
+  },
+};
+
 function productCategory(product) {
   return product.category || DEFAULT_CATEGORY;
+}
+
+// An unknown category behaves like the default rather than throwing: a typo in
+// a product's category should show it in the wrong tab, not break the site.
+function categorySetup(id) {
+  return CATEGORY_SETUP[id] || CATEGORY_SETUP[DEFAULT_CATEGORY];
+}
+
+function productSetup(product) {
+  return categorySetup(productCategory(product));
 }
 
 // In the order the products declare them, so the tabs follow the catalogue.
@@ -757,10 +843,15 @@ function findColor(product, colorId) {
 // "Foto em breve" would read as if the box were the product.
 const KIT_IMAGE = "images/products/kit.jpeg";
 
+// A variant with no photos of its own falls back to the product's, which is
+// what a size does: five sizes of one shirt are the same shirt.
 function productImages(product, colorId) {
   const color = findColor(product, colorId);
-  const own = (color ? color.images : product.images) || [];
-  return own.length ? own.concat(KIT_IMAGE) : own;
+  const own = ((color && color.images) || product.images) || [];
+  if (!own.length) return own;
+  // Only where it is true. The kit shot is the micro bag, the cloth and the
+  // case, and a shirt arrives with none of them.
+  return productSetup(product).kit ? own.concat(KIT_IMAGE) : own;
 }
 
 // Smaller copies of every product photo, made by tools/resize.ps1 under
@@ -836,14 +927,18 @@ function productPageTitle(product, tr) {
     ? colours.filter((c) => !isSoldOut(product, c.id))
     : (isSoldOut(product, null) ? [] : [null]);
 
+  // "Oakley Juliet" for the lupas, because that is what people type into
+  // Google; "Camisa Brasil 26/27" for a shirt, for the same reason.
+  const lead = `${productSetup(product).titleWord} ${product.name}`;
+
   if (colours.length && !left.length) {
-    return `Oakley ${product.name} — ${tr("product.soldOut").toLowerCase()} | RumorLupas`;
+    return `${lead} — ${tr("product.soldOut").toLowerCase()} | RumorLupas`;
   }
   const price = formatPrice(product.price);
   if (left.length > 1) {
-    return `Oakley ${product.name} — ${left.length} ${tr("seo.colours")}, ${price} | RumorLupas`;
+    return `${lead} — ${left.length} ${tr(productSetup(product).countWord)}, ${price} | RumorLupas`;
   }
-  return `Oakley ${product.name} — ${price} | RumorLupas`;
+  return `${lead} — ${price} | RumorLupas`;
 }
 
 function productPageDescription(product, tr) {
@@ -875,6 +970,86 @@ function stockOf(product, colorId) {
 
 function isSoldOut(product, colorId) {
   return stockOf(product, colorId) <= 0;
+}
+
+// A shirt can be printed with a name and a number. It rides in the cart key as
+// a third part - "brasil-26-27|m|RONALDO~9" - so two shirts printed differently
+// are two lines, the quantity still counts them, and nothing else about the
+// cart had to learn a new shape.
+//
+// Cleaned on both sides from here: in the browser so the customer sees exactly
+// what will be printed, and again in the checkout function, because a cart key
+// lives in localStorage and can be typed by hand. What comes out is what the
+// shirt can actually carry - capitals, no accents, a short name, two digits.
+const PRINT_NAME_MAX = 12;
+
+function cleanPrinting(name, number) {
+  const printed = String(name || "")
+    .toUpperCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^A-Z ]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, PRINT_NAME_MAX);
+  // Leading zeros go before the cut, not after: "0010" is the number 10, and
+  // trimming second would have turned it into 0.
+  const digits = String(number || "").replace(/[^0-9]/g, "").replace(/^0+(?=\d)/, "").slice(0, 2);
+  return printed || digits ? { name: printed, number: digits } : null;
+}
+
+function printingFromKey(part) {
+  if (!part) return null;
+  const [name, number] = String(part).split("~");
+  return cleanPrinting(name, number);
+}
+
+function printingToKey(printing) {
+  return printing ? `${printing.name}~${printing.number}` : "";
+}
+
+function printingLabel(printing) {
+  return printing ? [printing.name, printing.number].filter(Boolean).join(" ") : "";
+}
+
+// What the printing costs on top, and zero for anything that cannot be printed
+// - which is every lupa.
+function printingPrice(product) {
+  return product && product.personalisation ? product.personalisation : 0;
+}
+
+// An order can leave in more than one parcel. The lupas are on the shelf and
+// the shirts are ordered in when they sell, so a cart holding both arrives
+// twice - the lupas first, the shirts weeks later.
+//
+// One entry per category in the cart, in the order they appear, so the cart
+// and the checkout can say both. Averaging them would produce a date that is
+// true of neither parcel, and a customer waiting three weeks for a pair of
+// sunglasses that arrived on Tuesday is a complaint the shop earned.
+//
+// `days` of null means the category ships from the shelf and the shipping
+// zone's own working-day estimate is the right answer for it.
+function deliveryEstimates(categoryIds) {
+  const seen = [];
+  categoryIds.forEach((id) => {
+    if (seen.some((entry) => entry.category === id)) return;
+    seen.push({ category: id, days: categorySetup(id).deliveryDays || null });
+  });
+  return seen;
+}
+
+// How few of a category an order may carry. One, unless the category says so.
+function categoryMinimum(id) {
+  return categorySetup(id).minimum || 1;
+}
+
+// Given how many of each category are in a cart, the ones that are in it but
+// not in enough. Asked by the drawer, so the customer is told before they try,
+// and by the checkout function, which is what actually refuses.
+function shortOfMinimum(counts) {
+  return Object.keys(counts)
+    .filter((id) => counts[id] > 0 && counts[id] < categoryMinimum(id))
+    .map((id) => ({ category: id, have: counts[id], need: categoryMinimum(id) }));
 }
 
 // Exactly one left. Untracked colours return Infinity, so they never say this —
@@ -931,15 +1106,25 @@ function swatchBackground(color) {
 
 function colorSwatchesHtml(product, selectedId) {
   if (!hasColors(product)) return "";
+  const setup = productSetup(product);
+  const sized = setup.variants === "size";
+
   const dots = product.colors
     .map((c) => {
       const on = c.id === selectedId;
       const out = isSoldOut(product, c.id);
       const label = colorName(c);
+      // A size has no colour to show, so the dot becomes a pill with the size
+      // written in it. Everything else about it - selected, sold out, the
+      // reader's label - stays the same.
+      if (sized) {
+        return `<button type="button" class="swatch swatch--size${on ? " active" : ""}${out ? " out" : ""}" data-color="${c.id}" aria-pressed="${on}" title="${label}">${label}</button>`;
+      }
       return `<button type="button" class="swatch${on ? " active" : ""}${out ? " out" : ""}" style="--swatch: ${swatchBackground(c)}" data-color="${c.id}" aria-pressed="${on}" title="${label}"><span class="sr-only">${label}</span></button>`;
     })
     .join("");
-  return `<div class="swatches" role="group" aria-label="Cor">${dots}</div>`;
+
+  return `<div class="swatches" role="group" aria-label="${t(setup.groupLabel)}">${dots}</div>`;
 }
 
 // The checkout function pulls the catalogue from here too, so stock is written
@@ -954,5 +1139,8 @@ if (typeof module !== "undefined" && module.exports) {
     findProductBySlug, hasColors, defaultColorId, productImages, ogImage,
     formatPrice, productPageTitle, productPageDescription,
     sizedImage, imageSrcset, GALLERY_SIZES,
+    categorySetup, productSetup, CATEGORY_SETUP,
+    cleanPrinting, printingFromKey, printingToKey, printingLabel, printingPrice,
+    categoryMinimum, shortOfMinimum, categoryLabel, deliveryEstimates,
   };
 }

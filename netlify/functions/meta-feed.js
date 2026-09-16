@@ -85,7 +85,14 @@ function rowsFor(product) {
 
 exports.handler = async () => {
   try {
-    const rows = CATALOGUE.PRODUCTS.flatMap(rowsFor);
+    // Only the lupas. The shirts are sold on the site and deliberately kept
+    // out of the Meta catalogue: the feed is what the ad account advertises,
+    // and if Meta ever takes exception to a replica kit, what it suspends is
+    // the account the sunglasses are advertised from. One word here is what
+    // separates the two; do not widen it without deciding that on purpose.
+    const rows = CATALOGUE.PRODUCTS
+      .filter((p) => CATALOGUE.productCategory(p) === "lupas")
+      .flatMap(rowsFor);
     const body = [COLUMNS.join(","), ...rows].join("\n") + "\n";
 
     return {

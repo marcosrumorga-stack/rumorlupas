@@ -113,7 +113,36 @@ const PRODUCTS = {
   "pitboss-53":      { name: "Oakley Pit Boss II",    price: 53, colors: {
     "preta-lente-preta": "Preta · lente preta",
   } },
+  // Not a lupa. The variants are sizes, and `printing` is what a name and a
+  // number on the back costs on top - charged from this number, never from
+  // anything the browser sends.
+  "brasil-26-27":    { name: "Camisa Brasil 26/27",   price: 35, printing: 5,
+    // Ordered in from the supplier when it sells: at least two per order, and
+    // ten to twenty-one calendar days rather than the courier's working days.
+    // The shop's own copy of what CATEGORY_SETUP says in products.js - this
+    // file deliberately trusts nothing it did not write down itself.
+    group: "camisas", minimum: 2, deliveryDays: [10, 21],
+    colors: { s: "S", m: "M", l: "L", xl: "XL", xxl: "XXL" } },
 };
+
+// Mirrors cleanPrinting() in products.js: capitals, no accents, twelve letters,
+// two digits. Repeated rather than imported because what a customer typed
+// reaches this function through a cart key in their own browser, and the shop
+// prints what this says, not what arrived.
+function cleanPrinting(raw) {
+  const [name, number] = String(raw || "").split("~");
+  const printed = String(name || "")
+    .toUpperCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^A-Z ]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 12);
+  // Leading zeros go before the cut: "0010" is 10, not 0.
+  const digits = String(number || "").replace(/[^0-9]/g, "").replace(/^0+(?=\d)/, "").slice(0, 2);
+  return printed || digits ? [printed, digits].filter(Boolean).join(" ") : null;
+}
 
 // Stripe wants a coupon object of its own, and the rule lives in coupons.js -
 // so the object is named after the rule. Change the percentage, the cap or the
@@ -192,9 +221,13 @@ exports.handler = async (event) => {
   // against the table above, so a tampered id or colour never reaches Stripe.
   const lines = [];
   for (const [key, qty] of Object.entries(cart || {})) {
-    const [id, colorId] = String(key).split("|");
+    const [id, colorId, printed] = String(key).split("|");
     const product = PRODUCTS[id];
     if (!product || !(qty > 0)) continue;
+
+    // Only where the product offers it, so a key edited by hand cannot add a
+    // printed name to something that is not printed - or dodge the surcharge.
+    const printing = product.printing ? cleanPrinting(printed) : null;
 
     let colorName = null;
     if (product.colors) {
@@ -218,24 +251,57 @@ exports.handler = async (event) => {
       };
     }
 
-    lines.push({ product, qty, colorName });
+    lines.push({ product, qty, colorName, printing });
   }
 
   if (lines.length === 0) {
     return { statusCode: 400, body: "Cart is empty" };
   }
 
-  const line_items = lines.map(({ product, qty, colorName }) => ({
+  // Some things are sold in twos. Counted across the whole order rather than
+  // per line, so two different shirts pass and one shirt beside a pair of
+  // lupas does not. The cart drawer says this before the button is pressed;
+  // this is what actually refuses, because the drawer runs in the browser.
+  const perGroup = {};
+  lines.forEach(({ product, qty }) => {
+    if (!product.group) return;
+    perGroup[product.group] = (perGroup[product.group] || 0) + qty;
+  });
+  const minimums = {};
+  lines.forEach(({ product }) => {
+    if (product.group && product.minimum) minimums[product.group] = product.minimum;
+  });
+  const short = Object.keys(perGroup).find((g) => perGroup[g] < (minimums[g] || 1));
+  if (short) {
+    return {
+      statusCode: 409,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        error: "minimum", group: short, have: perGroup[short], need: minimums[short],
+      }),
+    };
+  }
+
+  // The printed name goes in the line's own name, because this text is what the
+  // shop reads when it packs and what the customer sees on the Stripe page and
+  // on the receipt - the three have to agree about what was ordered.
+  const linePrice = ({ product, printing }) => product.price + (printing ? product.printing : 0);
+  const lineName = ({ product, colorName, printing }) => [
+    colorName ? `${product.name} — ${colorName}` : product.name,
+    printing ? `(${printing})` : "",
+  ].filter(Boolean).join(" ");
+
+  const line_items = lines.map((line) => ({
     price_data: {
       currency: "eur",
-      product_data: { name: colorName ? `${product.name} — ${colorName}` : product.name },
-      unit_amount: Math.round(product.price * 100),
+      product_data: { name: lineName(line) },
+      unit_amount: Math.round(linePrice(line) * 100),
     },
-    quantity: qty,
+    quantity: line.qty,
   }));
 
   // Worked out from the resolved lines, never from a total sent by the client.
-  const subtotal = lines.reduce((sum, { product, qty }) => sum + product.price * qty, 0);
+  const subtotal = lines.reduce((sum, line) => sum + linePrice(line) * line.qty, 0);
 
   // The browser sends which country the customer chose, and the rate is worked
   // out here from it - the amount is never taken from the request. An unknown
@@ -274,6 +340,14 @@ exports.handler = async (event) => {
   const shippingCents = couponFreeShipping ? 0 : shippingCentsFor(destination, subtotal);
   const freeShipping = shippingCents === 0;
 
+  // Anything in this order that is not on a shelf, and the longest wait among
+  // them. Stripe takes a single estimate per shipping option, so a mixed order
+  // is quoted the slower one and told in the name that the rest leaves first.
+  const ordered = lines.filter(({ product }) => product.deliveryDays);
+  const slowest = ordered.reduce(
+    (worst, { product }) => (!worst || product.deliveryDays[1] > worst[1] ? product.deliveryDays : worst),
+    null);
+
   const siteUrl = process.env.URL || "http://localhost:8888";
 
   try {
@@ -309,8 +383,21 @@ exports.handler = async (event) => {
             fixed_amount: { amount: shippingCents, currency: "eur" },
             // Portuguese on purpose, like the line items: this text is what
             // the shop reads when packing, and the function has no language.
-            display_name: freeShipping ? "Envio grátis" : "Envio",
-            delivery_estimate: {
+            // Portuguese on purpose, like the line items: this text is what
+            // the shop reads when packing, and the function has no language.
+            // An order holding something ordered in says so here, because
+            // Stripe shows one estimate and this is the last screen before
+            // the card: a customer must not read "2 to 5 working days" and
+            // then wait three weeks for the half of it that was never on the
+            // shelf. The lupas in that order still leave straight away.
+            display_name: [
+              freeShipping ? "Envio grátis" : "Envio",
+              ordered.length && ordered.length < lines.length ? "(as lupas seguem primeiro)" : "",
+            ].filter(Boolean).join(" "),
+            delivery_estimate: ordered.length ? {
+              minimum: { unit: "day", value: slowest[0] },
+              maximum: { unit: "day", value: slowest[1] },
+            } : {
               minimum: { unit: "business_day", value: zone.days[0] },
               maximum: { unit: "business_day", value: zone.days[1] },
             },

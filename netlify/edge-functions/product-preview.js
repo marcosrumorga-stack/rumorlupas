@@ -63,9 +63,12 @@ const SITE = "https://rumorlupas.com";
 const HTML_LANG = { pt: "pt-PT", en: "en", es: "es" };
 const OG_LOCALE = { pt: "pt_PT", en: "en_GB", es: "es_ES" };
 
-// Matches /lupas/<slug> and the same under /en and /es, with or without a
-// trailing slash. Anything else is none of this function's business.
-const PATH = /^\/(?:(en|es)\/)?lupas\/([^/]+)\/?$/;
+// Matches /<category>/<slug> and the same under /en and /es, with or without a
+// trailing slash - /lupas/oakley-juliet, /camisas/brasil-26-27. The category is
+// captured rather than hard-coded, and checked against the product's own once
+// the catalogue is loaded, so /camisas/oakley-juliet is not a second address
+// for the same page.
+const PATH = /^\/(?:(en|es)\/)?([a-z][a-z0-9-]*)\/([^/]+)\/?$/;
 
 function escapeAttr(value) {
   return String(value)
@@ -91,17 +94,21 @@ export default async (request, context) => {
   if (!match) return;
 
   const lang = match[1] || "pt";
+  const categoryPath = match[2];
 
   let catalogue;
   let strings;
   let product;
   try {
     ({ catalogue, strings } = await loadCatalogue(url.origin));
-    product = catalogue.findProductBySlug(match[2]);
+    product = catalogue.findProductBySlug(match[3]);
   } catch (error) {
     console.error("product-preview: catalogue", error && error.message);
     return;
   }
+  // The slug found it, but only at its own category's address. Reaching a
+  // shirt under /lupas/ is not a page this should dress up as one.
+  if (product && catalogue.productSetup(product).path !== categoryPath) product = null;
 
   const {
     hasColors, defaultColorId, findColor, productImages, imageSrcset, sizedImage,
@@ -135,7 +142,7 @@ export default async (request, context) => {
 
     const images = productImages(product, colorId);
     const cover = images[0];
-    const path = `/${lang === "pt" ? "" : lang + "/"}lupas/${productSlug(product)}`;
+    const path = `/${lang === "pt" ? "" : lang + "/"}${categoryPath}/${productSlug(product)}`;
     const canonical = SITE + path;
     const shared = canonical + (wanted && colorId === wanted ? `?cor=${encodeURIComponent(colorId)}` : "");
 
@@ -203,7 +210,10 @@ export default async (request, context) => {
 };
 
 export const config = {
-  path: ["/lupas/*", "/en/lupas/*", "/es/lupas/*"],
+  path: [
+    "/lupas/*", "/en/lupas/*", "/es/lupas/*",
+    "/camisas/*", "/en/camisas/*", "/es/camisas/*",
+  ],
   // If the function cannot run at all, serve the page without it. Netlify's
   // default is to answer with an error, which would take the product pages
   // down over what is only an improvement to them.

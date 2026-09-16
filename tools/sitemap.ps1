@@ -28,12 +28,30 @@ $source = [System.IO.File]::ReadAllText(
 $block = [regex]::Match($source, 'const PRODUCTS = \[(.*?)\n\];', 'Singleline').Groups[1].Value
 $block = [regex]::Replace($block, '(?m)^\s*//.*$', '')
 
+# Each category owns a path and a slug prefix. This is a copy of CATEGORY_SETUP
+# in products.js, which this script cannot read - change one and change the
+# other in the same commit. A category missing here falls back to the lupas.
+$CATEGORIES = @{
+  lupas   = @{ path = "lupas";   slugPrefix = "oakley-" }
+  camisas = @{ path = "camisas"; slugPrefix = "" }
+}
+
 $products = @()
-foreach ($m in [regex]::Matches($block, '(?m)^\s{2,4}(\{ )?id: "([a-z0-9.-]+)",\s*\r?\n?\s*name: "([^"]+)"')) {
+$hits = [regex]::Matches($block, '(?m)^\s{2,4}(\{ )?id: "([a-z0-9.-]+)",\s*\r?\n?\s*name: "([^"]+)"')
+for ($i = 0; $i -lt $hits.Count; $i++) {
+  $m = $hits[$i]
+  # Everything until the next product, so its own category is read and not the
+  # next one's.
+  $fim = if ($i + 1 -lt $hits.Count) { $hits[$i + 1].Index } else { $block.Length }
+  $texto = $block.Substring($m.Index, $fim - $m.Index)
+  $cat = if ($texto -match 'category: "([a-z0-9-]+)"') { $Matches[1] } else { "lupas" }
+  $setup = if ($CATEGORIES.ContainsKey($cat)) { $CATEGORIES[$cat] } else { $CATEGORIES["lupas"] }
+
   $slug = $m.Groups[3].Value.ToLowerInvariant()
   $slug = $slug.Normalize([Text.NormalizationForm]::FormD) -replace '\p{Mn}', ''
   $slug = ($slug -replace '[^a-z0-9]+', '-').Trim('-')
-  $products += [pscustomobject]@{ id = $m.Groups[2].Value; slug = "oakley-$slug" }
+  $products += [pscustomobject]@{
+    id = $m.Groups[2].Value; slug = "$($setup.slugPrefix)$slug"; path = $setup.path }
 }
 
 $dupes = $products | Group-Object slug | Where-Object { $_.Count -gt 1 }
@@ -63,7 +81,7 @@ function Add-Page([string]$path, [string]$priority, [string]$freq, [string[]]$la
     path = $path; priority = $priority; freq = $freq; langs = $langs }
 }
 Add-Page "/" "1.0" "daily"
-foreach ($p in $products) { Add-Page "/lupas/$($p.slug)" "0.8" "weekly" }
+foreach ($p in $products) { Add-Page "/$($p.path)/$($p.slug)" "0.8" "weekly" }
 # Portuguese only: the documents themselves are not translated, and the notice
 # at the top of each says only the Portuguese version is binding. Must match
 # PT_ONLY in i18n.js.
@@ -102,7 +120,7 @@ $r = @(
   "",
   "# The address each model was sold at before /lupas/ existed. Kept because it",
   "# is in the sitemap Google already fetched and in links people have shared.")
-foreach ($p in $products) { $r += "/produto.html  id=$($p.id)  /lupas/$($p.slug)  301!" }
+foreach ($p in $products) { $r += "/produto.html  id=$($p.id)  /$($p.path)/$($p.slug)  301!" }
 
 # Before the catch-all below, or /lupas/<retirado> would be rewritten to
 # produto.html and answer 200 with "produto nao encontrado".
@@ -120,11 +138,14 @@ if ($RETIRED.Count) {
 
 # The model rules come before the catch-all, or /en/lupas/x would be rewritten
 # to /lupas/x, which is not a file on disk and would 404.
-$r += "", "# Serve the product page at its own address without changing the bar."
-foreach ($lang in $LANGS | Where-Object { $_ -ne "pt" }) {
-  $r += "/$lang/lupas/*  /produto.html  200"
+$r += "", "# Serve the product page at its own address without changing the bar.",
+      "# One pair of rules per category that has products in it."
+foreach ($path in ($products | ForEach-Object { $_.path } | Select-Object -Unique)) {
+  foreach ($lang in $LANGS | Where-Object { $_ -ne "pt" }) {
+    $r += "/$lang/$path/*  /produto.html  200"
+  }
+  $r += "/$path/*  /produto.html  200"
 }
-$r += "/lupas/*  /produto.html  200"
 
 $r += "", "# The Meta catalogue feed. Generated per request from products.js rather",
       "# than kept as a file, so a sale cannot leave a sold pair being advertised",

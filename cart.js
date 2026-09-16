@@ -26,15 +26,43 @@ const checkoutBtn = document.getElementById("checkoutBtn");
 // A cart key is "<productId>" for a plain product, or "<productId>|<colorId>"
 // when the product comes in more than one colour. Keys written before colours
 // existed have no suffix, and still resolve to the product's first colour.
-function cartKey(productId, colorId) {
+// A third part carries what is printed on a shirt - "brasil-26-27|m|RONALDO~9".
+// Two shirts printed differently are two lines, which is what they are.
+function cartKey(productId, colorId, printing) {
+  const printed = printingToKey(printing);
+  if (printed) return `${productId}|${colorId || ""}|${printed}`;
   return colorId ? `${productId}|${colorId}` : productId;
 }
 
 function cartLine(key, qty) {
-  const [productId, colorId] = key.split("|");
+  const [productId, colorId, printed] = key.split("|");
   const product = PRODUCTS.find((p) => p.id === productId);
   if (!product) return null;
-  return { key, qty, product, color: findColor(product, colorId) };
+  // Ignored for a product that cannot be printed, so a key edited by hand
+  // cannot add a free line of text to a pair of sunglasses.
+  const printing = printingPrice(product) ? printingFromKey(printed) : null;
+  return { key, qty, product, color: findColor(product, colorId), printing };
+}
+
+// What a line costs each: the product, plus the printing when it carries some.
+function linePrice(line) {
+  return line.product.price + (line.printing ? printingPrice(line.product) : 0);
+}
+
+// How many of each category the cart holds, counted across every line - which
+// is what the minimum is about: two shirts, whether or not they are the same
+// shirt, and whatever else is in the basket beside them.
+function categoryCounts() {
+  const counts = {};
+  cartLines().forEach((line) => {
+    const id = productCategory(line.product);
+    counts[id] = (counts[id] || 0) + line.qty;
+  });
+  return counts;
+}
+
+function cartShortfalls() {
+  return shortOfMinimum(categoryCounts());
 }
 
 function cartLines() {
@@ -43,8 +71,8 @@ function cartLines() {
     .filter(Boolean);
 }
 
-function addToCart(productId, colorId) {
-  const key = cartKey(productId, colorId);
+function addToCart(productId, colorId, printing) {
+  const key = cartKey(productId, colorId, printing);
   cart[key] = (cart[key] || 0) + 1;
   saveCart(cart);
   renderCart();
@@ -113,7 +141,7 @@ function renderCountrySelect() {
 }
 
 function cartTotal() {
-  return cartLines().reduce((sum, line) => sum + line.product.price * line.qty, 0);
+  return cartLines().reduce((sum, line) => sum + linePrice(line) * line.qty, 0);
 }
 
 // Discount codes. The browser cannot read the list - it lives behind the
@@ -311,8 +339,10 @@ function renderCart() {
   if (lines.length === 0) {
     cartItemsEl.innerHTML = `<p class="cart-drawer__empty">${t("cart.empty")}</p>`;
   } else {
-    cartItemsEl.innerHTML = lines.map(({ key, qty, product, color }) => {
+    cartItemsEl.innerHTML = lines.map((line) => {
+      const { key, qty, product, color, printing } = line;
       const images = productImages(product, color && color.id);
+      const sized = productSetup(product).variants === "size";
       return `
         <div class="cart-item">
           <div class="cart-item__thumb">${
@@ -320,8 +350,11 @@ function renderCart() {
           }</div>
           <div class="cart-item__info">
             <p class="cart-item__name">${product.name}</p>
-            ${color ? `<p class="cart-item__color"><span class="swatch" style="--swatch: ${swatchBackground(color)}"></span>${colorName(color)}</p>` : ""}
-            <p class="cart-item__price">${formatPrice(product.price)} · <span class="cart-item__qty-inline">${qty}x</span></p>
+            ${color ? `<p class="cart-item__color">${
+              sized ? "" : `<span class="swatch" style="--swatch: ${swatchBackground(color)}"></span>`
+            }${colorName(color)}</p>` : ""}
+            ${printing ? `<p class="cart-item__color">${t("print.line").replace("{x}", printingLabel(printing))}</p>` : ""}
+            <p class="cart-item__price">${formatPrice(linePrice(line))} · <span class="cart-item__qty-inline">${qty}x</span></p>
             <div class="cart-item__qty">
               <button data-action="dec" data-id="${key}">−</button>
               <span>${qty}</span>
@@ -343,6 +376,7 @@ function renderCart() {
   renderCoupon();
   renderShipProgress();
   renderShipCost();
+  renderMinimum();
 }
 
 // One button does both jobs, and says which one it is about to do: it removes
@@ -425,8 +459,36 @@ function renderShipCost() {
   const cents = couponFreeShipping() ? 0 : shippingCentsFor(shipCountry, cartTotal());
   const price = cents === 0 ? t("cart.shipFree") : formatPrice(cents / 100);
 
-  note.textContent = `${t("cart.note")} · ${price} · ${
-    t("cart.shipDays").replace("{a}", zone.days[0]).replace("{b}", zone.days[1])}`;
+  // One estimate per kind of thing in the cart, because they do not travel
+  // together: what is on the shelf leaves now, what is ordered in leaves when
+  // it arrives. With only one kind, it reads exactly as it always did.
+  const estimates = deliveryEstimates(Object.keys(categoryCounts()));
+  const when = (entry) => (entry.days
+    ? t("cart.shipDaysOpen").replace("{a}", entry.days[0]).replace("{b}", entry.days[1])
+    : t("cart.shipDays").replace("{a}", zone.days[0]).replace("{b}", zone.days[1]));
+
+  const timing = estimates.length > 1
+    ? estimates.map((e) => `${categoryLabel(e.category)}: ${when(e)}`).join(" · ")
+    : (estimates.length ? when(estimates[0]) : "");
+
+  note.textContent = [t("cart.note"), price, timing].filter(Boolean).join(" · ");
+}
+
+// Says it before the button is pressed, and stops the press. The checkout
+// function refuses the same order anyway; this is so nobody meets that refusal
+// at the payment page, with their card already out.
+function renderMinimum() {
+  const el = document.getElementById("cartMinimum");
+  if (!el) return;
+  const short = cartShortfalls();
+  el.hidden = short.length === 0;
+  el.textContent = short
+    .map((s) => t("cart.minimum")
+      .replace("{cat}", categoryLabel(s.category))
+      .replace("{n}", s.need)
+      .replace("{m}", s.need - s.have))
+    .join(" ");
+  checkoutBtn.disabled = short.length > 0;
 }
 
 function renderShipProgress() {
@@ -512,6 +574,18 @@ checkoutBtn.addEventListener("click", async () => {
         checkoutBtn.disabled = false;
         checkoutBtn.textContent = t("cart.checkout");
         mendCart(detail.key, detail.available);
+        return;
+      }
+      // The drawer already says this and keeps the button off, so reaching it
+      // means the cart changed in another tab. Redraw and say it here too.
+      if (detail && detail.error === "minimum") {
+        checkoutBtn.textContent = t("cart.checkout");
+        renderCart();
+        openCart();
+        showNotice(t("cart.minimum")
+          .replace("{cat}", categoryLabel(detail.group))
+          .replace("{n}", detail.need)
+          .replace("{m}", detail.need - detail.have));
         return;
       }
       // The code stopped working between opening the drawer and paying -

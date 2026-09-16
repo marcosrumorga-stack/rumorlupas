@@ -12,7 +12,9 @@ nav.querySelectorAll("a").forEach((link) => {
 // in the sitemap Google already fetched, and in links people have sent each
 // other. Netlify redirects the old form, but the page resolves both regardless.
 const product = (function () {
-  const slug = barePath(window.location.pathname).replace(/^\/lupas\//, "").replace(/\/$/, "");
+  // The first segment is the category's own path - /lupas/ for the sunglasses,
+  // /camisas/ for the shirts - and only the slug after it names the product.
+  const slug = barePath(window.location.pathname).replace(/^\/[^/]+\//, "").replace(/\/$/, "");
   const bySlug = slug && findProductBySlug(slug);
   if (bySlug) return bySlug;
   const id = new URLSearchParams(window.location.search).get("id");
@@ -114,7 +116,21 @@ if (!product) {
             "@type": "DefinedRegion",
             addressCountry: code,
           })),
-          deliveryTime: {
+          // A product ordered in when it sells carries its own estimate, which
+          // has nothing to do with the courier: the wait is the supplier, and
+          // it is the same wherever the parcel is going. Telling Google the
+          // shelf estimate for one of those would be a promise the shop cannot
+          // keep, and Google shows this date in the result.
+          deliveryTime: productSetup(product).deliveryDays ? {
+            "@type": "ShippingDeliveryTime",
+            handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 1, unitCode: "DAY" },
+            transitTime: {
+              "@type": "QuantitativeValue",
+              minValue: productSetup(product).deliveryDays[0],
+              maxValue: productSetup(product).deliveryDays[1],
+              unitCode: "DAY",
+            },
+          } : {
             "@type": "ShippingDeliveryTime",
             handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 1, unitCode: "DAY" },
             transitTime: {
@@ -357,6 +373,73 @@ if (!product) {
     });
   }
 
+  // The kit - micro bag, cloth, case - goes with the lupas and with nothing
+  // else, so the block that lists it belongs to those categories only. Left in
+  // place it would promise a shirt arrives with a lens cloth.
+  const includes = document.getElementById("productIncludes");
+  if (includes && !productSetup(product).kit) includes.hidden = true;
+
+  // The assurances line promises the courier's working days, which is true of
+  // what sits on the shelf. Something ordered in when it sells waits for the
+  // supplier instead, and says so in calendar days.
+  const delivery = document.getElementById("assureDelivery");
+  const ownDays = productSetup(product).deliveryDays;
+  if (delivery && ownDays) {
+    delivery.removeAttribute("data-i18n");
+    delivery.textContent = t("assure.deliveryOpen")
+      .replace("{a}", ownDays[0]).replace("{b}", ownDays[1]);
+  }
+
+  // Printing a name and a number on the back, for the products that offer it.
+  // The fields only exist once the box is ticked, and what they hold is
+  // cleaned as it is typed, so the line under them is exactly what gets
+  // printed rather than what was typed.
+  const printing = document.getElementById("printing");
+  const printToggle = document.getElementById("printToggle");
+  const printName = document.getElementById("printName");
+  const printNumber = document.getElementById("printNumber");
+  const printFields = document.getElementById("printFields");
+  const printNote = document.getElementById("printNote");
+  const extra = printingPrice(product);
+
+  function currentPrinting() {
+    if (!printToggle || !printToggle.checked) return null;
+    return cleanPrinting(printName.value, printNumber.value);
+  }
+
+  function renderPrinting() {
+    if (!printing) return;
+    const on = printToggle.checked;
+    printFields.hidden = !on;
+    const chosen = currentPrinting();
+    printNote.className = "printing__note";
+    if (!on) {
+      printNote.textContent = t("print.note");
+    } else if (chosen) {
+      printNote.textContent = t("print.preview").replace("{x}", printingLabel(chosen));
+    } else {
+      printNote.className = "printing__note printing__note--bad";
+      printNote.textContent = t("print.empty");
+    }
+  }
+
+  if (printing) {
+    if (!extra) {
+      printing.hidden = true;
+    } else {
+      document.getElementById("printToggleLabel").textContent =
+        t("print.toggle").replace("{x}", formatPrice(extra));
+      document.getElementById("printNameLabel").textContent = t("print.name");
+      document.getElementById("printNumberLabel").textContent = t("print.number");
+      printName.maxLength = PRINT_NAME_MAX;
+      printing.hidden = false;
+      printToggle.addEventListener("change", renderPrinting);
+      printName.addEventListener("input", renderPrinting);
+      printNumber.addEventListener("input", renderPrinting);
+      renderPrinting();
+    }
+  }
+
   renderColors();
   renderGallery();
   renderHistory();
@@ -366,6 +449,13 @@ if (!product) {
 
   addBtn.addEventListener("click", () => {
     if (isSoldOut(product, currentColor)) return;
-    addToCart(product.id, currentColor);
+    // Ticked but empty is a customer who meant to print something: say so
+    // rather than quietly selling a plain shirt at the printed price.
+    if (printToggle && printToggle.checked && !currentPrinting()) {
+      renderPrinting();
+      printName.focus();
+      return;
+    }
+    addToCart(product.id, currentColor, currentPrinting());
   });
 }

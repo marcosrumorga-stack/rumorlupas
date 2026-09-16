@@ -1063,6 +1063,72 @@ button.swatch { position: relative; }
   background: var(--swatch);
   box-shadow: 0 0 0 1px var(--border), inset 0 1px 1.5px rgba(255,255,255,0.22);
 }
+/* A size has no colour to show, so its dot becomes a pill with the size in it.
+   Same states as a colour dot - selected, sold out - only wider. */
+.swatch--size {
+  width: auto;
+  height: auto;
+  min-width: 38px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--border);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text);
+}
+.swatch--size:hover { transform: none; box-shadow: 0 0 0 1px var(--text-muted); }
+.swatch--size.active {
+  box-shadow: 0 0 0 1px var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+.swatch--size.out { text-decoration: line-through; }
+.swatch--size.out::after { content: none; }
+
+/* Printing a name and a number on a shirt. Hidden until the box is ticked, so
+   the page stays as simple as a lupa's for everything that cannot be printed. */
+.printing { margin: 0 0 14px; }
+.printing__toggle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.printing__fields {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+.printing__fields label { flex: 1 1 auto; font-size: 0.78rem; color: var(--text-muted); }
+.printing__fields input {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  font: inherit;
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+.printing__fields input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.printing__number { flex: 0 0 86px !important; }
+/* Reserved whether or not there is anything to say, so ticking the box and
+   typing does not shove the buy button down the page. */
+.printing__note {
+  min-height: 1.15rem;
+  margin-top: 7px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.printing__note--bad { color: var(--accent); }
+
 button.swatch { cursor: pointer; transition: box-shadow 0.15s, transform 0.15s; }
 button.swatch:hover { transform: scale(1.12); }
 button.swatch.active {
