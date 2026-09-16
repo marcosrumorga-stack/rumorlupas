@@ -67,34 +67,37 @@ function loadPixel() {
   fbq("track", "PageView");
 }
 
-function buildBanner() {
-  const wrap = document.createElement("div");
-  wrap.className = "consent";
-  wrap.setAttribute("role", "dialog");
-  wrap.setAttribute("aria-labelledby", "consentText");
+// The banner is written into every page rather than built here. It used to be
+// created by this file, which meant it could not be drawn until i18n.js and
+// this script had both arrived - and on the home page it is the largest thing
+// in view, so Cloudflare measured it as the element the whole page waited for.
+// In the markup it paints with the HTML. A small script in each page's head
+// hides it before the first paint for anyone who already answered, so nobody
+// who has chosen ever sees it flash; that script repeats CONSENT_KEY and
+// CONSENT_VERSION, so changing either means changing the head of every page.
+//
+// This file still owns everything that matters: the storage, the buttons and
+// the pixel. Only the drawing moved.
+const BANNER_CLASS = "consent-answered";
 
-  const privacy = typeof localePath === "function"
-    ? localePath("/privacidade.html")
-    : "/privacidade.html";
+function hideBanner() {
+  document.documentElement.classList.add(BANNER_CLASS);
+}
 
-  wrap.innerHTML = `
-    <div class="consent__inner">
-      <p class="consent__text" id="consentText">
-        ${t("consent.text")}
-        <a class="consent__link" href="${privacy}">${t("consent.more")}</a>
-      </p>
-      <div class="consent__actions">
-        <button type="button" class="consent__btn" data-choice="reject">${t("consent.reject")}</button>
-        <button type="button" class="consent__btn" data-choice="accept">${t("consent.accept")}</button>
-      </div>
-    </div>`;
+function openBanner() {
+  if (!PIXEL_ID) return;
+  document.documentElement.classList.remove(BANNER_CLASS);
+}
+
+function wireBanner() {
+  const wrap = document.getElementById("consentBanner");
+  if (!wrap) return;
 
   wrap.querySelectorAll("[data-choice]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const choice = btn.dataset.choice;
       saveConsent(choice);
-      wrap.remove();
-      banner = null;
+      hideBanner();
       refreshControl();
       if (choice === "accept") loadPixel();
       // Withdrawing cannot unload a script that already ran, so a refusal made
@@ -102,16 +105,6 @@ function buildBanner() {
       else if (window.fbq) window.location.reload();
     });
   });
-
-  document.body.appendChild(wrap);
-  return wrap;
-}
-
-let banner = null;
-
-function openBanner() {
-  if (!PIXEL_ID || banner) return;
-  banner = buildBanner();
 }
 
 // The privacy policy carries a control to see the current answer and change
@@ -135,10 +128,18 @@ window.rlConsent = {
 
 if (PIXEL_ID) {
   const choice = readConsent();
+  // The head script has already hidden it if there was an answer; this is the
+  // same decision made again, for the case where that script did not run.
+  if (choice !== null) hideBanner();
   if (choice === "accept") loadPixel();
-  else if (choice === null) openBanner();
+  wireBanner();
 
   const changeBtn = document.getElementById("consentChange");
   if (changeBtn) changeBtn.addEventListener("click", openBanner);
   refreshControl();
+} else {
+  // No pixel means nothing to ask about. The markup sits in the page either
+  // way, so it has to be put away here - a moment late, since this runs after
+  // the paint, but only ever in the state where the banner should not exist.
+  hideBanner();
 }

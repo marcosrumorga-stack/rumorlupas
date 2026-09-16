@@ -3,6 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* Hides the consent banner before anything is painted, for a visitor who has
+   already answered - so the banner can live in the markup and draw with the
+   page instead of waiting for two scripts. Repeats CONSENT_KEY and
+   CONSENT_VERSION from consent.js: change one, change all of these. */
+try {
+  var rlChoice = JSON.parse(localStorage.getItem("rumorlupas_consent") || "null");
+  if (rlChoice && rlChoice.v === 1 && (rlChoice.choice === "accept" || rlChoice.choice === "reject")) {
+    document.documentElement.className += " consent-answered";
+  }
+} catch (e) { /* private browsing: we ask again, which is the safe way to err */ }
+</script>
 <title data-i18n="meta.notfound.title">Página não encontrada — RumorLupas</title>
 <meta name="robots" content="noindex">
 <!-- Every path here is root-absolute on purpose. Netlify serves this file for
@@ -49,6 +61,25 @@
   </div>
 </footer>
 
+<!-- Written here rather than by consent.js: on the home page this is the
+     largest thing a first-time visitor sees, and built by script it could not
+     be drawn until i18n.js and consent.js had both arrived. The text is the
+     Portuguese one; on /en/ and /es/ it is swapped after the paint, which can
+     move the banner by a line - nobody reading Portuguese sees that, and it is
+     the trade for the page drawing sooner for everyone.
+     consent.js still owns the buttons, the storage and the pixel. -->
+<div class="consent" id="consentBanner" role="dialog" aria-labelledby="consentText">
+  <div class="consent__inner">
+    <p class="consent__text" id="consentText">
+      <span data-i18n="consent.text">Usamos cookies da Meta para perceber se a nossa publicidade funciona. Só os ativamos se concordar, e o site funciona exatamente igual se recusar.</span>
+      <a class="consent__link" href="/privacidade.html" data-i18n="consent.more">Saber mais</a>
+    </p>
+    <div class="consent__actions">
+      <button type="button" class="consent__btn" data-choice="reject" data-i18n="consent.reject">Recusar</button>
+      <button type="button" class="consent__btn" data-choice="accept" data-i18n="consent.accept">Aceitar</button>
+    </div>
+  </div>
+</div>
 <script src="/i18n.js"></script>
 <script src="/consent.js"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>

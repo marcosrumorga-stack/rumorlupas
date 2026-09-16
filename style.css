@@ -1416,6 +1416,12 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
    contrast: EU guidance treats a prominent "accept" beside a faint "reject" as
    consent that was never freely given. Only appears once consent.js has a
    pixel id to ask about. */
+/* The banner is in the markup so it draws with the page. This is how it is
+   put away: set by the small script in each page's head before anything is
+   painted when the visitor has already answered, and by consent.js when they
+   answer or when there is no pixel to ask about. */
+.consent-answered .consent { display: none; }
+
 .consent {
   position: fixed;
   left: 0;
