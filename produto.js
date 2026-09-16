@@ -90,7 +90,7 @@ if (!product) {
       "@type": "Product",
       // The same words the tab and the search result use, from the category,
       // rather than "Oakley" in front of everything the shop sells.
-      name: `${productSetup(product).titleWord} ${product.name}`,
+      name: titleLead(product),
       sku: product.id,
       image: productImages(product, currentColor).map(absolute),
       description: productHistory(product),
@@ -436,8 +436,10 @@ if (!product) {
     } else {
       document.getElementById("printToggleLabel").textContent =
         t("print.toggle").replace("{x}", formatPrice(extra));
-      document.getElementById("printNameLabel").textContent = t("print.name");
-      document.getElementById("printNumberLabel").textContent = t("print.number");
+      // The spans inside the labels, not the labels: a label wraps its input,
+      // and writing textContent on it deletes the input along with the words.
+      document.getElementById("printNameText").textContent = t("print.name");
+      document.getElementById("printNumberText").textContent = t("print.number");
       printName.maxLength = PRINT_NAME_MAX;
       printing.hidden = false;
       printToggle.addEventListener("change", renderPrinting);

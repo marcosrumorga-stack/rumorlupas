@@ -98,11 +98,14 @@ try {
             <input type="checkbox" id="printToggle">
             <span id="printToggleLabel">Personalizar com nome e número</span>
           </label>
+          <!-- The wording lives in its own span inside each label, never as the
+               label's own text: the label wraps the input, and translating it by
+               writing textContent on the label takes the input out with it. -->
           <div class="printing__fields" id="printFields" hidden>
-            <label id="printNameLabel">Nome nas costas
+            <label id="printNameLabel"><span id="printNameText">Nome nas costas</span>
               <input type="text" id="printName" autocomplete="off" spellcheck="false" inputmode="text">
             </label>
-            <label class="printing__number" id="printNumberLabel">Número
+            <label class="printing__number" id="printNumberLabel"><span id="printNumberText">Número</span>
               <input type="text" id="printNumber" autocomplete="off" inputmode="numeric" maxlength="2">
             </label>
           </div>

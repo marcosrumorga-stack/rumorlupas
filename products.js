@@ -635,7 +635,14 @@ const PRODUCTS = [
     // It comes last in this list on purpose: the order of the tabs is the
     // order the categories first appear here, and the lupas come first.
     id: "brasil-26-27",
-    name: "Brasil 26/27",
+    name: "Camisola Brasil Principal 26/27 Copa do Mundo 2026 - Homem (Versão Jogador)",
+    // The name opens with "Camisola", so the category's "Camisa" stays off the
+    // front of it - see titleLead.
+    namesItself: true,
+    // Written out because the address would otherwise be rebuilt from the name
+    // above, and this one is already live and already shared. It is also a name
+    // that would make a sixty-character URL nobody wants to paste into WhatsApp.
+    slug: "brasil-26-27",
     category: "camisas",
     price: 35,
     // Five euros more to have a name and a number printed on the back. The
@@ -671,8 +678,11 @@ const PRODUCTS = [
 //
 // Derived from the name rather than stored, so a new model needs nothing extra
 // — but that also means renaming a model changes its URL, and the old one then
-// needs a line in _redirects or the links already out there break.
+// needs a line in _redirects or the links already out there break. A product
+// can write its own `slug` instead, which is how a name gets rewritten without
+// the address moving under the links already out there.
 function productSlug(product) {
+  if (product.slug) return `${productSetup(product).slugPrefix}${product.slug}`;
   const name = product.name
     .toLowerCase()
     .normalize("NFD")
@@ -925,15 +935,29 @@ function ogImage(src) {
 // Nobody searches "Juliet"; they search "oakley juliet portugal". So the title
 // leads with Oakley and carries the two things that decide a click: how much
 // choice is left, and the price.
+// What a product is called with its category's word in front: "Oakley Juliet"
+// for the lupas, because that is what people type into Google. Three places
+// need exactly this string - the page title, the Google markup and the link
+// preview the edge function writes - so it is written once here.
+//
+// A product whose own name already says what the thing is sets `namesItself`
+// and keeps the word off, or the page reads "Camisa Camisola Brasil Principal
+// 26/27". It is a flag rather than a guess at the name, because guessing does
+// not survive contact with Portuguese: camisola does not begin with camisa,
+// they only share five letters, and any rule that catches this pair catches
+// things it should not.
+function titleLead(product) {
+  const word = productSetup(product).titleWord;
+  return word && !product.namesItself ? `${word} ${product.name}` : product.name;
+}
+
 function productPageTitle(product, tr) {
   const colours = hasColors(product) ? product.colors : [];
   const left = colours.length
     ? colours.filter((c) => !isSoldOut(product, c.id))
     : (isSoldOut(product, null) ? [] : [null]);
 
-  // "Oakley Juliet" for the lupas, because that is what people type into
-  // Google; "Camisa Brasil 26/27" for a shirt, for the same reason.
-  const lead = `${productSetup(product).titleWord} ${product.name}`;
+  const lead = titleLead(product);
 
   if (colours.length && !left.length) {
     return `${lead} — ${tr("product.soldOut").toLowerCase()} | RumorLupas`;
@@ -1141,7 +1165,7 @@ if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     PRODUCTS, stockOf, isSoldOut, findColor, productCategory, productSlug,
     findProductBySlug, hasColors, defaultColorId, productImages, ogImage,
-    formatPrice, productPageTitle, productPageDescription,
+    formatPrice, titleLead, productPageTitle, productPageDescription,
     sizedImage, imageSrcset, GALLERY_SIZES,
     categorySetup, productSetup, CATEGORY_SETUP,
     cleanPrinting, printingFromKey, printingToKey, printingLabel, printingPrice,

@@ -113,7 +113,7 @@ export default async (request, context) => {
   const {
     hasColors, defaultColorId, findColor, productImages, imageSrcset, sizedImage,
     ogImage, isSoldOut, productPageTitle, productPageDescription, productSlug,
-    GALLERY_SIZES,
+    titleLead, GALLERY_SIZES,
   } = catalogue;
   const { I18N } = strings;
   // An address that names no model: produto.js already answers that one, with
@@ -153,9 +153,8 @@ export default async (request, context) => {
 
     const title = productPageTitle(product, tr);
     const description = productPageDescription(product, tr);
-    // "Oakley Juliet", "Camisa Brasil 26/27" - the category's own word, the
-    // same one the page title and the Google markup lead with.
-    const lead = `${catalogue.productSetup(product).titleWord} ${product.name}`;
+    // The same string the page title and the Google markup lead with.
+    const lead = titleLead(product);
     const ogTitle = colorLabel
       ? `${lead} — ${colorLabel} | RumorLupas`
       : title;

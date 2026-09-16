@@ -116,7 +116,10 @@ const PRODUCTS = {
   // Not a lupa. The variants are sizes, and `printing` is what a name and a
   // number on the back costs on top - charged from this number, never from
   // anything the browser sends.
-  "brasil-26-27":    { name: "Camisa Brasil 26/27",   price: 35, printing: 5,
+  // The full name, not a short one: the Stripe page should say what the page
+  // the customer came from said, or the row reads as a different product.
+  "brasil-26-27":    { name: "Camisola Brasil Principal 26/27 Copa do Mundo 2026 - Homem (Versão Jogador)",
+    price: 35, printing: 5,
     // Ordered in from the supplier when it sells: at least two per order, and
     // ten to twenty-one calendar days rather than the courier's working days.
     // The shop's own copy of what CATEGORY_SETUP says in products.js - this
