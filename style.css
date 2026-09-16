@@ -929,7 +929,11 @@ button.swatch { position: relative; }
 /* Products */
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  /* auto-fill, not auto-fit: auto-fit collapses the columns nothing lands in,
+     so a tab holding a single product stretched that one card across the whole
+     page. auto-fill keeps the empty columns, so one camisa is the same size as
+     one lupa and the grid fills left to right as models are added. */
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 24px;
 }
 .product-card {
