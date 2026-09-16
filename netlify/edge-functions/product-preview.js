@@ -138,7 +138,12 @@ export default async (request, context) => {
       ? wanted
       : defaultColorId(product);
     const color = findColor(product, colorId);
-    const colorLabel = color ? tr(`color.${color.id}`) : "";
+    // Same fallback colorName() makes in the browser: a variant with no string
+    // of its own keeps the name written in the catalogue. The sizes have none
+    // on purpose - an "M" is an M in all three languages - and without this the
+    // preview of a shared shirt read "Camisa Brasil 26/27 — color.s".
+    const colorKey = color ? `color.${color.id}` : "";
+    const colorLabel = color ? (tr(colorKey) === colorKey ? color.name : tr(colorKey)) : "";
 
     const images = productImages(product, colorId);
     const cover = images[0];
