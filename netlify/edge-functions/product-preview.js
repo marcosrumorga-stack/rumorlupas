@@ -148,8 +148,11 @@ export default async (request, context) => {
 
     const title = productPageTitle(product, tr);
     const description = productPageDescription(product, tr);
+    // "Oakley Juliet", "Camisa Brasil 26/27" - the category's own word, the
+    // same one the page title and the Google markup lead with.
+    const lead = `${catalogue.productSetup(product).titleWord} ${product.name}`;
     const ogTitle = colorLabel
-      ? `Oakley ${product.name} — ${colorLabel} | RumorLupas`
+      ? `${lead} — ${colorLabel} | RumorLupas`
       : title;
 
     const tags = [
@@ -173,7 +176,7 @@ export default async (request, context) => {
         `<meta property="og:image" content="${escapeAttr(preview)}">`,
         `<meta property="og:image:width" content="1200">`,
         `<meta property="og:image:height" content="630">`,
-        `<meta property="og:image:alt" content="${escapeAttr(`Oakley ${product.name}${colorLabel ? " — " + colorLabel : ""}`)}">`,
+        `<meta property="og:image:alt" content="${escapeAttr(`${lead}${colorLabel ? " — " + colorLabel : ""}`)}">`,
       );
 
       // Exactly what produto.js will ask for, so this starts the one fetch the

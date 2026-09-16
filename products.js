@@ -759,6 +759,10 @@ const CATEGORY_SETUP = {
   lupas: {
     path: "lupas", slugPrefix: "oakley-", titleWord: "Oakley", kit: true,
     variants: "colour", countWord: "seo.colours", groupLabel: "aria.colour",
+    // What goes in the Product markup's brand field, which Google reads as a
+    // statement about who made the thing. Left out where the shop is not in a
+    // position to make that statement.
+    brand: "Oakley",
   },
   camisas: {
     path: "camisas", slugPrefix: "", titleWord: "Camisa", kit: false,

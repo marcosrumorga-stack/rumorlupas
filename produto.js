@@ -88,11 +88,18 @@ if (!product) {
     const data = {
       "@context": "https://schema.org",
       "@type": "Product",
-      name: `Oakley ${product.name}`,
+      // The same words the tab and the search result use, from the category,
+      // rather than "Oakley" in front of everything the shop sells.
+      name: `${productSetup(product).titleWord} ${product.name}`,
       sku: product.id,
       image: productImages(product, currentColor).map(absolute),
       description: productHistory(product),
-      brand: { "@type": "Brand", name: "Oakley" },
+      // Only where the category names one. Google reads this as who made the
+      // product; a shirt bought in from a supplier is not the shop's claim to
+      // make, and a wrong brand here is worse than no brand at all.
+      ...(productSetup(product).brand
+        ? { brand: { "@type": "Brand", name: productSetup(product).brand } }
+        : {}),
       offers: {
         "@type": "Offer",
         url: canonical,
