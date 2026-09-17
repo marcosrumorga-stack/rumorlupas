@@ -1058,13 +1058,18 @@ button.swatch { position: relative; }
      box is clipped by it - the menu would have been cut off at the row's own
      edge. Fixed takes it out of that box entirely. */
   position: fixed;
-  transform: translateY(-4px);
+  /* No transform here, and that is not a style choice. An element with a
+     transform becomes the anchor for fixed-position elements inside it, so the
+     nested panel stopped being placed against the window and started counting
+     as content of the panel above it - which grew scrollbars, horizontal and
+     vertical, around four items. The panels fade in and do not slide. */
   z-index: 30;
   display: flex;
   flex-direction: column;
-  min-width: 160px;
-  max-height: 320px;
+  min-width: 190px;
+  max-height: min(320px, 60vh);
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 6px;
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -1080,14 +1085,13 @@ button.swatch { position: relative; }
      be halfway, and animating it left the menu stuck hidden whenever the
      browser throttled the transition - in a background tab, for one. Delayed
      on the way out so the fade is seen, instant on the way in. */
-  transition: opacity 0.14s, transform 0.14s, visibility 0s 0.14s;
+  transition: opacity 0.14s, visibility 0s 0.14s;
 }
-.teams.open .teams__menu {
+.teams.open > .teams__menu {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateY(0);
-  transition: opacity 0.14s, transform 0.14s, visibility 0s;
+  transition: opacity 0.14s, visibility 0s;
 }
 /* The gap between the pill and the menu, bridged. The menu sits six pixels
    below the pill so it reads as a separate surface, and those six pixels were

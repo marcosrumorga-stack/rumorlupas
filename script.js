@@ -178,10 +178,9 @@ function wireGroupPills(row) {
   });
 }
 
-// One entry inside a menu. An entry that holds more entries carries them in a
-// panel of its own, opening beside it — the same shape the supplier's own menu
-// has, and the shape this catalogue already has in its data: Seleções holds
-// continents, a continent holds teams.
+// One entry inside a panel. An entry that holds more entries carries them in a
+// panel of its own, opening beside it: Seleções holds continents, a continent
+// holds teams, and a fourth level would draw itself the same way.
 function menuEntry(path, group) {
   const dentro = subGroups(activeCategory, path);
   const on = activeGroup === path || String(activeGroup || "").startsWith(`${path}/`);
@@ -197,9 +196,6 @@ function menuEntry(path, group) {
 function renderGroups() {
   const groups = categoryGroups(activeCategory);
   leagueTabs.hidden = !groups.length;
-  // The row of continents is gone: everything below a league now hangs off that
-  // league's own pill, which is how the shop Marcos is copying does it and one
-  // fewer row of pills above the grid.
   subLeagueTabs.hidden = true;
   subLeagueTabs.innerHTML = "";
   if (!groups.length) {
@@ -209,8 +205,8 @@ function renderGroups() {
 
   leagueTabs.setAttribute("aria-label", t("aria.league"));
   // "Todas" first: without it there is no way back to the whole tab once a
-  // league is picked. A league is marked active for everything inside it too,
-  // so Seleções stays lit while Portugal is the one being read.
+  // league is picked. A league is lit for everything inside it too, so Seleções
+  // stays lit while Portugal is the one being read.
   const league = activeLeague();
   leagueTabs.innerHTML = [
     groupPill("", t("league.all"), !activeGroup, null),
@@ -230,6 +226,11 @@ function renderGroups() {
   // to the continent without ever showing the teams inside it.
   leagueTabs.querySelectorAll(".teams").forEach((wrap) => {
     const abrir = () => {
+      // Already open: leave it exactly where it is. mouseover and pointerover
+      // bubble, so every twitch of the pointer inside a panel reaches the
+      // wrapper again, and measuring and replacing the panel on each one makes
+      // it shiver under the cursor.
+      if (wrap.classList.contains("open")) return;
       // Close whatever is open that this one does not live inside, so moving
       // between two continents swaps their panels instead of stacking them.
       leagueTabs.querySelectorAll(".teams.open").forEach((o) => {
@@ -245,11 +246,16 @@ function renderGroups() {
       const largura = menu.offsetWidth || 180;
 
       if (wrap.classList.contains("teams--aninhado")) {
-        // A nested panel opens beside its entry, and flips to the other side
-        // when there is no room on the right.
-        const cabe = r.right + largura + 8 <= window.innerWidth;
-        menu.style.left = `${Math.round(cabe ? r.right + 2 : Math.max(8, r.left - largura - 2))}px`;
-        menu.style.top = `${Math.round(Math.min(r.top - 6, window.innerHeight - menu.offsetHeight - 8))}px`;
+        // Beside the panel it lives in, not beside the entry: the entry stops
+        // at the panel's padding, so anchoring to it opened the second panel a
+        // few pixels on top of the first.
+        const painel = wrap.parentElement.getBoundingClientRect();
+        const cabe = painel.right + largura + 8 <= window.innerWidth;
+        menu.style.left = `${Math.round(cabe ? painel.right + 2 : Math.max(8, painel.left - largura - 2))}px`;
+        // Lined up with the entry, then pulled back up if the bottom would fall
+        // off the window.
+        const topo = Math.min(r.top - 6, window.innerHeight - menu.offsetHeight - 8);
+        menu.style.top = `${Math.round(Math.max(8, topo))}px`;
       } else {
         menu.style.top = `${Math.round(r.bottom + 6)}px`;
         const meio = r.left + r.width / 2 - largura / 2;
@@ -263,10 +269,17 @@ function renderGroups() {
     // reach for anyone who does not travel in straight lines.
     let aFechar = null;
     const cancelar = () => { if (aFechar) { clearTimeout(aFechar); aFechar = null; } };
-    const fechar = () => { cancelar(); aFechar = setTimeout(() => wrap.classList.remove("open"), 220); };
+    const fechar = () => { cancelar(); aFechar = setTimeout(() => wrap.classList.remove("open"), 300); };
 
-    wrap.addEventListener("mouseenter", () => { cancelar(); abrir(); });
+    // mouseenter and mouseover both, and pointerover on top: they are the same
+    // gesture but they are not dispatched identically everywhere, and a menu
+    // that opens on only one of them is a menu that sometimes does not open.
+    // abrir() is cheap and idempotent, so asking three times costs nothing.
+    ["mouseenter", "mouseover", "pointerover"].forEach((evento) => {
+      wrap.addEventListener(evento, () => { cancelar(); abrir(); });
+    });
     wrap.addEventListener("mouseleave", fechar);
+    wrap.addEventListener("pointerleave", fechar);
     wrap.addEventListener("focusin", () => { cancelar(); abrir(); });
     wrap.addEventListener("focusout", (e) => { if (!wrap.contains(e.relatedTarget)) fechar(); });
     wrap.addEventListener("keydown", (e) => { if (e.key === "Escape") { cancelar(); wrap.classList.remove("open"); } });
