@@ -768,6 +768,7 @@ const I18N = {
 
 
 
+
   },
 
   en: {
@@ -1533,6 +1534,7 @@ const I18N = {
 
 
 
+
   },
 
   es: {
@@ -2288,6 +2290,7 @@ const I18N = {
     "history.vitoria-26-27": "Vitória — camiseta principal de la temporada 26/27. Tallas S a XXL. Nombre y número en la espalda por 5 € más.",
     "history.vitoria-guarda-redes-25-26": "Vitória — camiseta de portero de la temporada 25/26. Tallas S a XXL. Nombre y número en la espalda por 5 € más.",
     // <<< fim das descricoes geradas
+
 
 
 

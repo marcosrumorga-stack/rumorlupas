@@ -5928,9 +5928,9 @@ const PRODUCTS = [
   },
   {
     id: "flamengo-retro",
-    name: "Camisola Flamengo Homem (Retro)",
+    name: "Camisola Flamengo Listras Homem (Retro)",
     namesItself: true,
-    titleName: "Camisola Flamengo",
+    titleName: "Camisola Flamengo Listras",
     slug: "flamengo-retro",
     category: "camisas",
     league: "brasileirao/flamengo",
@@ -5967,9 +5967,9 @@ const PRODUCTS = [
   },
   {
     id: "flamengo-retro-ii",
-    name: "Camisola Flamengo Homem (Retro)",
+    name: "Camisola Flamengo Aos Quartos Homem (Retro)",
     namesItself: true,
-    titleName: "Camisola Flamengo",
+    titleName: "Camisola Flamengo Aos Quartos",
     slug: "flamengo-retro-ii",
     category: "camisas",
     league: "brasileirao/flamengo",
