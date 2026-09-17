@@ -1172,6 +1172,57 @@ button.swatch { position: relative; }
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 24px;
 }
+
+/* Pages. Same pills as the league row above the grid, so the two rows that
+   bracket the catalogue look like they belong to each other. */
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 36px;
+}
+.pager[hidden] { display: none; }
+.pager__btn {
+  min-width: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, opacity 0.18s;
+}
+.pager__btn:hover { color: var(--text); border-color: var(--text-muted); }
+.pager__btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+/* Disabled covers two different things here: the arrow at the end of the road,
+   which should look spent, and the page you are already on, which should look
+   chosen. The second wins because .active comes after. */
+.pager__btn[disabled] { cursor: default; opacity: 0.4; }
+.pager__btn.active[disabled] { opacity: 1; }
+.pager__btn--seta { font-size: 1rem; }
+.pager__btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pager__gap {
+  padding: 0 2px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+@media (max-width: 480px) {
+  /* Nine numbers and two arrows at full size wrap onto a second line on a
+     phone. Narrower pills keep the row a row. */
+  .pager { gap: 6px; }
+  .pager__btn { min-width: 34px; padding: 8px 8px; }
+}
+
 .product-card {
   background: var(--surface);
   border: 1px solid var(--border);

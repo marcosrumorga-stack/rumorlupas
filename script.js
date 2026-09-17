@@ -68,7 +68,15 @@ const categoryTabs = document.getElementById("categoryTabs");
 const leagueTabs = document.getElementById("leagueTabs");
 const subLeagueTabs = document.getElementById("subLeagueTabs");
 const gridEmpty = document.getElementById("gridEmpty");
+const pager = document.getElementById("pager");
 const catalogNote = document.getElementById("catalogNote");
+
+// How many products a page of the catalogue holds. Twenty-four is six rows of
+// four on a computer, and on a phone it is the difference between a list you
+// can reach the end of and a hundred thousand pixels of scrolling: all the
+// shirts in one column came to 102,796.
+const POR_PAGINA = 24;
+let activePage = 1;
 let activeCategory = categories()[0];
 // null means the whole category. Otherwise a group path: "selecoes", or
 // "selecoes/americas" when a continent inside it is the one being looked at.
@@ -108,10 +116,19 @@ function activeLeague() {
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
 // The address the current view is at, so pushing it and reading it back agree.
+// The page rides in the query string rather than the path: the path already
+// says what is being browsed, and a query cannot be mistaken for a league by
+// the rules that read it back.
 function currentPath() {
   const lang = typeof currentLang === "string" ? currentLang : "pt";
   const home = lang === "pt" ? "/" : `/${lang}/`;
-  return activeGroup ? groupUrl(activeCategory, activeGroup, lang) : home;
+  const base = activeGroup ? groupUrl(activeCategory, activeGroup, lang) : home;
+  return activePage > 1 ? `${base}?pagina=${activePage}` : base;
+}
+
+function readPageFromUrl() {
+  const n = Number(new URLSearchParams(location.search).get("pagina"));
+  activePage = Number.isFinite(n) && n > 1 ? Math.floor(n) : 1;
 }
 
 // A league has an address of its own, so it needs a head of its own: the tab,
@@ -149,6 +166,9 @@ function renderGroupHead() {
 
 function showGroup(groupId, push) {
   activeGroup = groupId;
+  // A different list starts at its own beginning; page four of the Selecoes is
+  // not page four of Portugal.
+  activePage = 1;
   if (push) history.pushState({ group: groupId, cat: activeCategory }, "", currentPath());
   renderGroups();
   renderGroupHead();
@@ -306,6 +326,7 @@ function renderGroups() {
 window.addEventListener("popstate", () => {
   activeGroup = null;
   readGroupFromPath();
+  readPageFromUrl();
   renderCategories();
   renderCatalogNote();
   renderGroupHead();
@@ -338,6 +359,7 @@ function renderCategories() {
       // A league belongs to the tab it was picked in, so changing tab drops it
       // and the address goes back to the catalogue's own.
       activeGroup = null;
+      activePage = 1;
       // Replaced, not pushed: switching tab is not a place to come back to,
       // and one fewer history entry is one fewer chance for the browser to
       // decide where the page should be scrolled.
@@ -352,17 +374,87 @@ function renderCategories() {
   renderGroups();
 }
 
+// Which page numbers to show. All of them up to seven; beyond that the first,
+// the last, and the ones either side of where you are, with gaps marked - a row
+// of numbers that does not itself need scrolling.
+function numerosDaPagina(actual, total) {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  const nums = new Set([1, total, actual, actual - 1, actual + 1]);
+  const lista = [...nums].filter((n) => n >= 1 && n <= total).sort((a, b) => a - b);
+  const saida = [];
+  lista.forEach((n, i) => {
+    if (i && n - lista[i - 1] > 1) saida.push("...");
+    saida.push(n);
+  });
+  return saida;
+}
+
+function irParaPagina(n) {
+  if (n === activePage) return;
+  activePage = n;
+  history.pushState({ pagina: n }, "", currentPath());
+  renderProducts();
+  // Straight to the top of the catalogue: a new page of results is a new thing
+  // to read, and being left in the middle of it is worse than being moved.
+  document.getElementById("catalogo").scrollIntoView({ block: "start", behavior: "instant" });
+}
+
+function renderPager(paginas) {
+  pager.hidden = paginas < 2;
+  if (paginas < 2) { pager.innerHTML = ""; return; }
+
+  // The arrows read as "‹" to a screen reader, which is nothing, and a bare
+  // number reads as a number with no unit - so every button carries a label
+  // saying which page it goes to.
+  const botao = (texto, n, rotulo, classe, mais) =>
+    `<button type="button" class="pager__btn${classe}" aria-label="${rotulo}"${mais || ""}${
+      n ? ` data-pagina="${n}"` : " disabled"}>${texto}</button>`;
+  const numero = (n) => {
+    const aqui = n === activePage;
+    return botao(n, aqui ? 0 : n, t("pager.page").replace("{x}", n),
+      aqui ? " active" : "", aqui ? ` aria-current="page"` : "");
+  };
+
+  pager.setAttribute("aria-label", t("pager.aria"));
+  pager.innerHTML = [
+    botao("‹", activePage > 1 ? activePage - 1 : 0, t("pager.prev"), " pager__btn--seta"),
+    ...numerosDaPagina(activePage, paginas).map((n) =>
+      n === "..." ? `<span class="pager__gap" aria-hidden="true">…</span>` : numero(n)),
+    botao("›", activePage < paginas ? activePage + 1 : 0, t("pager.next"), " pager__btn--seta"),
+  ].join("");
+
+  pager.querySelectorAll(".pager__btn[data-pagina]").forEach((b) => {
+    b.addEventListener("click", () => irParaPagina(Number(b.dataset.pagina)));
+  });
+}
+
 function renderProducts() {
   // productsInGroup rather than a match on the field: a shirt filed under
   // "selecoes/americas" has to show under Seleções as well as under Américas.
-  const shown = activeGroup
+  const todos = activeGroup
     ? productsInGroup(activeCategory, activeGroup)
     : PRODUCTS.filter((p) => productCategory(p) === activeCategory);
 
   // A league the shop has not stocked yet is shown on purpose, so a customer
   // can see what is coming; saying so is better than an empty grid.
-  gridEmpty.hidden = shown.length > 0;
-  gridEmpty.textContent = shown.length ? "" : t("league.empty");
+  gridEmpty.hidden = todos.length > 0;
+  gridEmpty.textContent = todos.length ? "" : t("league.empty");
+
+  // One page at a time, and not only to spare the scrolling. Every card draws
+  // a strip holding all of that product's photos, so the whole catalogue at
+  // once is 783 images - enough for a phone to run out of memory, drop the tab
+  // and reload it, which is what "it refreshes and goes back to the home page"
+  // was. A page is two dozen.
+  const paginas = Math.max(1, Math.ceil(todos.length / POR_PAGINA));
+  if (activePage > paginas) {
+    // A hand-typed or stale ?pagina=99 shows the last page there is, and the
+    // address is corrected to say so rather than lying about where we are.
+    activePage = paginas;
+    history.replaceState(history.state, "", currentPath());
+  }
+  const inicio = (activePage - 1) * POR_PAGINA;
+  const shown = todos.slice(inicio, inicio + POR_PAGINA);
+  renderPager(paginas);
 
   productGrid.innerHTML = shown.map((p) => `
     <div class="product-card" data-product="${p.id}">
@@ -428,6 +520,7 @@ function pickColor(productId, colorId) {
 
 // Before the first draw, so a league address opens on its own pill.
 const arrivedAtGroup = readGroupFromPath();
+readPageFromUrl();
 renderCategories();
 renderCatalogNote();
 renderGroupHead();
