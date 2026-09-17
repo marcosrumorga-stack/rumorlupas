@@ -70,6 +70,63 @@ const subLeagueTabs = document.getElementById("subLeagueTabs");
 const gridEmpty = document.getElementById("gridEmpty");
 const pager = document.getElementById("pager");
 const catalogNote = document.getElementById("catalogNote");
+const buscaCampo = document.getElementById("buscaCampo");
+const buscaLimpar = document.getElementById("buscaLimpar");
+const buscaConta = document.getElementById("buscaConta");
+
+// What the reader typed, already stripped of accents and case. "" means they
+// are browsing rather than searching, which is a different mode: while a search
+// is running the tabs step aside and the grid answers the words, not the pills.
+let activeQuery = "";
+
+// Accents off, case off. A customer types "gremio" and "sao paulo" without
+// reaching for the circumflex, and half the catalogue's names carry one. The
+// same normalisation runs over the product's words and over what was typed, so
+// the two meet in the middle.
+function semAcentos(s) {
+  return (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+
+// Everything about a product worth matching, as one string: what it is called,
+// the short name, the team it belongs to and the league above that. A shirt
+// filed under selecoes/americas/brasil answers to "brasil", to "americas" and
+// to "selecoes", because a reader who types any of those means this shelf.
+const PALHEIRO = new Map();
+function palheiro(product) {
+  let feito = PALHEIRO.get(product.id);
+  if (feito) return feito;
+  const partes = [product.name, product.titleName, product.id];
+  const cat = productCategory(product);
+  // Walked cumulatively, because a group is found by its whole path: "selecoes",
+  // then "selecoes/americas", then "selecoes/americas/brasil".
+  const trocos = (product.league || "").split("/").filter(Boolean);
+  let caminho = "";
+  trocos.forEach((troco) => {
+    caminho = caminho ? `${caminho}/${troco}` : troco;
+    partes.push(troco);
+    // The name as it is displayed, so "Grêmio" is found by someone who typed
+    // the accent and "Vasco da Gama" by someone who typed only "gama".
+    const g = findGroup(cat, caminho);
+    if (g) partes.push(groupName(g));
+  });
+  partes.push(categoryLabel(cat));
+  feito = semAcentos(partes.filter(Boolean).join(" "));
+  PALHEIRO.set(product.id, feito);
+  return feito;
+}
+
+// Every word has to appear somewhere, in any order: "flamengo mulher" finds the
+// women's Flamengo shirts, and "mulher flamengo" finds the same ones. Matching
+// the whole phrase would have found neither, because the words are never
+// adjacent in the name.
+function procura(termo) {
+  const palavras = semAcentos(termo).split(/\s+/).filter(Boolean);
+  if (!palavras.length) return [];
+  return PRODUCTS.filter((p) => {
+    const h = palheiro(p);
+    return palavras.every((w) => h.indexOf(w) !== -1);
+  });
+}
 
 // How many products a page of the catalogue holds. Twenty-four is six rows of
 // four on a computer, and on a phone it is the difference between a list you
@@ -122,13 +179,25 @@ if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 function currentPath() {
   const lang = typeof currentLang === "string" ? currentLang : "pt";
   const home = lang === "pt" ? "/" : `/${lang}/`;
-  const base = activeGroup ? groupUrl(activeCategory, activeGroup, lang) : home;
-  return activePage > 1 ? `${base}?pagina=${activePage}` : base;
+  // A search is not a shelf, so it hangs off the home address rather than off a
+  // league's: results come from the whole catalogue and a league in the path
+  // would be saying otherwise.
+  const base = activeQuery ? home : (activeGroup ? groupUrl(activeCategory, activeGroup, lang) : home);
+  const q = [];
+  if (activeQuery) q.push(`q=${encodeURIComponent(activeQuery)}`);
+  if (activePage > 1) q.push(`pagina=${activePage}`);
+  return q.length ? `${base}?${q.join("&")}` : base;
 }
 
 function readPageFromUrl() {
   const n = Number(new URLSearchParams(location.search).get("pagina"));
   activePage = Number.isFinite(n) && n > 1 ? Math.floor(n) : 1;
+}
+
+// A search survives being linked, bookmarked or reached with the back button.
+function readQueryFromUrl() {
+  activeQuery = (new URLSearchParams(location.search).get("q") || "").trim();
+  if (buscaCampo && buscaCampo.value !== activeQuery) buscaCampo.value = activeQuery;
 }
 
 // A league has an address of its own, so it needs a head of its own: the tab,
@@ -140,7 +209,10 @@ function readPageFromUrl() {
 // the tab, and for the crawlers that do run scripts.
 function renderGroupHead() {
   const home = { title: t("meta.home.title"), desc: t("meta.home.desc") };
-  const group = activeGroup ? findGroup(activeCategory, activeGroup) : null;
+  // A search is not in a league, whatever league the reader was in when they
+  // started typing. Without this the tab still said "Santos" while the grid
+  // showed a pair of sunglasses.
+  const group = !activeQuery && activeGroup ? findGroup(activeCategory, activeGroup) : null;
 
   document.title = group ? groupPageTitle(activeCategory, activeGroup, t) : home.title;
 
@@ -152,7 +224,12 @@ function renderGroupHead() {
 
   // A league with nothing in it is shown to people on purpose and kept out of
   // the index on purpose. The tag is removed again the moment it has stock.
-  const empty = group && !productsInGroup(activeCategory, activeGroup).length;
+  //
+  // A search is kept out for a different reason: ?q= is a view of the home page,
+  // not a page of its own, and every word anyone ever types would otherwise be
+  // an address competing with the catalogue it came from.
+  const empty = Boolean(activeQuery) ||
+    (group && !productsInGroup(activeCategory, activeGroup).length);
   let robots = document.querySelector('meta[name="robots"]');
   if (empty && !robots) {
     robots = document.createElement("meta");
@@ -223,10 +300,12 @@ function menuEntry(path, group) {
 
 function renderGroups() {
   const groups = categoryGroups(activeCategory);
-  leagueTabs.hidden = !groups.length;
+  // A search answers from the whole catalogue, so no league may be lit while
+  // one is running - a lit pill would be claiming the reader is inside it.
+  leagueTabs.hidden = Boolean(activeQuery) || !groups.length;
   subLeagueTabs.hidden = true;
   subLeagueTabs.innerHTML = "";
-  if (!groups.length) {
+  if (activeQuery || !groups.length) {
     leagueTabs.innerHTML = "";
     return;
   }
@@ -327,6 +406,8 @@ window.addEventListener("popstate", () => {
   activeGroup = null;
   readGroupFromPath();
   readPageFromUrl();
+  readQueryFromUrl();
+  renderBuscaModo();
   renderCategories();
   renderCatalogNote();
   renderGroupHead();
@@ -353,7 +434,18 @@ function renderCategories() {
     .join("");
 
   categoryTabs.querySelectorAll(".cats__tab").forEach((btn) => {
+    // While a search is running no tab is lit, so a tab means "stop searching
+    // and show me this" - including the tab that was already active when the
+    // search began, which is why the early return is inside the guard.
+    btn.setAttribute("aria-selected", String(!activeQuery && btn.dataset.cat === activeCategory));
+    btn.classList.toggle("active", !activeQuery && btn.dataset.cat === activeCategory);
     btn.addEventListener("click", () => {
+      if (activeQuery) {
+        activeCategory = btn.dataset.cat;
+        if (buscaCampo) buscaCampo.value = "";
+        setQuery("", false);
+        return;
+      }
       if (btn.dataset.cat === activeCategory) return;
       activeCategory = btn.dataset.cat;
       // A league belongs to the tab it was picked in, so changing tab drops it
@@ -428,17 +520,71 @@ function renderPager(paginas) {
   });
 }
 
+// The line under the box: how many were found, and the way back to browsing.
+// Only while a search is running; browsing a league says nothing here, because
+// the pills already say where the reader is.
+function renderBuscaConta(n) {
+  if (!buscaConta) return;
+  // Nothing found says so once, in the grid, where the reader is looking. A
+  // line above saying "0 results" as well is the same sentence twice.
+  buscaConta.hidden = !activeQuery || n === 0;
+  if (buscaLimpar) buscaLimpar.hidden = !activeQuery;
+  // Emptied, not just hidden. A count nobody can see is still read out by a
+  // screen reader that walks the page, and it would be the previous search's.
+  if (!activeQuery || n === 0) { buscaConta.textContent = ""; return; }
+  const chave = n === 1 ? "search.one" : "search.count";
+  buscaConta.textContent = t(chave).replace("{n}", n).replace("{x}", activeQuery);
+}
+
+// While a search is running the tabs and the pills step aside. They would be
+// lying otherwise: the results come from the whole catalogue, and a lit pill
+// would be claiming the reader is inside that league.
+function renderBuscaModo() {
+  const a = Boolean(activeQuery);
+  document.body.classList.toggle("a-procurar", a);
+  if (a) {
+    leagueTabs.hidden = true;
+    subLeagueTabs.hidden = true;
+  }
+}
+
+// Called as the reader types. The address is replaced rather than pushed, so
+// the back button leaves the search in one go instead of walking back through
+// every letter that was typed.
+function setQuery(termo, push) {
+  const limpo = (termo || "").trim();
+  if (limpo === activeQuery) return;
+  activeQuery = limpo;
+  activePage = 1;
+  const estado = { q: activeQuery, cat: activeCategory };
+  if (push) history.pushState(estado, "", currentPath());
+  else history.replaceState(estado, "", currentPath());
+  renderBuscaModo();
+  renderCategories();
+  renderCatalogNote();
+  renderGroupHead();
+  renderProducts();
+}
+
 function renderProducts() {
   // productsInGroup rather than a match on the field: a shirt filed under
   // "selecoes/americas" has to show under Seleções as well as under Américas.
-  const todos = activeGroup
-    ? productsInGroup(activeCategory, activeGroup)
-    : PRODUCTS.filter((p) => productCategory(p) === activeCategory);
+  const todos = activeQuery
+    ? procura(activeQuery)
+    : activeGroup
+      ? productsInGroup(activeCategory, activeGroup)
+      : PRODUCTS.filter((p) => productCategory(p) === activeCategory);
 
-  // A league the shop has not stocked yet is shown on purpose, so a customer
-  // can see what is coming; saying so is better than an empty grid.
+  // Two different empty grids, and they are not the same thing to say. A league
+  // with nothing in it is a promise - the shop means to stock it - and a search
+  // with nothing in it is a dead end that needs a way out.
   gridEmpty.hidden = todos.length > 0;
-  gridEmpty.textContent = todos.length ? "" : t("league.empty");
+  gridEmpty.textContent = todos.length
+    ? ""
+    : activeQuery
+      ? t("search.none").replace("{x}", activeQuery)
+      : t("league.empty");
+  renderBuscaConta(todos.length);
 
   // One page at a time, and not only to spare the scrolling. Every card draws
   // a strip holding all of that product's photos, so the whole catalogue at
@@ -518,13 +664,78 @@ function pickColor(productId, colorId) {
   renderProducts();
 }
 
+// The search box. Typing redraws the grid as the words arrive; there is no
+// button to press, because with the whole catalogue already in the page there
+// is nothing to wait for.
+//
+// A short delay all the same. Not for the search itself - five hundred products
+// against a handful of words is nothing - but for the grid it redraws, which
+// mounts two dozen cards and their photographs. Doing that on every keystroke
+// made typing feel like wading.
+if (buscaCampo) {
+  let temporizador = 0;
+  buscaCampo.addEventListener("input", () => {
+    clearTimeout(temporizador);
+    temporizador = setTimeout(() => setQuery(buscaCampo.value, false), 180);
+  });
+
+  // Enter would otherwise submit the form and reload the page, throwing away
+  // the very results it was asked for.
+  const form = document.getElementById("buscaForm");
+  if (form) form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    clearTimeout(temporizador);
+    setQuery(buscaCampo.value, false);
+    buscaCampo.blur();
+  });
+
+  // Escape leaves the search, which is what Escape does everywhere else.
+  buscaCampo.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || !buscaCampo.value) return;
+    buscaCampo.value = "";
+    clearTimeout(temporizador);
+    setQuery("", false);
+  });
+
+  if (buscaLimpar) buscaLimpar.addEventListener("click", () => {
+    buscaCampo.value = "";
+    clearTimeout(temporizador);
+    setQuery("", false);
+    buscaCampo.focus();
+  });
+}
+
+// The magnifier in the header. On this page there is a box to jump to; on the
+// product page the same icon is a link here, and #procurar is what it leaves in
+// the address for this to pick up.
+function abrirBusca() {
+  if (!buscaCampo) return;
+  document.getElementById("catalogo").scrollIntoView({ block: "start", behavior: "instant" });
+  buscaCampo.focus();
+  buscaCampo.select();
+}
+const buscaAtalho = document.getElementById("buscaAtalho");
+if (buscaAtalho) buscaAtalho.addEventListener("click", (e) => { e.preventDefault(); abrirBusca(); });
+
 // Before the first draw, so a league address opens on its own pill.
 const arrivedAtGroup = readGroupFromPath();
 readPageFromUrl();
+readQueryFromUrl();
+renderBuscaModo();
 renderCategories();
 renderCatalogNote();
 renderGroupHead();
 renderProducts();
+
+// Arrived from the magnifier on a product page, or from a bookmarked search.
+// The hash is taken back out of the address so a reload does not reopen it.
+if (location.hash === "#procurar" || activeQuery) {
+  if (location.hash === "#procurar") {
+    history.replaceState(history.state, "", currentPath());
+  }
+  setTimeout(abrirBusca, 60);
+}
+
 // Straight to the catalogue: someone who followed a league link came for the
 // shirts, not for the hero.
 //
