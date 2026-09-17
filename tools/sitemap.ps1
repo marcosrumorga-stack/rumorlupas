@@ -49,7 +49,7 @@ $GROUPS = @{
     path = "liga"
     ids  = @("selecoes", "brasileirao", "liga-portugal", "premier-league",
              "la-liga", "ligue-1", "bundesliga", "serie-a", "mls", "nba",
-             "camisolas-f1")
+             "formula-1")
   }
 }
 

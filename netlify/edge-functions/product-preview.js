@@ -215,7 +215,7 @@ export default async (request, context) => {
   const {
     hasColors, defaultColorId, findColor, productImages, imageSrcset, sizedImage,
     ogImage, isSoldOut, productPageTitle, productPageDescription, productSlug,
-    titleLead, GALLERY_SIZES,
+    searchLead, GALLERY_SIZES,
   } = catalogue;
   const { I18N } = strings;
   // An address that names no model: produto.js already answers that one, with
@@ -255,8 +255,9 @@ export default async (request, context) => {
 
     const title = productPageTitle(product, tr);
     const description = productPageDescription(product, tr);
-    // The same string the page title and the Google markup lead with.
-    const lead = titleLead(product);
+    // The same string the page title leads with - the short one where a product
+    // has it, because a preview in a chat is read at a glance like a title is.
+    const lead = searchLead(product);
     const ogTitle = colorLabel
       ? `${lead} — ${colorLabel} | RumorLupas`
       : title;

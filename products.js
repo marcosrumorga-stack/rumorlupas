@@ -639,6 +639,12 @@ const PRODUCTS = [
     // The name opens with "Camisola", so the category's "Camisa" stays off the
     // front of it - see titleLead.
     namesItself: true,
+    // What the search result and the link preview lead with instead of the
+    // name above, which alone is longer than a title Google will show. It keeps
+    // the two phrases people actually type and drops Principal, Homem and
+    // Versao Jogador, which nobody searches for and which were pushing the
+    // price and the sizes off the end. See searchLead.
+    titleName: "Camisola Brasil 26/27 Copa do Mundo 2026",
     // Written out because the address would otherwise be rebuilt from the name
     // above, and this one is already live and already shared. It is also a name
     // that would make a sixty-character URL nobody wants to paste into WhatsApp.
@@ -814,7 +820,10 @@ const CATEGORY_SETUP = {
       { id: "serie-a", name: "Serie A" },
       { id: "mls", name: "MLS" },
       { id: "nba", name: "NBA" },
-      { id: "camisolas-f1", name: "Camisolas F1" },
+      // "Camisolas F1" as a pill made its own title read "Camisolas F1 —
+      // camisolas de Fórmula 1". The address moved with the name, which is only
+      // safe because this league is empty, noindex and in nobody's sitemap.
+      { id: "formula-1", name: "Fórmula 1" },
     ],
   },
 };
@@ -1054,13 +1063,27 @@ function titleLead(product) {
   return word && !product.namesItself ? `${word} ${product.name}` : product.name;
 }
 
+// The name a search result leads with, which is not always the name a customer
+// reads. Google shows about sixty characters of a title; the shirt's supplier
+// name is seventy-six on its own, so the words that decide a click - how much
+// choice is left, and the price - fell off the end where nobody saw them.
+//
+// A product carrying `titleName` lends it to the title and to the link preview
+// only. The page heading, the catalogue card, the cart line and the Stripe row
+// all keep the full name, because those are read by someone who has already
+// arrived and wants to know exactly what they are buying. The Google markup
+// keeps it too: that field is a statement about the product, not a headline.
+function searchLead(product) {
+  return product.titleName || titleLead(product);
+}
+
 function productPageTitle(product, tr) {
   const colours = hasColors(product) ? product.colors : [];
   const left = colours.length
     ? colours.filter((c) => !isSoldOut(product, c.id))
     : (isSoldOut(product, null) ? [] : [null]);
 
-  const lead = titleLead(product);
+  const lead = searchLead(product);
 
   if (colours.length && !left.length) {
     return `${lead} — ${tr("product.soldOut").toLowerCase()} | RumorLupas`;
@@ -1268,7 +1291,7 @@ if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     PRODUCTS, stockOf, isSoldOut, findColor, productCategory, productSlug,
     findProductBySlug, hasColors, defaultColorId, productImages, ogImage,
-    formatPrice, titleLead, productPageTitle, productPageDescription,
+    formatPrice, titleLead, searchLead, productPageTitle, productPageDescription,
     sizedImage, imageSrcset, GALLERY_SIZES,
     categorySetup, productSetup, CATEGORY_SETUP,
     categoryGroups, findGroup, groupName, productGroup, productsInGroup,
