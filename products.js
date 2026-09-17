@@ -3469,7 +3469,7 @@ const PRODUCTS = [
     slug: "japao-obito-25-26",
     category: "camisas",
     league: "selecoes/asia/japao",
-    price: 35,
+    price: 30,
     personalisation: 5,
     images: [
       "images/products/japao-obito-25-26/1.jpeg",
@@ -3535,6 +3535,25 @@ const PRODUCTS = [
     images: [
       "images/products/japao-rock-lee-24-25/1.jpeg",
       "images/products/japao-rock-lee-24-25/2.jpeg",
+    ],
+    colors: [
+      { id: "s", name: "S" }, { id: "m", name: "M" }, { id: "l", name: "L" },
+      { id: "xl", name: "XL" }, { id: "xxl", name: "XXL" },
+    ],
+  },
+  {
+    id: "japao-tsubasa",
+    name: "Camisola Japão Edição Capitão Tsubasa - Campeões: Oliver e Benji - Homem",
+    namesItself: true,
+    titleName: "Camisola Japão Edição Capitão Tsubasa - Campeões: Oliver e Benji",
+    slug: "japao-tsubasa",
+    category: "camisas",
+    league: "selecoes/asia/japao",
+    price: 30,
+    personalisation: 5,
+    images: [
+      "images/products/japao-tsubasa/1.jpeg",
+      "images/products/japao-tsubasa/2.jpeg",
     ],
     colors: [
       { id: "s", name: "S" }, { id: "m", name: "M" }, { id: "l", name: "L" },

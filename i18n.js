@@ -379,6 +379,7 @@ const I18N = {
     "history.japao-one-piece-26": "Japão — camisola de 2026. Tamanhos S a XXL. Nome e número nas costas por mais 5 €.",
     "history.japao-remixed": "Japão — reedição retro de 2026. Tamanhos S a XXL. Nome e número nas costas por mais 5 €.",
     "history.japao-rock-lee-24-25": "Japão — camisola de edição especial da época 24/25. Tamanhos S a XXL. Nome e número nas costas por mais 5 €.",
+    "history.japao-tsubasa": "Japão — camisola. Tamanhos S a XXL. Nome e número nas costas por mais 5 €.",
     "history.japao-vegeta": "Japão — camisola. Tamanhos S a XXL. Nome e número nas costas por mais 5 €.",
     "history.japao-zoro-26-27": "Japão — camisola da época 26/27. Tamanhos S a XXL. Nome e número nas costas por mais 5 €.",
     "history.marrocos-25-26-ii": "Marrocos — camisola alternativa da época 25/26. Tamanhos S a XXL. Nome e número nas costas por mais 5 €.",
@@ -418,6 +419,7 @@ const I18N = {
     "history.venezuela-25-26": "Venezuela — camisola principal da época 25/26. Tamanhos S a XXL. Nome e número nas costas por mais 5 €.",
     "history.venezuela-alt-26-27": "Venezuela — camisola alternativa da época 26/27. Tamanhos S a XXL. Nome e número nas costas por mais 5 €.",
     // <<< fim das descricoes geradas
+
   },
 
   en: {
@@ -794,6 +796,7 @@ const I18N = {
     "history.japao-one-piece-26": "Japan — football shirt, 2026. Sizes S to XXL. A name and number on the back for 5 € more.",
     "history.japao-remixed": "Japan — retro reissue, 2026. Sizes S to XXL. A name and number on the back for 5 € more.",
     "history.japao-rock-lee-24-25": "Japan — special edition shirt for the 24/25 season. Sizes S to XXL. A name and number on the back for 5 € more.",
+    "history.japao-tsubasa": "Japan — football shirt. Sizes S to XXL. A name and number on the back for 5 € more.",
     "history.japao-vegeta": "Japan — football shirt. Sizes S to XXL. A name and number on the back for 5 € more.",
     "history.japao-zoro-26-27": "Japan — football shirt for the 26/27 season. Sizes S to XXL. A name and number on the back for 5 € more.",
     "history.marrocos-25-26-ii": "Morocco — away shirt for the 25/26 season. Sizes S to XXL. A name and number on the back for 5 € more.",
@@ -833,6 +836,7 @@ const I18N = {
     "history.venezuela-25-26": "Venezuela — home shirt for the 25/26 season. Sizes S to XXL. A name and number on the back for 5 € more.",
     "history.venezuela-alt-26-27": "Venezuela — away shirt for the 26/27 season. Sizes S to XXL. A name and number on the back for 5 € more.",
     // <<< fim das descricoes geradas
+
   },
 
   es: {
@@ -1202,6 +1206,7 @@ const I18N = {
     "history.japao-one-piece-26": "Japón — camiseta de fútbol de 2026. Tallas S a XXL. Nombre y número en la espalda por 5 € más.",
     "history.japao-remixed": "Japón — reedición retro de 2026. Tallas S a XXL. Nombre y número en la espalda por 5 € más.",
     "history.japao-rock-lee-24-25": "Japón — camiseta de edición especial de la temporada 24/25. Tallas S a XXL. Nombre y número en la espalda por 5 € más.",
+    "history.japao-tsubasa": "Japón — camiseta de fútbol. Tallas S a XXL. Nombre y número en la espalda por 5 € más.",
     "history.japao-vegeta": "Japón — camiseta de fútbol. Tallas S a XXL. Nombre y número en la espalda por 5 € más.",
     "history.japao-zoro-26-27": "Japón — camiseta de fútbol de la temporada 26/27. Tallas S a XXL. Nombre y número en la espalda por 5 € más.",
     "history.marrocos-25-26-ii": "Marruecos — camiseta alternativa de la temporada 25/26. Tallas S a XXL. Nombre y número en la espalda por 5 € más.",
@@ -1241,6 +1246,7 @@ const I18N = {
     "history.venezuela-25-26": "Venezuela — camiseta principal de la temporada 25/26. Tallas S a XXL. Nombre y número en la espalda por 5 € más.",
     "history.venezuela-alt-26-27": "Venezuela — camiseta alternativa de la temporada 26/27. Tallas S a XXL. Nombre y número en la espalda por 5 € más.",
     // <<< fim das descricoes geradas
+
   },
 };
 
