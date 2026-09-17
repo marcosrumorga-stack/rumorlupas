@@ -36,6 +36,15 @@ $src = Join-Path $Root "images\products"
 $dst = Join-Path $Root "images\sized"
 if (-not (Test-Path $src)) { throw "Nao encontrei $src - passe -Root com a pasta do site." }
 
+# Every relative path below is this string cut off the front of a full path, so
+# $src has to be spelled the way Windows spells it. A short 8.3 path - the
+# MARCOS~1 form - is eight characters shorter than the real one, so the cut left
+# the tail of "produ|cts" on every name and the whole tree was rebuilt inside a
+# folder called "cts". It emptied images/sized and images/og first, so the
+# damage was three thousand files and only git got them back.
+$real = (Get-Item $src).FullName
+if ($real -cne $src) { throw "Passe o caminho por extenso: $Root nao e $((Get-Item $Root).FullName)." }
+
 if (Test-Path $dst) { Remove-Item $dst -Recurse -Force }
 
 $jpeg = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() |
