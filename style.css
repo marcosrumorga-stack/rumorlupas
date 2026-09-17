@@ -953,11 +953,12 @@ button.swatch { position: relative; }
   gap: 8px;
   margin-bottom: 34px;
 }
-/* The league row now always sits between the tabs and whatever follows, so the
-   old `.cats:has(+ .section__subtitle)` would never match again. Either of the
-   two things that can come next takes most of the tabs' bottom margin. */
-.cats:has(+ .leagues:not([hidden])),
-.cats:has(+ .leagues + .section__subtitle:not([hidden])) { margin-bottom: 14px; }
+/* Rows of pills now sit between the tabs and whatever follows, so the old
+   `.cats:has(+ .section__subtitle)` would never match again. Anything that can
+   come next takes most of the tabs' bottom margin, and the count of rows in
+   between is not something this should have to know. */
+.cats:has(~ .leagues:not([hidden])),
+.cats:has(~ .section__subtitle:not([hidden])) { margin-bottom: 14px; }
 .cats__tab {
   border: 1px solid var(--border);
   background: var(--bg);
@@ -988,6 +989,24 @@ button.swatch { position: relative; }
   margin-bottom: 30px;
 }
 .leagues[hidden] { display: none; }
+/* The third row, quieter again than the second, so the three read as levels
+   rather than as three rows of equals. It also sits closer to the row it
+   belongs under than to the grid below it. */
+.leagues--sub {
+  margin-top: -18px;
+  margin-bottom: 26px;
+  gap: 6px;
+}
+.leagues--sub .leagues__tab {
+  padding: 4px 12px;
+  font-size: 0.74rem;
+  border-style: dashed;
+}
+.leagues--sub .leagues__tab.active {
+  border-style: solid;
+  background: var(--text);
+  border-color: var(--text);
+}
 .leagues__tab {
   border: 1px solid var(--border);
   background: transparent;

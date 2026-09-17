@@ -47,7 +47,11 @@ $CATEGORIES = @{
 $GROUPS = @{
   camisas = @{
     path = "liga"
-    ids  = @("selecoes", "brasileirao", "liga-portugal", "premier-league",
+    # Paths, not ids: a league that holds leagues writes its children out in
+    # full, the same strings products.js uses.
+    ids  = @("selecoes",
+             "selecoes/europa", "selecoes/americas", "selecoes/asia", "selecoes/africa",
+             "brasileirao", "liga-portugal", "premier-league",
              "la-liga", "ligue-1", "bundesliga", "serie-a", "mls", "nba",
              "formula-1")
   }
@@ -75,7 +79,9 @@ for ($i = 0; $i -lt $hits.Count; $i++) {
     $slug = $slug.Normalize([Text.NormalizationForm]::FormD) -replace '\p{Mn}', ''
     $slug = ($slug -replace '[^a-z0-9]+', '-').Trim('-')
   }
-  $league = if ($texto -match 'league: "([a-z0-9-]+)"') { $Matches[1] } else { "" }
+  # Slashes allowed: a product says where it belongs down to the last level,
+  # "selecoes/americas" and not just "selecoes".
+  $league = if ($texto -match 'league: "([a-z0-9/-]+)"') { $Matches[1] } else { "" }
   $products += [pscustomobject]@{
     id = $m.Groups[2].Value; slug = "$($setup.slugPrefix)$slug"; path = $setup.path
     category = $cat; league = $league }
@@ -113,7 +119,11 @@ foreach ($p in $products) { Add-Page "/$($p.path)/$($p.slug)" "0.8" "weekly" }
 foreach ($cat in $GROUPS.Keys) {
   $setup = $CATEGORIES[$cat]
   foreach ($id in $GROUPS[$cat].ids) {
-    $has = @($products | Where-Object { $_.category -eq $cat -and $_.league -eq $id }).Count
+    # A shirt under selecoes/americas counts for selecoes as well, which is the
+    # same rule productsInGroup() applies in products.js.
+    $has = @($products | Where-Object {
+      $_.category -eq $cat -and ($_.league -eq $id -or $_.league -like "$id/*")
+    }).Count
     if ($has) { Add-Page "/$($setup.path)/$($GROUPS[$cat].path)/$id" "0.6" "weekly" }
   }
 }

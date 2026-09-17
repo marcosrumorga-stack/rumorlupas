@@ -650,8 +650,10 @@ const PRODUCTS = [
     // that would make a sixty-character URL nobody wants to paste into WhatsApp.
     slug: "brasil-26-27",
     category: "camisas",
-    // Which league pill it files under - see `groups` in CATEGORY_SETUP.
-    league: "selecoes",
+    // Where it files, down to the continent - see `groups` in CATEGORY_SETUP.
+    // The league above it counts it too, so Seleções shows it without having to
+    // be told about the Americas.
+    league: "selecoes/americas",
     price: 35,
     // Five euros more to have a name and a number printed on the back. The
     // surcharge is charged by the checkout function from its own copy of this
@@ -810,7 +812,17 @@ const CATEGORY_SETUP = {
     // League is Premier League in all three languages; Selecoes is not.
     groupPath: "liga",
     groups: [
-      { id: "selecoes", name: "Seleções" },
+      // The only one divided so far. A league without its own `groups` simply
+      // draws no third row - see subGroups().
+      {
+        id: "selecoes", name: "Seleções",
+        groups: [
+          { id: "europa", name: "Europa", title: "Seleções da Europa" },
+          { id: "americas", name: "Américas", title: "Seleções das Américas" },
+          { id: "asia", name: "Ásia", title: "Seleções da Ásia" },
+          { id: "africa", name: "África", title: "Seleções de África" },
+        ],
+      },
       { id: "brasileirao", name: "Brasileirão" },
       { id: "liga-portugal", name: "Liga Portugal" },
       { id: "premier-league", name: "Premier League" },
@@ -865,25 +877,65 @@ function categoryGroups(id) {
   return categorySetup(id).groups || [];
 }
 
-function findGroup(categoryId, groupId) {
-  return categoryGroups(categoryId).find((g) => g.id === groupId) || null;
+// A group is found by a path, not an id, because a group can hold groups:
+// "selecoes" is the league and "selecoes/americas" a continent inside it. One
+// string rather than a field per level, so a fourth level would need no new
+// machinery and a product still says where it belongs in one place.
+function findGroup(categoryId, path) {
+  const parts = String(path || "").split("/").filter(Boolean);
+  if (!parts.length) return null;
+  let list = categoryGroups(categoryId);
+  let found = null;
+  for (const part of parts) {
+    found = list.find((g) => g.id === part) || null;
+    if (!found) return null;
+    list = found.groups || [];
+  }
+  return found;
+}
+
+// The groups inside a group — the continents under Seleções. Empty for a league
+// that is not divided, which is how the third row of pills knows to stay away.
+function subGroups(categoryId, path) {
+  const group = findGroup(categoryId, path);
+  return (group && group.groups) || [];
 }
 
 // `tr` so the server can pass its own lookup; the browser falls back to t().
+// Keyed by the group's own id and not by its path: the ids are unique across
+// the whole tree, and a key that carried the path would have to be rewritten
+// every time a group moved.
 function groupName(group, tr) {
   const key = `league.${group.id}`;
   const text = tr ? tr(key) : t(key);
   return text === key ? group.name : text;
 }
 
+// The longer form, for a page title and a search result: the pill says "Europa"
+// because the league above it already says Seleções, but a title standing on
+// its own in Google says "Seleções da Europa". Written out rather than built,
+// because Portuguese wants a different preposition for each one — da Europa,
+// das Américas, de África - and that is not worth generating.
+function groupTitleName(group, tr) {
+  const key = `league.title.${group.id}`;
+  const text = tr ? tr(key) : t(key);
+  if (text !== key) return text;
+  return group.title || groupName(group, tr);
+}
+
 function productGroup(product) {
   return product.league || null;
 }
 
-function productsInGroup(categoryId, groupId) {
-  return PRODUCTS.filter(
-    (p) => productCategory(p) === categoryId && productGroup(p) === groupId
-  );
+// A shirt filed under "selecoes/americas" counts for "selecoes" too, so the
+// league shows everything inside it without having to list its own continents.
+function productsInGroup(categoryId, path) {
+  const want = String(path || "");
+  return PRODUCTS.filter((p) => {
+    if (productCategory(p) !== categoryId) return false;
+    const has = productGroup(p) || "";
+    return has === want || has.startsWith(`${want}/`);
+  });
 }
 
 // /camisas/liga/premier-league, and the same under /en and /es. Three segments
@@ -909,10 +961,16 @@ function groupShirtsWord(group, tr) {
 // Leads with the league's own name, because that is what gets typed into
 // Google — "premier league camisola" — and it sidesteps Portuguese wanting a
 // different preposition for each one: da Premier League, do Brasileirão.
-function groupPageTitle(categoryId, group, tr) {
-  const name = groupName(group, tr);
+//
+// Takes the path rather than the group, so the products can be counted: a
+// continent and the league above it are two different pages with two different
+// counts, and only the path says which one this is.
+function groupPageTitle(categoryId, path, tr) {
+  const group = findGroup(categoryId, path);
+  if (!group) return "";
+  const name = groupTitleName(group, tr);
   const shirts = groupShirtsWord(group, tr);
-  const products = productsInGroup(categoryId, group.id);
+  const products = productsInGroup(categoryId, path);
   if (!products.length) {
     return `${name} — ${shirts}, ${tr("league.soon")} | RumorLupas`;
   }
@@ -920,10 +978,12 @@ function groupPageTitle(categoryId, group, tr) {
   return `${name} — ${shirts} ${tr("league.from")} ${formatPrice(cheapest)} | RumorLupas`;
 }
 
-function groupPageDescription(categoryId, group, tr) {
-  const name = groupName(group, tr);
+function groupPageDescription(categoryId, path, tr) {
+  const group = findGroup(categoryId, path);
+  if (!group) return "";
+  const name = groupTitleName(group, tr);
   const shirts = groupShirtsWord(group, tr);
-  const products = productsInGroup(categoryId, group.id);
+  const products = productsInGroup(categoryId, path);
   if (!products.length) {
     return `${name} — ${shirts}, ${tr("league.soon")}. ${tr("league.soonTail")}`;
   }
@@ -1294,7 +1354,8 @@ if (typeof module !== "undefined" && module.exports) {
     formatPrice, titleLead, searchLead, productPageTitle, productPageDescription,
     sizedImage, imageSrcset, GALLERY_SIZES,
     categorySetup, productSetup, CATEGORY_SETUP,
-    categoryGroups, findGroup, groupName, productGroup, productsInGroup,
+    categoryGroups, findGroup, subGroups, groupName, groupTitleName,
+    productGroup, productsInGroup,
     groupUrl, groupPageTitle, groupPageDescription,
     cleanPrinting, printingFromKey, printingToKey, printingLabel, printingPrice,
     categoryMinimum, shortOfMinimum, categoryLabel, deliveryEstimates,

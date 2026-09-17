@@ -452,6 +452,36 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://rumorlupas.com/camisas/liga/selecoes/americas</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/camisas/liga/selecoes/americas"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/camisas/liga/selecoes/americas"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/camisas/liga/selecoes/americas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/camisas/liga/selecoes/americas"/>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/en/camisas/liga/selecoes/americas</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/camisas/liga/selecoes/americas"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/camisas/liga/selecoes/americas"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/camisas/liga/selecoes/americas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/camisas/liga/selecoes/americas"/>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rumorlupas.com/es/camisas/liga/selecoes/americas</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://rumorlupas.com/camisas/liga/selecoes/americas"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rumorlupas.com/en/camisas/liga/selecoes/americas"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://rumorlupas.com/es/camisas/liga/selecoes/americas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rumorlupas.com/camisas/liga/selecoes/americas"/>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://rumorlupas.com/termos.html</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>yearly</changefreq>

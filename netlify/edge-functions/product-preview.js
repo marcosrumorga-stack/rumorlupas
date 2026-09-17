@@ -80,7 +80,9 @@ const PATH = /^\/(?:(en|es)\/)?([a-z][a-z0-9-]*)\/([^/]+)\/?$/;
 // page quietly lost its head. Refusing a category called "en" or "es" forces
 // the prefix to be read as a prefix. PATH above does not need this: its last
 // group cannot hold a slash, so only one reading of it ever fits.
-const LEAGUE_PATH = /^\/(?:(en|es)\/)?(?!en\/|es\/)([a-z][a-z0-9-]*)\/([a-z][a-z0-9-]*)\/([a-z0-9-]+)\/?$/;
+// The last group takes further segments, because a league can hold leagues:
+// /camisas/liga/selecoes/americas is the Americas inside Selecoes.
+const LEAGUE_PATH = /^\/(?:(en|es)\/)?(?!en\/|es\/)([a-z][a-z0-9-]*)\/([a-z][a-z0-9-]*)\/([a-z0-9-]+(?:\/[a-z0-9-]+)*)\/?$/;
 
 function escapeAttr(value) {
   return String(value)
@@ -107,7 +109,7 @@ async function dressLeague(url, context, match) {
   const lang = match[1] || "pt";
   const categoryPath = match[2];
   const groupPath = match[3];
-  const groupId = match[4];
+  const wanted = match[4];
 
   let catalogue;
   let strings;
@@ -130,7 +132,7 @@ async function dressLeague(url, context, match) {
   if (!categoryId) return;
   const setup = categorySetup(categoryId);
   if (setup.groupPath !== groupPath) return;
-  const group = findGroup(categoryId, groupId);
+  const group = findGroup(categoryId, wanted);
   if (!group) return;
 
   const response = await context.next();
@@ -145,11 +147,13 @@ async function dressLeague(url, context, match) {
     const { I18N } = strings;
     const tr = (key) => (I18N[lang] && I18N[lang][key] !== undefined ? I18N[lang][key] : key);
 
-    const title = groupPageTitle(categoryId, group, tr);
-    const description = groupPageDescription(categoryId, group, tr);
-    const canonical = `${SITE}${lang === "pt" ? "" : "/" + lang}/${setup.path}/${setup.groupPath}/${group.id}`;
+    // The path and not the group: a continent and the league above it are two
+    // pages with two different counts, and only the path says which is which.
+    const title = groupPageTitle(categoryId, wanted, tr);
+    const description = groupPageDescription(categoryId, wanted, tr);
+    const canonical = `${SITE}${lang === "pt" ? "" : "/" + lang}/${setup.path}/${setup.groupPath}/${wanted}`;
 
-    const stocked = productsInGroup(categoryId, group.id);
+    const stocked = productsInGroup(categoryId, wanted);
     // A shared league link shows a shirt from that league when there is one.
     const first = stocked[0];
     const cover = first ? productImages(first, defaultColorId(first))[0] : null;

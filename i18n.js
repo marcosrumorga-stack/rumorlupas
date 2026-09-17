@@ -276,6 +276,16 @@ const I18N = {
     // Only the two that are not the same words in English.
     "league.selecoes": "National teams",
     "league.formula-1": "Formula 1",
+    // The continents inside Seleções: the short form is the pill, the long one
+    // is the page title standing on its own in a search result.
+    "league.europa": "Europe",
+    "league.americas": "Americas",
+    "league.asia": "Asia",
+    "league.africa": "Africa",
+    "league.title.europa": "European national teams",
+    "league.title.americas": "National teams of the Americas",
+    "league.title.asia": "Asian national teams",
+    "league.title.africa": "African national teams",
     "league.shirts": "football shirts",
     "league.shirts.nba": "basketball jerseys",
     "league.shirts.formula-1": "Formula 1 shirts",
@@ -499,6 +509,11 @@ const I18N = {
     "aria.league": "Liga",
     "league.all": "Todas",
     "league.selecoes": "Selecciones",
+    "league.americas": "América",
+    "league.title.europa": "Selecciones de Europa",
+    "league.title.americas": "Selecciones de América",
+    "league.title.asia": "Selecciones de Asia",
+    "league.title.africa": "Selecciones de África",
     "league.shirts": "camisetas de fútbol",
     "league.shirts.nba": "camisetas de baloncesto",
     "league.shirts.formula-1": "camisetas de Fórmula 1",

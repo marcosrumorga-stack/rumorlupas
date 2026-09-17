@@ -66,26 +66,37 @@ function mediaHtml(p) {
 
 const categoryTabs = document.getElementById("categoryTabs");
 const leagueTabs = document.getElementById("leagueTabs");
+const subLeagueTabs = document.getElementById("subLeagueTabs");
 const gridEmpty = document.getElementById("gridEmpty");
 const catalogNote = document.getElementById("catalogNote");
 let activeCategory = categories()[0];
-// null means the whole category. A league id means that pill is on.
+// null means the whole category. Otherwise a group path: "selecoes", or
+// "selecoes/americas" when a continent inside it is the one being looked at.
 let activeGroup = null;
 
-// /camisas/liga/premier-league, with or without a language in front, is served
-// this same page by _redirects. Reading it here is what makes the address a
-// real one: opened cold, sent in a message or reached with the back button, it
-// arrives at the right pill instead of the top of the catalogue.
+// /camisas/liga/premier-league and /camisas/liga/selecoes/americas, with or
+// without a language in front, are both served this same page by _redirects -
+// Netlify's * matches across slashes, so the rule written for the leagues
+// already covers the continents inside them. Reading the address here is what
+// makes it a real one: opened cold, sent in a message or reached with the back
+// button, it arrives at the right pill instead of the top of the catalogue.
 function readGroupFromPath() {
-  const match = location.pathname.match(/^\/(?:(?:en|es)\/)?([a-z][a-z0-9-]*)\/([a-z][a-z0-9-]*)\/([a-z0-9-]+)\/?$/);
+  const match = location.pathname.match(
+    /^\/(?:(?:en|es)\/)?([a-z][a-z0-9-]*)\/([a-z][a-z0-9-]*)\/([a-z0-9-]+(?:\/[a-z0-9-]+)*)\/?$/);
   if (!match) return false;
-  const [, categoryId, groupPath, groupId] = match;
+  const [, categoryId, groupPath, wanted] = match;
   const setup = categorySetup(categoryId);
   if (setup.path !== categoryId || setup.groupPath !== groupPath) return false;
-  if (!findGroup(categoryId, groupId)) return false;
+  if (!findGroup(categoryId, wanted)) return false;
   activeCategory = categoryId;
-  activeGroup = groupId;
+  activeGroup = wanted;
   return true;
+}
+
+// The league a path sits in: "selecoes/americas" belongs to "selecoes", and a
+// league belongs to itself. What the second row of pills marks as active.
+function activeLeague() {
+  return activeGroup ? activeGroup.split("/")[0] : null;
 }
 
 // The address the current view is at, so pushing it and reading it back agree.
@@ -106,17 +117,17 @@ function renderGroupHead() {
   const home = { title: t("meta.home.title"), desc: t("meta.home.desc") };
   const group = activeGroup ? findGroup(activeCategory, activeGroup) : null;
 
-  document.title = group ? groupPageTitle(activeCategory, group, t) : home.title;
+  document.title = group ? groupPageTitle(activeCategory, activeGroup, t) : home.title;
 
   const desc = document.querySelector('meta[name="description"]');
   if (desc) {
     desc.setAttribute("content",
-      group ? groupPageDescription(activeCategory, group, t) : home.desc);
+      group ? groupPageDescription(activeCategory, activeGroup, t) : home.desc);
   }
 
   // A league with nothing in it is shown to people on purpose and kept out of
   // the index on purpose. The tag is removed again the moment it has stock.
-  const empty = group && !productsInGroup(activeCategory, group.id).length;
+  const empty = group && !productsInGroup(activeCategory, activeGroup).length;
   let robots = document.querySelector('meta[name="robots"]');
   if (empty && !robots) {
     robots = document.createElement("meta");
@@ -136,34 +147,66 @@ function showGroup(groupId, push) {
   renderProducts();
 }
 
-function renderGroups() {
-  const groups = categoryGroups(activeCategory);
-  leagueTabs.hidden = !groups.length;
-  if (!groups.length) {
-    leagueTabs.innerHTML = "";
-    return;
-  }
+// One pill. `count` of 0 dims it: the league is still shown and still opens,
+// and says on arrival that it is being filled.
+function groupPill(path, label, on, count) {
+  return `<button type="button" role="tab" class="leagues__tab${on ? " active" : ""}` +
+    `${count === 0 ? " leagues__tab--soon" : ""}" data-group="${path}" aria-selected="${on}">${label}</button>`;
+}
 
-  leagueTabs.setAttribute("aria-label", t("aria.league"));
-  // "Todas" first: without it there is no way back to the whole tab once a
-  // league is picked.
-  const pill = (id, label, on, count) =>
-    `<button type="button" role="tab" class="leagues__tab${on ? " active" : ""}${count === 0 ? " leagues__tab--soon" : ""}" data-group="${id}" aria-selected="${on}">${label}</button>`;
-
-  leagueTabs.innerHTML = [
-    pill("", t("league.all"), !activeGroup, null),
-    ...groups.map((g) =>
-      pill(g.id, groupName(g), g.id === activeGroup, productsInGroup(activeCategory, g.id).length)
-    ),
-  ].join("");
-
-  leagueTabs.querySelectorAll(".leagues__tab").forEach((btn) => {
+function wireGroupPills(row) {
+  row.querySelectorAll(".leagues__tab").forEach((btn) => {
     btn.addEventListener("click", () => {
       const wanted = btn.dataset.group || null;
       if (wanted === activeGroup) return;
       showGroup(wanted, true);
     });
   });
+}
+
+function renderGroups() {
+  const groups = categoryGroups(activeCategory);
+  leagueTabs.hidden = !groups.length;
+  subLeagueTabs.hidden = true;
+  if (!groups.length) {
+    leagueTabs.innerHTML = "";
+    subLeagueTabs.innerHTML = "";
+    return;
+  }
+
+  leagueTabs.setAttribute("aria-label", t("aria.league"));
+  // "Todas" first: without it there is no way back to the whole tab once a
+  // league is picked. A league is marked active for its own continents too, so
+  // Seleções stays lit while Américas is the one being read.
+  const league = activeLeague();
+  leagueTabs.innerHTML = [
+    groupPill("", t("league.all"), !activeGroup, null),
+    ...groups.map((g) =>
+      groupPill(g.id, groupName(g), g.id === league, productsInGroup(activeCategory, g.id).length)
+    ),
+  ].join("");
+  wireGroupPills(leagueTabs);
+
+  // The third row: the continents inside Seleções, drawn only while that league
+  // is the one being looked at. A league with no groups of its own draws none,
+  // which is every other one today.
+  const inside = league ? subGroups(activeCategory, league) : [];
+  subLeagueTabs.hidden = !inside.length;
+  if (!inside.length) {
+    subLeagueTabs.innerHTML = "";
+    return;
+  }
+
+  subLeagueTabs.setAttribute("aria-label", t("aria.league"));
+  subLeagueTabs.innerHTML = [
+    groupPill(league, t("league.all"), activeGroup === league, null),
+    ...inside.map((g) => {
+      const path = `${league}/${g.id}`;
+      return groupPill(path, groupName(g), path === activeGroup,
+        productsInGroup(activeCategory, path).length);
+    }),
+  ].join("");
+  wireGroupPills(subLeagueTabs);
 }
 
 // The back button, and the forward one after it.
@@ -214,10 +257,11 @@ function renderCategories() {
 }
 
 function renderProducts() {
-  const shown = PRODUCTS.filter(
-    (p) => productCategory(p) === activeCategory &&
-      (!activeGroup || productGroup(p) === activeGroup)
-  );
+  // productsInGroup rather than a match on the field: a shirt filed under
+  // "selecoes/americas" has to show under Seleções as well as under Américas.
+  const shown = activeGroup
+    ? productsInGroup(activeCategory, activeGroup)
+    : PRODUCTS.filter((p) => productCategory(p) === activeCategory);
 
   // A league the shop has not stocked yet is shown on purpose, so a customer
   // can see what is coming; saying so is better than an empty grid.
@@ -304,25 +348,35 @@ renderProducts();
 // each other is worse than none.
 if (arrivedAtGroup) {
   const target = document.getElementById("catalogo");
-  let taken = false;
-
-  // A person who has started scrolling has said where they want to be, and
-  // nothing here may argue with them.
-  ["wheel", "touchstart", "keydown"].forEach((event) => {
-    window.addEventListener(event, () => { taken = true; }, { once: true, passive: true });
-  });
 
   // Three shots on a timer rather than a frame loop: requestAnimationFrame is
   // paused in a tab that is not being looked at, which is exactly the tab a
   // link opened in a background window lands in. `behavior: auto` because the
   // page scrolls smoothly by default and three animations chasing each other
   // look worse than none.
+  //
+  // Whether the reader has taken over is decided by where the page actually is,
+  // not by listening for wheel and touch events. Those fire for reasons that
+  // have nothing to do with a person - the first version gave up on the scroll
+  // altogether, at random, because something else in the page tripped one. If
+  // the position is no longer where this last put it, someone else moved it and
+  // it stops arguing.
+  let placed = null;
   const toCatalogue = () => {
-    if (taken) return;
+    if (placed !== null && Math.abs(window.scrollY - placed) > 2) return;
     window.scrollTo({
       top: Math.round(target.getBoundingClientRect().top + window.scrollY),
-      behavior: "auto",
+      // "instant", not "auto". In scrollTo, "auto" does not mean jump - it
+      // means use the element's scroll-behavior, and this page sets that to
+      // smooth. So the scroll animated, window.scrollY read a few pixels along
+      // rather than at the target, and the next attempt read that gap as the
+      // reader having taken over and gave up on a page that had barely moved.
+      behavior: "instant",
     });
+    // Where the page ended up, not where it was asked to go: on the first try
+    // the images above have no height yet, so the document can be too short to
+    // scroll that far and the browser stops short.
+    placed = Math.round(window.scrollY);
   };
   window.addEventListener("load", toCatalogue);
   setTimeout(toCatalogue, 300);
