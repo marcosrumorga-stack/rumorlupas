@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- This page is now also served at /camisas/liga/<liga>, where a relative
+     "style.css" would resolve to /camisas/liga/style.css - and worse, be
+     rewritten to produto.html and come back as HTML pretending to be a
+     stylesheet. Everything relative below hangs off the root instead, the same
+     way produto.html has always done it. i18n.js puts the language prefix back
+     on every internal link, so /en/ still stays in English. -->
+<base href="/">
 <script>
 /* Hides the consent banner before anything is painted, for a visitor who has
    already answered - so the banner can live in the markup and draw with the
@@ -143,8 +150,12 @@ try {
   <div class="container" style="position:relative;">
     <h2 class="section__title" data-i18n="catalog.title">Catálogo</h2>
     <div class="cats" id="categoryTabs" role="tablist"></div>
+    <!-- The leagues under Camisas. Drawn only for a category that declares
+         groups, which today is that one; see CATEGORY_SETUP in products.js. -->
+    <div class="leagues" id="leagueTabs" role="tablist" hidden></div>
     <p class="section__subtitle" id="catalogNote" hidden></p>
     <div class="products" id="productGrid"></div>
+    <p class="products__empty" id="gridEmpty" hidden></p>
   </div>
 </section>
 

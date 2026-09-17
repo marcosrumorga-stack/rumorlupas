@@ -23,6 +23,12 @@
 /en/lupas/oakley-splice  /en/  302!
 /es/lupas/oakley-splice  /es/  302!
 
+# A league inside a category is the catalogue, opened on that league.
+# script.js reads the address back; the edge function writes the head.
+/en/camisas/liga/*  /index.html  200
+/es/camisas/liga/*  /index.html  200
+/camisas/liga/*  /index.html  200
+
 # Serve the product page at its own address without changing the bar.
 # One pair of rules per category that has products in it.
 /en/lupas/*  /produto.html  200

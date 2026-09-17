@@ -905,7 +905,11 @@ button.swatch { position: relative; }
   gap: 8px;
   margin-bottom: 34px;
 }
-.cats:has(+ .section__subtitle) { margin-bottom: 14px; }
+/* The league row now always sits between the tabs and whatever follows, so the
+   old `.cats:has(+ .section__subtitle)` would never match again. Either of the
+   two things that can come next takes most of the tabs' bottom margin. */
+.cats:has(+ .leagues:not([hidden])),
+.cats:has(+ .leagues + .section__subtitle:not([hidden])) { margin-bottom: 14px; }
 .cats__tab {
   border: 1px solid var(--border);
   background: var(--bg);
@@ -925,6 +929,63 @@ button.swatch { position: relative; }
   color: #fff;
 }
 .cats__tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* The leagues inside Camisas: the same shape as the tabs above, smaller and
+   quieter, so the tab still reads as the thing that was chosen first. */
+.leagues {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
+  margin-bottom: 30px;
+}
+.leagues[hidden] { display: none; }
+.leagues__tab {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, opacity 0.18s;
+}
+.leagues__tab:hover { color: var(--text); border-color: var(--text-muted); }
+.leagues__tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+/* A league with nothing in it yet is still shown and still opens - it says so
+   on arrival. Dimmed so the ones that have shirts are the ones the eye lands
+   on, and back to full strength once it is the league being looked at. */
+.leagues__tab--soon { opacity: 0.5; }
+.leagues__tab--soon:hover,
+.leagues__tab--soon.active { opacity: 1; }
+.leagues__tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (max-width: 760px) {
+  /* Twelve pills wrap to six rows on a phone and push the grid off the screen.
+     One line that scrolls sideways instead, like the photo strips. */
+  .leagues {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 4px;
+  }
+  .leagues::-webkit-scrollbar { display: none; }
+  .leagues__tab { flex: 0 0 auto; }
+}
+
+.products__empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 44px 16px 12px;
+}
 
 /* Products */
 .products {

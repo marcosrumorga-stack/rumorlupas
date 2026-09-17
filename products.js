@@ -644,6 +644,8 @@ const PRODUCTS = [
     // that would make a sixty-character URL nobody wants to paste into WhatsApp.
     slug: "brasil-26-27",
     category: "camisas",
+    // Which league pill it files under - see `groups` in CATEGORY_SETUP.
+    league: "selecoes",
     price: 35,
     // Five euros more to have a name and a number printed on the back. The
     // surcharge is charged by the checkout function from its own copy of this
@@ -786,6 +788,34 @@ const CATEGORY_SETUP = {
     // in calendar days, which is how they count them - the lupas promise
     // working days and the two are never said in the same breath.
     deliveryDays: [10, 21],
+    // Sub-navigation inside the tab, in the order the shop wants them read,
+    // each with an address of its own under /camisas/liga/<id> so a league can
+    // be found on Google and sent in a message.
+    //
+    // All eleven are shown whether or not they hold shirts yet - the shop's
+    // call, so a customer sees what is coming - and an empty one says "em
+    // breve" rather than showing an empty grid. An empty one is still kept out
+    // of the sitemap and marked noindex: showing a person a page that is being
+    // filled is a different thing from asking Google to file ten pages that
+    // have nothing on them.
+    //
+    // A name written here is used as it stands unless i18n.js carries a
+    // `league.<id>` string - the same fallback colorName() makes. Premier
+    // League is Premier League in all three languages; Selecoes is not.
+    groupPath: "liga",
+    groups: [
+      { id: "selecoes", name: "Seleções" },
+      { id: "brasileirao", name: "Brasileirão" },
+      { id: "liga-portugal", name: "Liga Portugal" },
+      { id: "premier-league", name: "Premier League" },
+      { id: "la-liga", name: "La Liga" },
+      { id: "ligue-1", name: "Ligue 1" },
+      { id: "bundesliga", name: "Bundesliga" },
+      { id: "serie-a", name: "Serie A" },
+      { id: "mls", name: "MLS" },
+      { id: "nba", name: "NBA" },
+      { id: "camisolas-f1", name: "Camisolas F1" },
+    ],
   },
 };
 
@@ -817,6 +847,65 @@ function categoryLabel(id) {
   const key = `category.${id}`;
   const text = t(key);
   return text === key ? id : text;
+}
+
+// The groups a category is browsed by — the leagues under Camisas. Every other
+// category returns an empty list, which is how the rest of the code knows there
+// is no second row of pills to draw.
+function categoryGroups(id) {
+  return categorySetup(id).groups || [];
+}
+
+function findGroup(categoryId, groupId) {
+  return categoryGroups(categoryId).find((g) => g.id === groupId) || null;
+}
+
+// `tr` so the server can pass its own lookup; the browser falls back to t().
+function groupName(group, tr) {
+  const key = `league.${group.id}`;
+  const text = tr ? tr(key) : t(key);
+  return text === key ? group.name : text;
+}
+
+function productGroup(product) {
+  return product.league || null;
+}
+
+function productsInGroup(categoryId, groupId) {
+  return PRODUCTS.filter(
+    (p) => productCategory(p) === categoryId && productGroup(p) === groupId
+  );
+}
+
+// /camisas/liga/premier-league, and the same under /en and /es. Three segments
+// rather than /camisas/premier-league on purpose: two segments is the address a
+// product already occupies, and a league that one day shares a slug with a
+// shirt would quietly take its page.
+function groupUrl(categoryId, groupId, lang) {
+  const setup = categorySetup(categoryId);
+  const prefix = lang && lang !== "pt" ? `/${lang}` : "";
+  return `${prefix}/${setup.path}/${setup.groupPath}/${groupId}`;
+}
+
+// Leads with the league's own name, because that is what gets typed into
+// Google — "premier league camisola" — and it sidesteps Portuguese wanting a
+// different preposition for each one: da Premier League, do Brasileirão.
+function groupPageTitle(categoryId, group, tr) {
+  const name = groupName(group, tr);
+  const products = productsInGroup(categoryId, group.id);
+  if (!products.length) {
+    return `${name} — ${tr("league.shirts")}, ${tr("league.soon")} | RumorLupas`;
+  }
+  const cheapest = Math.min(...products.map((p) => p.price));
+  return `${name} — ${tr("league.shirts")} ${tr("league.from")} ${formatPrice(cheapest)} | RumorLupas`;
+}
+
+function groupPageDescription(categoryId, group, tr) {
+  const name = groupName(group, tr);
+  const products = productsInGroup(categoryId, group.id);
+  if (!products.length) return `${name} — ${tr("league.soonLong")}`;
+  const cheapest = Math.min(...products.map((p) => p.price));
+  return `${name} — ${tr("league.shirts")} ${tr("league.from")} ${formatPrice(cheapest)}. ${tr("league.descTail")}`;
 }
 
 // A product either has colour variants — each with its own photos — or a plain
@@ -1168,6 +1257,8 @@ if (typeof module !== "undefined" && module.exports) {
     formatPrice, titleLead, productPageTitle, productPageDescription,
     sizedImage, imageSrcset, GALLERY_SIZES,
     categorySetup, productSetup, CATEGORY_SETUP,
+    categoryGroups, findGroup, groupName, productGroup, productsInGroup,
+    groupUrl, groupPageTitle, groupPageDescription,
     cleanPrinting, printingFromKey, printingToKey, printingLabel, printingPrice,
     categoryMinimum, shortOfMinimum, categoryLabel, deliveryEstimates,
   };

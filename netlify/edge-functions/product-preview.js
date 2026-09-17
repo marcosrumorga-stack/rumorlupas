@@ -70,6 +70,18 @@ const OG_LOCALE = { pt: "pt_PT", en: "en_GB", es: "es_ES" };
 // for the same page.
 const PATH = /^\/(?:(en|es)\/)?([a-z][a-z0-9-]*)\/([^/]+)\/?$/;
 
+// One segment deeper: /camisas/liga/premier-league. Three segments is why it
+// cannot be confused with a product, which has two.
+//
+// The lookahead is load-bearing. All three segments here are slash-free, so
+// without it /en/lupas/oakley-juliet also reads as three segments - category
+// "en", group "lupas" - and the language prefix is never taken. It matched, the
+// category lookup then found nothing, and every English and Spanish product
+// page quietly lost its head. Refusing a category called "en" or "es" forces
+// the prefix to be read as a prefix. PATH above does not need this: its last
+// group cannot hold a slash, so only one reading of it ever fits.
+const LEAGUE_PATH = /^\/(?:(en|es)\/)?(?!en\/|es\/)([a-z][a-z0-9-]*)\/([a-z][a-z0-9-]*)\/([a-z0-9-]+)\/?$/;
+
 function escapeAttr(value) {
   return String(value)
     .replace(/&/g, "&amp;").replace(/"/g, "&quot;")
@@ -88,8 +100,98 @@ function stripHead(html) {
     .replace(/<link\b[^>]*\brel=["']canonical["'][^>]*>/gi, "");
 }
 
+// A league address is the catalogue opened on one league, and a page of its own
+// to Google, so it needs a head of its own. It lives in this function rather
+// than a second edge function so both share the one catalogue already loaded.
+async function dressLeague(url, context, match) {
+  const lang = match[1] || "pt";
+  const categoryPath = match[2];
+  const groupPath = match[3];
+  const groupId = match[4];
+
+  let catalogue;
+  let strings;
+  try {
+    ({ catalogue, strings } = await loadCatalogue(url.origin));
+  } catch (error) {
+    console.error("product-preview: catalogue", error && error.message);
+    return;
+  }
+
+  const {
+    CATEGORY_SETUP, categorySetup, findGroup, productsInGroup,
+    groupPageTitle, groupPageDescription, productImages, defaultColorId, ogImage,
+  } = catalogue;
+
+  // Every part of the address has to belong to the same category, or it is not
+  // a league's page: /lupas/liga/x is nobody's.
+  const categoryId = Object.keys(CATEGORY_SETUP)
+    .find((id) => CATEGORY_SETUP[id].path === categoryPath);
+  if (!categoryId) return;
+  const setup = categorySetup(categoryId);
+  if (setup.groupPath !== groupPath) return;
+  const group = findGroup(categoryId, groupId);
+  if (!group) return;
+
+  const response = await context.next();
+  const type = response.headers.get("content-type") || "";
+  if (!type.includes("text/html")) return response;
+
+  const original = await response.text();
+  const headers = new Headers(response.headers);
+  headers.delete("content-length");
+
+  try {
+    const { I18N } = strings;
+    const tr = (key) => (I18N[lang] && I18N[lang][key] !== undefined ? I18N[lang][key] : key);
+
+    const title = groupPageTitle(categoryId, group, tr);
+    const description = groupPageDescription(categoryId, group, tr);
+    const canonical = `${SITE}${lang === "pt" ? "" : "/" + lang}/${setup.path}/${setup.groupPath}/${group.id}`;
+
+    const stocked = productsInGroup(categoryId, group.id);
+    // A shared league link shows a shirt from that league when there is one.
+    const first = stocked[0];
+    const cover = first ? productImages(first, defaultColorId(first))[0] : null;
+    const preview = cover ? `${SITE}/${ogImage(cover)}` : `${SITE}/images/og-cover.png`;
+
+    const tags = [
+      `<title id="pageTitle">${escapeAttr(title)}</title>`,
+      `<meta name="description" content="${escapeAttr(description)}">`,
+      `<link rel="canonical" href="${escapeAttr(canonical)}">`,
+      `<meta property="og:type" content="website">`,
+      `<meta property="og:site_name" content="RumorLupas">`,
+      `<meta property="og:locale" content="${OG_LOCALE[lang]}">`,
+      `<meta property="og:url" content="${escapeAttr(canonical)}">`,
+      `<meta property="og:title" content="${escapeAttr(title)}">`,
+      `<meta property="og:description" content="${escapeAttr(description)}">`,
+      `<meta property="og:image" content="${escapeAttr(preview)}">`,
+      `<meta property="og:image:width" content="1200">`,
+      `<meta property="og:image:height" content="630">`,
+      `<meta name="twitter:card" content="summary_large_image">`,
+    ];
+    // Shown to a customer on purpose and kept out of the index on purpose: a
+    // league being filled is worth seeing and not worth filing. The tag goes
+    // the moment the league has a shirt, here and in script.js both.
+    if (!stocked.length) tags.push(`<meta name="robots" content="noindex, follow">`);
+
+    let html = stripHead(original).replace(/<\/head>/i, `${tags.join("\n")}\n</head>`);
+    html = html.replace(/<html\b[^>]*>/i, (tag) =>
+      /\blang=/.test(tag) ? tag.replace(/\blang=["'][^"']*["']/i, `lang="${HTML_LANG[lang]}"`) : tag);
+
+    return new Response(html, { status: response.status, headers });
+  } catch (error) {
+    console.error("product-preview: league", error && error.message);
+    return new Response(original, { status: response.status, headers });
+  }
+}
+
 export default async (request, context) => {
   const url = new URL(request.url);
+
+  const league = url.pathname.match(LEAGUE_PATH);
+  if (league) return await dressLeague(url, context, league);
+
   const match = url.pathname.match(PATH);
   if (!match) return;
 

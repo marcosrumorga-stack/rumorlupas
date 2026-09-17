@@ -36,6 +36,23 @@ $CATEGORIES = @{
   camisas = @{ path = "camisas"; slugPrefix = "" }
 }
 
+# The sub-navigation inside a category, and another copy of products.js - the
+# `groups` list under CATEGORY_SETUP. Order does not matter here; the pills are
+# ordered by the catalogue, this only decides which addresses exist.
+#
+# Every league gets a rewrite so its address answers, but only a league that
+# holds shirts goes in the sitemap: the empty ones are shown to customers on
+# purpose and are marked noindex by the edge function, so listing them would be
+# asking Google to file pages we have just told it to ignore.
+$GROUPS = @{
+  camisas = @{
+    path = "liga"
+    ids  = @("selecoes", "brasileirao", "liga-portugal", "premier-league",
+             "la-liga", "ligue-1", "bundesliga", "serie-a", "mls", "nba",
+             "camisolas-f1")
+  }
+}
+
 $products = @()
 $hits = [regex]::Matches($block, '(?m)^\s{2,4}(\{ )?id: "([a-z0-9.-]+)",\s*\r?\n?\s*name: "([^"]+)"')
 for ($i = 0; $i -lt $hits.Count; $i++) {
@@ -47,11 +64,21 @@ for ($i = 0; $i -lt $hits.Count; $i++) {
   $cat = if ($texto -match 'category: "([a-z0-9-]+)"') { $Matches[1] } else { "lupas" }
   $setup = if ($CATEGORIES.ContainsKey($cat)) { $CATEGORIES[$cat] } else { $CATEGORIES["lupas"] }
 
-  $slug = $m.Groups[3].Value.ToLowerInvariant()
-  $slug = $slug.Normalize([Text.NormalizationForm]::FormD) -replace '\p{Mn}', ''
-  $slug = ($slug -replace '[^a-z0-9]+', '-').Trim('-')
+  # A product may write its own address instead of having it built from the
+  # name - productSlug() in products.js does the same, and for the same reason:
+  # a rename must not move a page that is already linked to. Without this the
+  # long supplier name would generate a slug nobody has ever linked to.
+  if ($texto -match 'slug: "([a-z0-9-]+)"') {
+    $slug = $Matches[1]
+  } else {
+    $slug = $m.Groups[3].Value.ToLowerInvariant()
+    $slug = $slug.Normalize([Text.NormalizationForm]::FormD) -replace '\p{Mn}', ''
+    $slug = ($slug -replace '[^a-z0-9]+', '-').Trim('-')
+  }
+  $league = if ($texto -match 'league: "([a-z0-9-]+)"') { $Matches[1] } else { "" }
   $products += [pscustomobject]@{
-    id = $m.Groups[2].Value; slug = "$($setup.slugPrefix)$slug"; path = $setup.path }
+    id = $m.Groups[2].Value; slug = "$($setup.slugPrefix)$slug"; path = $setup.path
+    category = $cat; league = $league }
 }
 
 $dupes = $products | Group-Object slug | Where-Object { $_.Count -gt 1 }
@@ -82,6 +109,14 @@ function Add-Page([string]$path, [string]$priority, [string]$freq, [string[]]$la
 }
 Add-Page "/" "1.0" "daily"
 foreach ($p in $products) { Add-Page "/$($p.path)/$($p.slug)" "0.8" "weekly" }
+# A league only earns a place once it has something to show.
+foreach ($cat in $GROUPS.Keys) {
+  $setup = $CATEGORIES[$cat]
+  foreach ($id in $GROUPS[$cat].ids) {
+    $has = @($products | Where-Object { $_.category -eq $cat -and $_.league -eq $id }).Count
+    if ($has) { Add-Page "/$($setup.path)/$($GROUPS[$cat].path)/$id" "0.6" "weekly" }
+  }
+}
 # Portuguese only: the documents themselves are not translated, and the notice
 # at the top of each says only the Portuguese version is binding. Must match
 # PT_ONLY in i18n.js.
@@ -133,6 +168,21 @@ if ($RETIRED.Count) {
     foreach ($lang in $LANGS | Where-Object { $_ -ne "pt" }) {
       $r += "/$lang/lupas/$($x.slug)  /$lang/  302!"
     }
+  }
+}
+
+# Before the product rules below, and this matters: Netlify's * matches across
+# slashes, so /camisas/* would swallow /camisas/liga/premier-league and hand it
+# to produto.html, which would look for a model of that name and find none.
+if ($GROUPS.Count) {
+  $r += "", "# A league inside a category is the catalogue, opened on that league.",
+        "# script.js reads the address back; the edge function writes the head."
+  foreach ($cat in $GROUPS.Keys) {
+    $base = "/$($CATEGORIES[$cat].path)/$($GROUPS[$cat].path)/*"
+    foreach ($lang in $LANGS | Where-Object { $_ -ne "pt" }) {
+      $r += "/$lang$base  /index.html  200"
+    }
+    $r += "$base  /index.html  200"
   }
 }
 

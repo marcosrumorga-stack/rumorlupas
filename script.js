@@ -65,8 +65,116 @@ function mediaHtml(p) {
 }
 
 const categoryTabs = document.getElementById("categoryTabs");
+const leagueTabs = document.getElementById("leagueTabs");
+const gridEmpty = document.getElementById("gridEmpty");
 const catalogNote = document.getElementById("catalogNote");
 let activeCategory = categories()[0];
+// null means the whole category. A league id means that pill is on.
+let activeGroup = null;
+
+// /camisas/liga/premier-league, with or without a language in front, is served
+// this same page by _redirects. Reading it here is what makes the address a
+// real one: opened cold, sent in a message or reached with the back button, it
+// arrives at the right pill instead of the top of the catalogue.
+function readGroupFromPath() {
+  const match = location.pathname.match(/^\/(?:(?:en|es)\/)?([a-z][a-z0-9-]*)\/([a-z][a-z0-9-]*)\/([a-z0-9-]+)\/?$/);
+  if (!match) return false;
+  const [, categoryId, groupPath, groupId] = match;
+  const setup = categorySetup(categoryId);
+  if (setup.path !== categoryId || setup.groupPath !== groupPath) return false;
+  if (!findGroup(categoryId, groupId)) return false;
+  activeCategory = categoryId;
+  activeGroup = groupId;
+  return true;
+}
+
+// The address the current view is at, so pushing it and reading it back agree.
+function currentPath() {
+  const lang = typeof currentLang === "string" ? currentLang : "pt";
+  const home = lang === "pt" ? "/" : `/${lang}/`;
+  return activeGroup ? groupUrl(activeCategory, activeGroup, lang) : home;
+}
+
+// A league has an address of its own, so it needs a head of its own: the tab,
+// the search result and anything that reads the description should say which
+// league this is, not what the home page says.
+//
+// The edge function writes the same three things server-side, because a crawler
+// that runs nothing still has to see them. This is for the person looking at
+// the tab, and for the crawlers that do run scripts.
+function renderGroupHead() {
+  const home = { title: t("meta.home.title"), desc: t("meta.home.desc") };
+  const group = activeGroup ? findGroup(activeCategory, activeGroup) : null;
+
+  document.title = group ? groupPageTitle(activeCategory, group, t) : home.title;
+
+  const desc = document.querySelector('meta[name="description"]');
+  if (desc) {
+    desc.setAttribute("content",
+      group ? groupPageDescription(activeCategory, group, t) : home.desc);
+  }
+
+  // A league with nothing in it is shown to people on purpose and kept out of
+  // the index on purpose. The tag is removed again the moment it has stock.
+  const empty = group && !productsInGroup(activeCategory, group.id).length;
+  let robots = document.querySelector('meta[name="robots"]');
+  if (empty && !robots) {
+    robots = document.createElement("meta");
+    robots.name = "robots";
+    robots.content = "noindex, follow";
+    document.head.appendChild(robots);
+  } else if (!empty && robots) {
+    robots.remove();
+  }
+}
+
+function showGroup(groupId, push) {
+  activeGroup = groupId;
+  if (push) history.pushState({ group: groupId, cat: activeCategory }, "", currentPath());
+  renderGroups();
+  renderGroupHead();
+  renderProducts();
+}
+
+function renderGroups() {
+  const groups = categoryGroups(activeCategory);
+  leagueTabs.hidden = !groups.length;
+  if (!groups.length) {
+    leagueTabs.innerHTML = "";
+    return;
+  }
+
+  leagueTabs.setAttribute("aria-label", t("aria.league"));
+  // "Todas" first: without it there is no way back to the whole tab once a
+  // league is picked.
+  const pill = (id, label, on, count) =>
+    `<button type="button" role="tab" class="leagues__tab${on ? " active" : ""}${count === 0 ? " leagues__tab--soon" : ""}" data-group="${id}" aria-selected="${on}">${label}</button>`;
+
+  leagueTabs.innerHTML = [
+    pill("", t("league.all"), !activeGroup, null),
+    ...groups.map((g) =>
+      pill(g.id, groupName(g), g.id === activeGroup, productsInGroup(activeCategory, g.id).length)
+    ),
+  ].join("");
+
+  leagueTabs.querySelectorAll(".leagues__tab").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const wanted = btn.dataset.group || null;
+      if (wanted === activeGroup) return;
+      showGroup(wanted, true);
+    });
+  });
+}
+
+// The back button, and the forward one after it.
+window.addEventListener("popstate", () => {
+  activeGroup = null;
+  readGroupFromPath();
+  renderCategories();
+  renderCatalogNote();
+  renderGroupHead();
+  renderProducts();
+});
 
 // What ships in the box differs per category — a hat comes with no cleaning
 // cloth. Categories with nothing to say simply show no line.
@@ -91,15 +199,32 @@ function renderCategories() {
     btn.addEventListener("click", () => {
       if (btn.dataset.cat === activeCategory) return;
       activeCategory = btn.dataset.cat;
+      // A league belongs to the tab it was picked in, so changing tab drops it
+      // and the address goes back to the catalogue's own.
+      activeGroup = null;
+      history.pushState({ cat: activeCategory }, "", currentPath());
       renderCategories();
       renderCatalogNote();
+      renderGroupHead();
       renderProducts();
     });
   });
+
+  renderGroups();
 }
 
 function renderProducts() {
-  productGrid.innerHTML = PRODUCTS.filter((p) => productCategory(p) === activeCategory).map((p) => `
+  const shown = PRODUCTS.filter(
+    (p) => productCategory(p) === activeCategory &&
+      (!activeGroup || productGroup(p) === activeGroup)
+  );
+
+  // A league the shop has not stocked yet is shown on purpose, so a customer
+  // can see what is coming; saying so is better than an empty grid.
+  gridEmpty.hidden = shown.length > 0;
+  gridEmpty.textContent = shown.length ? "" : t("league.empty");
+
+  productGrid.innerHTML = shown.map((p) => `
     <div class="product-card" data-product="${p.id}">
       <div class="product-card__media">${mediaHtml(p)}</div>
       <div class="product-card__body">
@@ -161,9 +286,48 @@ function pickColor(productId, colorId) {
   renderProducts();
 }
 
+// Before the first draw, so a league address opens on its own pill.
+const arrivedAtGroup = readGroupFromPath();
 renderCategories();
 renderCatalogNote();
+renderGroupHead();
 renderProducts();
+// Straight to the catalogue: someone who followed a league link came for the
+// shirts, not for the hero.
+//
+// Scrolling once is not enough. Everything above the catalogue - the hero, the
+// customer strip - is still loading, and each photo that lands pushes the
+// catalogue further down, so a scroll to where it is now ends up short by
+// however much arrived afterwards. So it is re-asserted until the target stops
+// moving, and given up on after a second either way. `behavior: auto` because
+// the page sets smooth scrolling globally and a chain of animations fighting
+// each other is worse than none.
+if (arrivedAtGroup) {
+  const target = document.getElementById("catalogo");
+  let taken = false;
+
+  // A person who has started scrolling has said where they want to be, and
+  // nothing here may argue with them.
+  ["wheel", "touchstart", "keydown"].forEach((event) => {
+    window.addEventListener(event, () => { taken = true; }, { once: true, passive: true });
+  });
+
+  // Three shots on a timer rather than a frame loop: requestAnimationFrame is
+  // paused in a tab that is not being looked at, which is exactly the tab a
+  // link opened in a background window lands in. `behavior: auto` because the
+  // page scrolls smoothly by default and three animations chasing each other
+  // look worse than none.
+  const toCatalogue = () => {
+    if (taken) return;
+    window.scrollTo({
+      top: Math.round(target.getBoundingClientRect().top + window.scrollY),
+      behavior: "auto",
+    });
+  };
+  window.addEventListener("load", toCatalogue);
+  setTimeout(toCatalogue, 300);
+  setTimeout(toCatalogue, 900);
+}
 
 // The customer strip: arrows for the mouse, which has no sideways gesture, and
 // click-and-drag on top. Touch and trackpad already work through scroll-snap.
