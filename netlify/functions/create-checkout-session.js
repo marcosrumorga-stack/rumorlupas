@@ -386,8 +386,6 @@ exports.handler = async (event) => {
             fixed_amount: { amount: shippingCents, currency: "eur" },
             // Portuguese on purpose, like the line items: this text is what
             // the shop reads when packing, and the function has no language.
-            // Portuguese on purpose, like the line items: this text is what
-            // the shop reads when packing, and the function has no language.
             // An order holding something ordered in says so here, because
             // Stripe shows one estimate and this is the last screen before
             // the card: a customer must not read "2 to 5 working days" and

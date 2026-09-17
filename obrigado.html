@@ -45,9 +45,29 @@ try {
       <circle cx="32" cy="32" r="29"/>
       <path d="M19 33.5L28 42.5L45 23"/>
     </svg>
-    <p class="thanks__eyebrow" data-i18n="thanks.eyebrow">Pedido confirmado</p>
+    <!-- The wording starts neutral and is settled by the script below, which
+         asks Stripe whether this order was actually paid for. Written this way
+         round on purpose: with Multibanco a customer reaches this page before
+         paying, and the one thing that must never appear is a claim that a
+         parcel is being packed for someone who has not paid. Neutral is true
+         in every case, so it is what a reader with a slow connection, a failed
+         request or no JavaScript at all is left with. -->
+    <p class="thanks__eyebrow" data-i18n="thanks.eyebrow" id="thanksEyebrow">Pedido recebido</p>
     <h1 data-i18n="thanks.title">Obrigado pela compra!</h1>
-    <p class="thanks__text" data-i18n="thanks.text">Recebemos seu pedido e já estamos preparando o envio. Ele chega em 2 a 5 dias úteis.</p>
+    <p class="thanks__text" data-i18n="thanks.text" id="thanksText">Recebemos o seu pedido. Vai receber um e-mail com os próximos passos.</p>
+
+    <!-- Multibanco and bank transfer: the reference that still has to be paid. -->
+    <div class="thanks__voucher" id="orderVoucher" hidden>
+      <p class="thanks__voucher-title" id="voucherTitle"></p>
+      <div class="thanks__voucher-grid" id="voucherNumbers" hidden>
+        <span class="thanks__voucher-label" id="voucherEntityLabel"></span>
+        <code id="voucherEntity"></code>
+        <span class="thanks__voucher-label" id="voucherReferenceLabel"></span>
+        <code id="voucherReference"></code>
+      </div>
+      <p class="thanks__voucher-expires" id="voucherExpires" hidden></p>
+      <a class="btn btn--primary thanks__voucher-link" id="voucherLink" href="#" target="_blank" rel="noopener" hidden></a>
+    </div>
 
     <div class="thanks__ref" id="orderRef" hidden>
       <span class="thanks__ref-label" data-i18n="thanks.ref">Referência do pedido</span>
@@ -104,10 +124,12 @@ try {
 <script>
 document.getElementById("year").textContent = new Date().getFullYear();
 
-// Reaching this page means Stripe took the payment, so the cart has served its
-// purpose. Cleared here rather than on the way out, so an abandoned checkout
-// still finds the basket intact. The coupon goes with it: a code that has been
-// spent should not sit waiting in the next order.
+// Reaching this page means the order exists at Stripe, so the cart has served
+// its purpose - whether or not the money has arrived yet, because leaving the
+// basket full would have someone paying a Multibanco reference and then
+// ordering the same things a second time. Cleared here rather than on the way
+// out, so an abandoned checkout still finds the basket intact. The coupon goes
+// with it: a code that has been spent should not wait in the next order.
 try {
   localStorage.removeItem("rumorlupas_cart");
   localStorage.removeItem("rumorlupas_coupon");
@@ -120,6 +142,101 @@ if (ref) {
   document.getElementById("orderRefValue").textContent = ref;
   document.getElementById("orderRef").hidden = false;
 }
+
+// What the page says about the money. See netlify/functions/order-status.js for
+// why it has to be asked rather than assumed.
+(async () => {
+  if (!ref) return;
+
+  const say = (key, element) => {
+    const text = t(key);
+    if (text === key) return;
+    element.textContent = text;
+    // Kept in step so the attribute and the words never disagree; i18n.js reads
+    // this if it ever runs over the page again.
+    element.setAttribute("data-i18n", key);
+  };
+
+  let data;
+  try {
+    // Given up on rather than left spinning: the neutral wording already in the
+    // page is true, and a customer staring at a stalled page learns nothing.
+    const stop = new AbortController();
+    const timer = setTimeout(() => stop.abort(), 6000);
+    const res = await fetch(`/.netlify/functions/order-status?ref=${encodeURIComponent(ref)}`,
+      { signal: stop.signal });
+    clearTimeout(timer);
+    if (!res.ok) return;
+    data = await res.json();
+  } catch {
+    return;
+  }
+
+  const eyebrow = document.getElementById("thanksEyebrow");
+  const text = document.getElementById("thanksText");
+
+  if (data.state === "paid") {
+    say("thanks.eyebrow.paid", eyebrow);
+    say("thanks.text.paid", text);
+    return;
+  }
+
+  // A class and not .hidden: the tick is an <svg>, and `hidden` is a property
+  // of HTML elements, so assigning it there does nothing at all.
+  const dropTick = () => document.querySelector(".thanks__check").classList.add("thanks__check--off");
+
+  if (data.state === "unpaid") {
+    say("thanks.eyebrow.unpaid", eyebrow);
+    say("thanks.text.unpaid", text);
+    dropTick();
+    return;
+  }
+
+  if (data.state !== "pending") return;
+
+  // Ordered, but not yet paid. The tick goes: it is the one thing on this page
+  // that says "done" without words, and nothing is done yet.
+  dropTick();
+  say("thanks.eyebrow.pending", eyebrow);
+  say("thanks.text.pending", text);
+
+  const box = document.getElementById("orderVoucher");
+  box.hidden = false;
+  say("thanks.voucher.title", document.getElementById("voucherTitle"));
+
+  if (data.entity && data.reference) {
+    say("thanks.voucher.entity", document.getElementById("voucherEntityLabel"));
+    say("thanks.voucher.reference", document.getElementById("voucherReferenceLabel"));
+    document.getElementById("voucherEntity").textContent = data.entity;
+    document.getElementById("voucherReference").textContent = data.reference;
+    document.getElementById("voucherNumbers").hidden = false;
+  }
+
+  // A Multibanco reference stops working after a few days. Someone who does not
+  // know that pays late, the payment is refused, and neither side understands
+  // why - so the date is on the page next to the numbers.
+  if (data.expiresAt) {
+    const when = new Date(data.expiresAt * 1000).toLocaleDateString(
+      document.documentElement.lang || "pt-PT",
+      { day: "numeric", month: "long" });
+    const line = t("thanks.voucher.expires");
+    if (line !== "thanks.voucher.expires") {
+      const el = document.getElementById("voucherExpires");
+      el.textContent = line.replace("{x}", when);
+      el.hidden = false;
+    }
+  }
+
+  // Stripe's own page for this payment. Shown whether or not the numbers came
+  // back: when they did it is a second way to reach them, and when they did not
+  // it is the only one.
+  if (data.voucherUrl) {
+    const link = document.getElementById("voucherLink");
+    link.href = data.voucherUrl;
+    say("thanks.voucher.link", link);
+    link.hidden = false;
+  }
+})();
 </script>
 <!-- Cloudflare Web Analytics: cookieless, so no consent banner is needed. Named
      in the privacy policy under "Estatisticas de visitas". -->

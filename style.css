@@ -68,6 +68,11 @@ body {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+/* The tick is an <svg>, where setting .hidden in script does nothing: `hidden`
+   is a property of HTML elements only, so the assignment silently creates a
+   plain JS property and the tick keeps showing. A class, so hiding it is a
+   thing the stylesheet actually says. */
+.thanks__check--off { display: none; }
 .thanks__eyebrow {
   color: var(--accent-light);
   letter-spacing: 0.3em;
@@ -109,6 +114,49 @@ body {
   user-select: all;
 }
 .thanks__ref-note { font-size: 0.78rem; color: rgba(255,255,255,0.45); }
+
+/* The Multibanco reference, when the order still has to be paid. Louder than
+   the order reference above it: that one is for looking something up later,
+   this one is money the customer has to go and hand over, and it is the reason
+   they are still on the page. */
+.thanks__voucher {
+  margin: 30px auto 0;
+  padding: 22px 24px;
+  max-width: 460px;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  background: rgba(214,40,40,0.08);
+  text-align: left;
+}
+.thanks__voucher-title {
+  margin-bottom: 14px;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+}
+.thanks__voucher-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 18px;
+  align-items: baseline;
+}
+.thanks__voucher-label { font-size: 0.8rem; color: rgba(255,255,255,0.55); }
+.thanks__voucher-grid code {
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  color: #fff;
+  /* Digits a person reads out loud at a machine, so they line up and a tap
+     selects the whole number rather than half of it. */
+  font-variant-numeric: tabular-nums;
+  user-select: all;
+}
+.thanks__voucher-expires {
+  margin-top: 14px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.65);
+}
+.thanks__voucher-link { margin-top: 18px; }
 .thanks__help { color: rgba(255,255,255,0.6); font-size: 0.92rem; }
 .thanks__help a { color: var(--accent-light); }
 .thanks__actions { justify-content: center; margin-top: 30px; }
