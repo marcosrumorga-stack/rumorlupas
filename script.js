@@ -87,45 +87,114 @@ function semAcentos(s) {
   return (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 }
 
-// Everything about a product worth matching, as one string: what it is called,
-// the short name, the team it belongs to and the league above that. A shirt
-// filed under selecoes/americas/brasil answers to "brasil", to "americas" and
-// to "selecoes", because a reader who types any of those means this shelf.
+// Words, not letters. Everything is cut into tokens on anything that is not a
+// letter or a digit, so "26/27" is "26" and "27" and "vasco-da-gama" is three
+// words. Kept with a space at each end, which is what makes a whole-word test a
+// plain substring test: " brasil " is in " selecoes americas brasil " and is
+// not in " brasileirao ".
+function emPalavras(s) {
+  return ` ${semAcentos(s).replace(/[^a-z0-9]+/g, " ").trim()} `;
+}
+
+// What a product can be matched against, kept in three separate fields rather
+// than one blob. The field a word lands in is most of what decides how good the
+// match is, and a blob throws that away: searching "brasil" matched all 267
+// Brasileirao shirts as strongly as the Brazil ones, because "brasil" is the
+// first six letters of "brasileirao".
 const PALHEIRO = new Map();
 function palheiro(product) {
   let feito = PALHEIRO.get(product.id);
   if (feito) return feito;
-  const partes = [product.name, product.titleName, product.id];
+
   const cat = productCategory(product);
-  // Walked cumulatively, because a group is found by its whole path: "selecoes",
-  // then "selecoes/americas", then "selecoes/americas/brasil".
   const trocos = (product.league || "").split("/").filter(Boolean);
+  const equipa = [];
+  const liga = [];
+  // Walked cumulatively, because a group is found by its whole path: "selecoes",
+  // then "selecoes/americas", then "selecoes/americas/brasil". The last one is
+  // the team; everything above it is the shelf it stands on.
   let caminho = "";
-  trocos.forEach((troco) => {
+  trocos.forEach((troco, i) => {
     caminho = caminho ? `${caminho}/${troco}` : troco;
-    partes.push(troco);
-    // The name as it is displayed, so "Grêmio" is found by someone who typed
-    // the accent and "Vasco da Gama" by someone who typed only "gama".
     const g = findGroup(cat, caminho);
-    if (g) partes.push(groupName(g));
+    // The name as it is displayed too, so "Grêmio" is found by someone who
+    // typed the accent and "Vasco da Gama" by someone who typed only "gama".
+    const dois = [troco, g ? groupName(g) : ""];
+    (i === trocos.length - 1 ? equipa : liga).push(...dois);
   });
-  partes.push(categoryLabel(cat));
-  feito = semAcentos(partes.filter(Boolean).join(" "));
+
+  feito = {
+    nome: emPalavras([product.name, product.titleName, product.id].filter(Boolean).join(" ")),
+    equipa: emPalavras(equipa.filter(Boolean).join(" ")),
+    liga: emPalavras(liga.filter(Boolean).join(" ")),
+    categoria: emPalavras(categoryLabel(cat)),
+  };
   PALHEIRO.set(product.id, feito);
   return feito;
+}
+
+// How well one typed word matches one field. A whole word is worth many times a
+// word that merely starts with it, and that many times a run of letters buried
+// inside one - which is the difference between meaning Brazil and happening to
+// share six letters with the Brazilian league.
+function pontuaCampo(campo, w, pesoInteiro) {
+  if (campo.indexOf(` ${w} `) !== -1) return pesoInteiro;
+  if (campo.indexOf(` ${w}`) !== -1) return pesoInteiro * 0.4;
+  if (campo.indexOf(w) !== -1) return pesoInteiro * 0.1;
+  return 0;
+}
+
+// The team is what a search is usually about, so it outweighs the name, and the
+// name outweighs the shelf above it. A word that lands nowhere at all throws the
+// product out: every word has to mean something, or "flamengo mulher" would
+// return every Flamengo shirt.
+function pontua(p, palavras) {
+  const h = palheiro(p);
+  let total = 0;
+  for (const w of palavras) {
+    const ponto = Math.max(
+      pontuaCampo(h.equipa, w, 100),
+      pontuaCampo(h.nome, w, 30),
+      pontuaCampo(h.liga, w, 20),
+      pontuaCampo(h.categoria, w, 8),
+    );
+    if (!ponto) return 0;
+    total += ponto;
+  }
+  return total;
 }
 
 // Every word has to appear somewhere, in any order: "flamengo mulher" finds the
 // women's Flamengo shirts, and "mulher flamengo" finds the same ones. Matching
 // the whole phrase would have found neither, because the words are never
 // adjacent in the name.
+//
+// Sorted by how well each one matched; then, among equals, by how early the
+// word appears in the name, because "Camisola Flamengo I 26/27" is what someone
+// typing Flamengo meant and "Camisola de Treino Flamengo Bege" is not. Name
+// last, so the order is the same every time rather than whatever order the
+// catalogue happens to hold.
 function procura(termo) {
-  const palavras = semAcentos(termo).split(/\s+/).filter(Boolean);
+  const palavras = semAcentos(termo).replace(/[^a-z0-9]+/g, " ").split(" ").filter(Boolean);
   if (!palavras.length) return [];
-  return PRODUCTS.filter((p) => {
-    const h = palheiro(p);
-    return palavras.every((w) => h.indexOf(w) !== -1);
-  });
+
+  // Where the first typed word lands in the name. The longest word is taken as
+  // the first: someone typing "camisola flamengo" led with a word every shirt
+  // carries, and sorting by that would have sorted by nothing.
+  const chave = palavras.slice().sort((a, b) => b.length - a.length)[0];
+  const onde = (p) => {
+    const i = palheiro(p).nome.indexOf(` ${chave}`);
+    return i === -1 ? 9999 : i;
+  };
+
+  const achados = [];
+  for (const p of PRODUCTS) {
+    const ponto = pontua(p, palavras);
+    if (ponto) achados.push({ p, ponto, onde: onde(p) });
+  }
+  achados.sort((a, b) =>
+    b.ponto - a.ponto || a.onde - b.onde || a.p.name.localeCompare(b.p.name, "pt"));
+  return achados.map((x) => x.p);
 }
 
 // How many products a page of the catalogue holds. Twenty-four is six rows of
