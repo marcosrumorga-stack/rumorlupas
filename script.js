@@ -99,6 +99,14 @@ function activeLeague() {
   return activeGroup ? activeGroup.split("/")[0] : null;
 }
 
+// The browser is told not to manage the scroll position across history entries.
+// Choosing a league writes a new entry, and a new entry has no remembered
+// position, so a phone browser answers that by going to the top of the page -
+// tapping Camisas threw the reader back to the hero every time. Nothing here
+// wants the browser's help: the catalogue is redrawn in place and the page
+// should stay exactly where the reader left it.
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
 // The address the current view is at, so pushing it and reading it back agree.
 function currentPath() {
   const lang = typeof currentLang === "string" ? currentLang : "pt";
@@ -330,7 +338,10 @@ function renderCategories() {
       // A league belongs to the tab it was picked in, so changing tab drops it
       // and the address goes back to the catalogue's own.
       activeGroup = null;
-      history.pushState({ cat: activeCategory }, "", currentPath());
+      // Replaced, not pushed: switching tab is not a place to come back to,
+      // and one fewer history entry is one fewer chance for the browser to
+      // decide where the page should be scrolled.
+      history.replaceState({ cat: activeCategory }, "", currentPath());
       renderCategories();
       renderCatalogNote();
       renderGroupHead();
