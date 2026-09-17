@@ -29,11 +29,20 @@ $FECHA  = [string][char]41    # )
 $TRACOS = "-" + [char]0x2013 + [char]0x2014   # hyphen, en dash, em dash
 
 # Words that stay lowercase inside a name, and fragments that stay as they are.
-$MINUSCULAS = @("de", "do", "da", "dos", "das", "e", "x", "com", "sem", "a", "o")
+$MINUSCULAS = @("de", "do", "da", "dos", "das", "os", "as", "e", "x", "com",
+                "sem", "a", "o")
 $INTACTAS = @("II", "III", "IV", "VI", "I", "GR", "DBZ", "F1", "ESL", "NBA",
               "TOP", "CROPPED", "BRINGBACK", "REMIXED", "OVERSIZED")
 
 function Palavra([string]$w, [int]$posicao) {
+  # The supplier types Roman numerals with a lowercase L as often as with an I -
+  # "GREMIO lI", "SANTOS lll", "VASCO Ill" - and title casing turned those into
+  # "Li", "Lll" and "Ill", which is what a customer would have read on the card.
+  # A word of one to three letters using nothing but I and L is a numeral, and
+  # its length is the number: there is no Portuguese or English word it could be.
+  if ($w.Length -ge 1 -and $w.Length -le 3 -and $w -match "^[IilL]+$") {
+    return "I" * $w.Length
+  }
   if ($INTACTAS -contains $w) { return $w }
   # 26/27, 98/99, 1994: leave anything starting with a digit alone.
   if ($w -match "^[0-9]") { return $w }

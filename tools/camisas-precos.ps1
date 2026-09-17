@@ -20,15 +20,26 @@ param(
   [int]$PausaMs = 400
 )
 
-# Marcos's rules, later ones correcting earlier. Order matters: the retro and
-# player-version rule is tested before the 13-euro one, because plenty of retro
-# shirts also cost 13 and he said those stay at 35.
+# Marcos's rules, later ones correcting earlier. Order matters twice over.
+#
+# What the supplier charges is tested first, because a shirt that costs 33 and
+# sells for 40 earns seven euros, and no rule about sleeves changes that. Only
+# the two Palmeiras "todos os patrocinadores" shirts are up there today; at 35
+# they were earning two euros before postage, and Marcos set them at 55.
+#
+# The retro and player-version rule is tested before the cheap one. As it
+# happens no shirt at 13 is either - the supplier charges 17 for those - so the
+# two never actually meet, but the order is the one he gave.
+#
+# "Up to 14" rather than "exactly 13": four shirts came in a euro either side of
+# 13 and were selling for 35 because of it, which he did not intend.
 function Preco([string]$titulo, [double]$fornecedor) {
   $t = $titulo.ToUpperInvariant()
+  if ([Math]::Round($fornecedor) -ge 30) { return 55 }
   if ($t -match "CONJUNTO") { return 40 }
   if ($t -match "MANGA (LONGA|LARGA)") { return 40 }
   if ($t -match "RETR" -or $t -match "VERS.O JOGADOR") { return 35 }
-  if ([Math]::Round($fornecedor) -eq 13) { return 30 }
+  if ($fornecedor -gt 0 -and [Math]::Round($fornecedor) -le 14) { return 30 }
   return 35
 }
 

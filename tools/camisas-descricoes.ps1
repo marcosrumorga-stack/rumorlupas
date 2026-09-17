@@ -78,15 +78,20 @@ foreach ($p in $pastas) {
   $liga = $ligaDe[$f.id]
   if (-not $liga) { $semPais += $f.id; continue }
   $partes = ($liga -split "/")
-  $pais = $partes[$partes.Count - 1]
+  $quem = $partes[$partes.Count - 1]
+  # A team under a league is a country in Selecoes and a club everywhere else,
+  # and the sentence is the same either way, so both tables are looked in.
   # -notcontains, not .Contains(): the property-name list is a PowerShell
   # collection, and calling .Contains on it answers false for everything.
-  if ($frases.paises.PSObject.Properties.Name -notcontains $pais) { $semPais += $f.id; continue }
+  $equipa = if ($frases.paises.PSObject.Properties.Name -contains $quem) { $frases.paises.$quem }
+    elseif ($frases.clubes.PSObject.Properties.Name -contains $quem) { $frases.clubes.$quem }
+    else { $null }
+  if (-not $equipa) { $semPais += $f.id; continue }
 
   foreach ($lg in @("pt", "en", "es")) {
     $L = $frases.$lg
     $texto = $L.($ep.molde)
-    $texto = $texto.Replace("{pais}", $frases.paises.$pais.$lg)
+    $texto = $texto.Replace("{pais}", $equipa.$lg)
     $texto = $texto.Replace("{tipo}", $L.tipos.$tipo)
     $texto = $texto.Replace("{epoca}", $ep.valor)
 

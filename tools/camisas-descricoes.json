@@ -118,5 +118,38 @@
     "ucrania":        { "pt": "Ucrânia",         "en": "Ukraine",       "es": "Ucrania" },
     "uruguai":        { "pt": "Uruguai",         "en": "Uruguay",       "es": "Uruguay" },
     "venezuela":      { "pt": "Venezuela",       "en": "Venezuela",     "es": "Venezuela" }
+  },
+
+  "_notaClubes": [
+    "Um clube tem um nome proprio e nao se traduz, por isso as tres linguas",
+    "dizem o mesmo. Estao separados dos paises so para se saber ao que se",
+    "pertence: a frase que o script monta e exactamente a mesma."
+  ],
+
+  "clubes": {
+    "athletico-pr":     { "pt": "Athletico Paranaense", "en": "Athletico Paranaense", "es": "Athletico Paranaense" },
+    "atletico-mineiro": { "pt": "Atlético Mineiro",  "en": "Atlético Mineiro",  "es": "Atlético Mineiro" },
+    "bahia":            { "pt": "Bahia",             "en": "Bahia",             "es": "Bahia" },
+    "botafogo":         { "pt": "Botafogo",          "en": "Botafogo",          "es": "Botafogo" },
+    "ceara":            { "pt": "Ceará",             "en": "Ceará",             "es": "Ceará" },
+    "chapecoense":      { "pt": "Chapecoense",       "en": "Chapecoense",       "es": "Chapecoense" },
+    "corinthians":      { "pt": "Corinthians",       "en": "Corinthians",       "es": "Corinthians" },
+    "coritiba":         { "pt": "Coritiba",          "en": "Coritiba",          "es": "Coritiba" },
+    "flamengo":         { "pt": "Flamengo",          "en": "Flamengo",          "es": "Flamengo" },
+    "fluminense":       { "pt": "Fluminense",        "en": "Fluminense",        "es": "Fluminense" },
+    "fortaleza":        { "pt": "Fortaleza",         "en": "Fortaleza",         "es": "Fortaleza" },
+    "gremio":           { "pt": "Grêmio",            "en": "Grêmio",            "es": "Grêmio" },
+    "internacional":    { "pt": "Internacional",     "en": "Internacional",     "es": "Internacional" },
+    "juventus-mooca":   { "pt": "Juventus da Mooca", "en": "Juventus da Mooca", "es": "Juventus da Mooca" },
+    "nautico":          { "pt": "Náutico",           "en": "Náutico",           "es": "Náutico" },
+    "palmeiras":        { "pt": "Palmeiras",         "en": "Palmeiras",         "es": "Palmeiras" },
+    "portuguesa":       { "pt": "Portuguesa",        "en": "Portuguesa",        "es": "Portuguesa" },
+    "remo":             { "pt": "Remo",              "en": "Remo",              "es": "Remo" },
+    "santa-cruz":       { "pt": "Santa Cruz",        "en": "Santa Cruz",        "es": "Santa Cruz" },
+    "santos":           { "pt": "Santos",            "en": "Santos",            "es": "Santos" },
+    "sao-paulo":        { "pt": "São Paulo",         "en": "São Paulo",         "es": "São Paulo" },
+    "sport-recife":     { "pt": "Sport Recife",      "en": "Sport Recife",      "es": "Sport Recife" },
+    "vasco":            { "pt": "Vasco da Gama",     "en": "Vasco da Gama",     "es": "Vasco da Gama" },
+    "vitoria":          { "pt": "Vitória",           "en": "Vitória",           "es": "Vitória" }
   }
 }
