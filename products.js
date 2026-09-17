@@ -887,25 +887,39 @@ function groupUrl(categoryId, groupId, lang) {
   return `${prefix}/${setup.path}/${setup.groupPath}/${groupId}`;
 }
 
+// What is actually being sold under a league. Most of these are football, which
+// is the fallback, but the NBA is basketball and F1 is neither - saying
+// "camisolas de futebol" over the NBA is simply wrong, and it is the line
+// Google shows.
+function groupShirtsWord(group, tr) {
+  const key = `league.shirts.${group.id}`;
+  const text = tr(key);
+  return text === key ? tr("league.shirts") : text;
+}
+
 // Leads with the league's own name, because that is what gets typed into
 // Google — "premier league camisola" — and it sidesteps Portuguese wanting a
 // different preposition for each one: da Premier League, do Brasileirão.
 function groupPageTitle(categoryId, group, tr) {
   const name = groupName(group, tr);
+  const shirts = groupShirtsWord(group, tr);
   const products = productsInGroup(categoryId, group.id);
   if (!products.length) {
-    return `${name} — ${tr("league.shirts")}, ${tr("league.soon")} | RumorLupas`;
+    return `${name} — ${shirts}, ${tr("league.soon")} | RumorLupas`;
   }
   const cheapest = Math.min(...products.map((p) => p.price));
-  return `${name} — ${tr("league.shirts")} ${tr("league.from")} ${formatPrice(cheapest)} | RumorLupas`;
+  return `${name} — ${shirts} ${tr("league.from")} ${formatPrice(cheapest)} | RumorLupas`;
 }
 
 function groupPageDescription(categoryId, group, tr) {
   const name = groupName(group, tr);
+  const shirts = groupShirtsWord(group, tr);
   const products = productsInGroup(categoryId, group.id);
-  if (!products.length) return `${name} — ${tr("league.soonLong")}`;
+  if (!products.length) {
+    return `${name} — ${shirts}, ${tr("league.soon")}. ${tr("league.soonTail")}`;
+  }
   const cheapest = Math.min(...products.map((p) => p.price));
-  return `${name} — ${tr("league.shirts")} ${tr("league.from")} ${formatPrice(cheapest)}. ${tr("league.descTail")}`;
+  return `${name} — ${shirts} ${tr("league.from")} ${formatPrice(cheapest)}. ${tr("league.descTail")}`;
 }
 
 // A product either has colour variants — each with its own photos — or a plain
