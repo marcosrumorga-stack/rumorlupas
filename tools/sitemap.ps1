@@ -118,13 +118,26 @@ foreach ($p in $products) { Add-Page "/$($p.path)/$($p.slug)" "0.8" "weekly" }
 # A league only earns a place once it has something to show.
 foreach ($cat in $GROUPS.Keys) {
   $setup = $CATEGORIES[$cat]
-  foreach ($id in $GROUPS[$cat].ids) {
-    # A shirt under selecoes/americas counts for selecoes as well, which is the
-    # same rule productsInGroup() applies in products.js.
-    $has = @($products | Where-Object {
-      $_.category -eq $cat -and ($_.league -eq $id -or $_.league -like "$id/*")
-    }).Count
-    if ($has) { Add-Page "/$($setup.path)/$($GROUPS[$cat].path)/$id" "0.6" "weekly" }
+
+  # Every group path a product actually names, plus every path above it: a
+  # shirt filed under selecoes/europa/portugal gives Portugal a page, and gives
+  # Europa and Selecoes one too. Discovered rather than listed, the same way
+  # products.js discovers the teams inside a continent - a list written by hand
+  # here would promise pages that do not exist and miss ones that do.
+  $caminhos = @{}
+  foreach ($p in $products) {
+    if ($p.category -ne $cat -or -not $p.league) { continue }
+    $partes = $p.league -split "/"
+    for ($i = 0; $i -lt $partes.Count; $i++) {
+      $caminhos[($partes[0..$i] -join "/")] = $true
+    }
+  }
+  # The ones declared but empty stay out, which is where the noindex on them
+  # comes from; the ones discovered are by definition not empty.
+  foreach ($id in ($caminhos.Keys | Sort-Object)) {
+    $profundidade = ($id -split "/").Count
+    $peso = @("0.6", "0.6", "0.5", "0.5")[[Math]::Min($profundidade - 1, 3)]
+    Add-Page "/$($setup.path)/$($GROUPS[$cat].path)/$id" $peso "weekly"
   }
 }
 # Portuguese only: the documents themselves are not translated, and the notice

@@ -1,2 +1,9 @@
 node_modules/
 .netlify/
+
+# As fotos em bruto do fornecedor. Sao a fonte de onde inset-camisas.ps1
+# constroi as fotos enquadradas em images/products, e pesam mais de meio
+# gigabyte - seis vezes o site inteiro - para nunca chegarem a um browser.
+# Ficam na maquina de quem trabalha nelas; quem precisar delas outra vez
+# corre tools/fetch-camisas.ps1 e volta a busca-las ao fornecedor.
+tools/camisas-originais/

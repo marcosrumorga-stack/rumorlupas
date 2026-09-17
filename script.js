@@ -154,9 +154,20 @@ function groupPill(path, label, on, count) {
     `${count === 0 ? " leagues__tab--soon" : ""}" data-group="${path}" aria-selected="${on}">${label}</button>`;
 }
 
+// True where the pointer cannot hover: a phone, a tablet. There the first tap
+// on a continent opens its teams instead of going straight to the continent,
+// because a menu that only hover can reach does not exist on those screens.
+const semHover = () => window.matchMedia("(hover: none)").matches;
+
 function wireGroupPills(row) {
-  row.querySelectorAll(".leagues__tab").forEach((btn) => {
+  row.querySelectorAll(".leagues__tab, .teams__item").forEach((btn) => {
     btn.addEventListener("click", () => {
+      const wrap = btn.closest(".teams");
+      if (wrap && btn.classList.contains("leagues__tab") && semHover() && !wrap.classList.contains("open")) {
+        row.querySelectorAll(".teams.open").forEach((o) => o.classList.remove("open"));
+        wrap.classList.add("open");
+        return;
+      }
       const wanted = btn.dataset.group || null;
       if (wanted === activeGroup) return;
       showGroup(wanted, true);
@@ -202,11 +213,54 @@ function renderGroups() {
     groupPill(league, t("league.all"), activeGroup === league, null),
     ...inside.map((g) => {
       const path = `${league}/${g.id}`;
-      return groupPill(path, groupName(g), path === activeGroup,
-        productsInGroup(activeCategory, path).length);
+      const dentro = subGroups(activeCategory, path);
+      const on = activeGroup === path || String(activeGroup || "").startsWith(`${path}/`);
+      // A continent that holds teams carries them in a menu of its own, opened
+      // by the pointer and by the keyboard. Wrapped so the menu can hang off
+      // the pill without the row having to become a positioning context.
+      const pill = groupPill(path, groupName(g), on, productsInGroup(activeCategory, path).length);
+      if (!dentro.length) return pill;
+      const itens = dentro.map((team) =>
+        `<button type="button" class="teams__item${activeGroup === `${path}/${team.id}` ? " active" : ""}" data-group="${path}/${team.id}">${groupName(team)}</button>`
+      ).join("");
+      return `<span class="teams" data-for="${path}">${pill}<span class="teams__menu" role="menu">${itens}</span></span>`;
     }),
   ].join("");
   wireGroupPills(subLeagueTabs);
+
+  // Opened by hover and by focus, and on a touch screen by a first tap on the
+  // pill - where hover does not exist and a tap would otherwise jump straight
+  // to the continent without ever showing the teams inside it.
+  subLeagueTabs.querySelectorAll(".teams").forEach((wrap) => {
+    const abrir = () => {
+      subLeagueTabs.querySelectorAll(".teams.open").forEach((o) => { if (o !== wrap) o.classList.remove("open"); });
+      // The menu is fixed to the window, so it has to be told where the pill
+      // is. Measured at the moment it opens rather than when it is drawn: the
+      // row scrolls, and yesterday's position is the wrong one.
+      const pill = wrap.querySelector(".leagues__tab").getBoundingClientRect();
+      const menu = wrap.querySelector(".teams__menu");
+      menu.style.top = `${Math.round(pill.bottom + 6)}px`;
+      // Centred on the pill, then pulled back inside the window if that would
+      // hang it off either edge.
+      const largura = menu.offsetWidth || 170;
+      const meio = pill.left + pill.width / 2 - largura / 2;
+      const limite = Math.max(8, Math.min(meio, window.innerWidth - largura - 8));
+      menu.style.left = `${Math.round(limite)}px`;
+      wrap.classList.add("open");
+    };
+    wrap.addEventListener("mouseenter", abrir);
+    wrap.addEventListener("mouseleave", () => wrap.classList.remove("open"));
+    wrap.addEventListener("focusin", abrir);
+    wrap.addEventListener("keydown", (e) => { if (e.key === "Escape") wrap.classList.remove("open"); });
+  });
+
+  // Anywhere else closes whatever is open. Pointerdown rather than click, so a
+  // menu does not sit open under a finger that has already moved on.
+  document.addEventListener("pointerdown", (e) => {
+    if (!e.target.closest || !e.target.closest(".teams")) {
+      subLeagueTabs.querySelectorAll(".teams.open").forEach((o) => o.classList.remove("open"));
+    }
+  });
 }
 
 // The back button, and the forward one after it.
@@ -272,7 +326,7 @@ function renderProducts() {
     <div class="product-card" data-product="${p.id}">
       <div class="product-card__media">${mediaHtml(p)}</div>
       <div class="product-card__body">
-        <a href="${productUrl(p)}" class="product-card__name">${p.name}</a>
+        <a href="${productUrl(p)}" class="product-card__name">${cardName(p)}</a>
         ${colorSwatchesHtml(p, selectedColor[p.id])}
         <p class="product-card__price">${priceHtml(p)}</p>
         ${isSoldOut(p, selectedColor[p.id])

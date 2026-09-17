@@ -1048,6 +1048,65 @@ button.swatch { position: relative; }
   .leagues__tab { flex: 0 0 auto; }
 }
 
+/* The teams inside a continent, hanging off its pill. Kept in the flow as an
+   inline-block so the row of pills lays out exactly as it did before, with the
+   menu taken out of the flow on top of it. */
+.teams { display: inline-block; }
+.teams__menu {
+  /* Fixed, not absolute, and placed by script. On a phone the row of pills
+     scrolls sideways, and anything absolutely positioned inside a scrolling
+     box is clipped by it - the menu would have been cut off at the row's own
+     edge. Fixed takes it out of that box entirely. */
+  position: fixed;
+  transform: translateY(-4px);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 14px 34px rgba(28,27,25,0.16);
+  /* Closed by default, and not merely invisible: a menu that is only
+     transparent still catches the pointer and swallows clicks meant for the
+     grid underneath. */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  /* visibility is delayed rather than animated: it is not a property that can
+     be halfway, and animating it left the menu stuck hidden whenever the
+     browser throttled the transition - in a background tab, for one. Delayed
+     on the way out so the fade is seen, instant on the way in. */
+  transition: opacity 0.14s, transform 0.14s, visibility 0s 0.14s;
+}
+.teams.open .teams__menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition: opacity 0.14s, transform 0.14s, visibility 0s;
+}
+.teams__item {
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.82rem;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.teams__item:hover { background: var(--bg-alt); }
+.teams__item.active { background: var(--accent); color: #fff; }
+.teams__item:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+@media (max-width: 760px) { .teams__menu { max-height: 260px; } }
+
 .products__empty {
   text-align: center;
   color: var(--text-muted);
