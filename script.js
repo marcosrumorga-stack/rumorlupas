@@ -162,9 +162,12 @@ const semHover = () => window.matchMedia("(hover: none)").matches;
 function wireGroupPills(row) {
   row.querySelectorAll(".leagues__tab, .teams__item").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const wrap = btn.closest(".teams");
-      if (wrap && btn.classList.contains("leagues__tab") && semHover() && !wrap.classList.contains("open")) {
-        row.querySelectorAll(".teams.open").forEach((o) => o.classList.remove("open"));
+      // A button that opens something, on a screen with no hover: the first tap
+      // opens it rather than jumping past it. Works for both levels, because
+      // both say so with aria-haspopup.
+      const wrap = btn.parentElement && btn.parentElement.classList.contains("teams") ? btn.parentElement : null;
+      if (wrap && btn.getAttribute("aria-haspopup") !== "false" && semHover() && !wrap.classList.contains("open")) {
+        row.querySelectorAll(".teams.open").forEach((o) => { if (!o.contains(wrap)) o.classList.remove("open"); });
         wrap.classList.add("open");
         return;
       }
@@ -175,90 +178,105 @@ function wireGroupPills(row) {
   });
 }
 
+// One entry inside a menu. An entry that holds more entries carries them in a
+// panel of its own, opening beside it — the same shape the supplier's own menu
+// has, and the shape this catalogue already has in its data: Seleções holds
+// continents, a continent holds teams.
+function menuEntry(path, group) {
+  const dentro = subGroups(activeCategory, path);
+  const on = activeGroup === path || String(activeGroup || "").startsWith(`${path}/`);
+  const botao = `<button type="button" class="teams__item${on ? " active" : ""}` +
+    `${dentro.length ? " teams__item--pai" : ""}" data-group="${path}" aria-haspopup="${dentro.length > 0}">${groupName(group)}</button>`;
+  if (!dentro.length) return botao;
+
+  const filhos = dentro.map((g) => menuEntry(`${path}/${g.id}`, g)).join("");
+  return `<span class="teams teams--aninhado" data-for="${path}">${botao}` +
+    `<span class="teams__menu teams__menu--lado" role="menu">${filhos}</span></span>`;
+}
+
 function renderGroups() {
   const groups = categoryGroups(activeCategory);
   leagueTabs.hidden = !groups.length;
+  // The row of continents is gone: everything below a league now hangs off that
+  // league's own pill, which is how the shop Marcos is copying does it and one
+  // fewer row of pills above the grid.
   subLeagueTabs.hidden = true;
+  subLeagueTabs.innerHTML = "";
   if (!groups.length) {
     leagueTabs.innerHTML = "";
-    subLeagueTabs.innerHTML = "";
     return;
   }
 
   leagueTabs.setAttribute("aria-label", t("aria.league"));
   // "Todas" first: without it there is no way back to the whole tab once a
-  // league is picked. A league is marked active for its own continents too, so
-  // Seleções stays lit while Américas is the one being read.
+  // league is picked. A league is marked active for everything inside it too,
+  // so Seleções stays lit while Portugal is the one being read.
   const league = activeLeague();
   leagueTabs.innerHTML = [
     groupPill("", t("league.all"), !activeGroup, null),
-    ...groups.map((g) =>
-      groupPill(g.id, groupName(g), g.id === league, productsInGroup(activeCategory, g.id).length)
-    ),
-  ].join("");
-  wireGroupPills(leagueTabs);
-
-  // The third row: the continents inside Seleções, drawn only while that league
-  // is the one being looked at. A league with no groups of its own draws none,
-  // which is every other one today.
-  const inside = league ? subGroups(activeCategory, league) : [];
-  subLeagueTabs.hidden = !inside.length;
-  if (!inside.length) {
-    subLeagueTabs.innerHTML = "";
-    return;
-  }
-
-  subLeagueTabs.setAttribute("aria-label", t("aria.league"));
-  subLeagueTabs.innerHTML = [
-    groupPill(league, t("league.all"), activeGroup === league, null),
-    ...inside.map((g) => {
-      const path = `${league}/${g.id}`;
-      const dentro = subGroups(activeCategory, path);
-      const on = activeGroup === path || String(activeGroup || "").startsWith(`${path}/`);
-      // A continent that holds teams carries them in a menu of its own, opened
-      // by the pointer and by the keyboard. Wrapped so the menu can hang off
-      // the pill without the row having to become a positioning context.
-      const pill = groupPill(path, groupName(g), on, productsInGroup(activeCategory, path).length);
+    ...groups.map((g) => {
+      const dentro = subGroups(activeCategory, g.id);
+      const pill = groupPill(g.id, groupName(g), g.id === league, productsInGroup(activeCategory, g.id).length);
       if (!dentro.length) return pill;
-      const itens = dentro.map((team) =>
-        `<button type="button" class="teams__item${activeGroup === `${path}/${team.id}` ? " active" : ""}" data-group="${path}/${team.id}">${groupName(team)}</button>`
-      ).join("");
-      return `<span class="teams" data-for="${path}">${pill}<span class="teams__menu" role="menu">${itens}</span></span>`;
+      const filhos = dentro.map((sub) => menuEntry(`${g.id}/${sub.id}`, sub)).join("");
+      return `<span class="teams" data-for="${g.id}">${pill}` +
+        `<span class="teams__menu" role="menu">${filhos}</span></span>`;
     }),
   ].join("");
-  wireGroupPills(subLeagueTabs);
+  wireGroupPills(leagueTabs);
 
   // Opened by hover and by focus, and on a touch screen by a first tap on the
   // pill - where hover does not exist and a tap would otherwise jump straight
   // to the continent without ever showing the teams inside it.
-  subLeagueTabs.querySelectorAll(".teams").forEach((wrap) => {
+  leagueTabs.querySelectorAll(".teams").forEach((wrap) => {
     const abrir = () => {
-      subLeagueTabs.querySelectorAll(".teams.open").forEach((o) => { if (o !== wrap) o.classList.remove("open"); });
-      // The menu is fixed to the window, so it has to be told where the pill
-      // is. Measured at the moment it opens rather than when it is drawn: the
+      // Close whatever is open that this one does not live inside, so moving
+      // between two continents swaps their panels instead of stacking them.
+      leagueTabs.querySelectorAll(".teams.open").forEach((o) => {
+        if (o !== wrap && !o.contains(wrap) && !wrap.contains(o)) o.classList.remove("open");
+      });
+
+      // The menus are fixed to the window, so each has to be told where its own
+      // trigger is. Measured when it opens rather than when it is drawn: the
       // row scrolls, and yesterday's position is the wrong one.
-      const pill = wrap.querySelector(".leagues__tab").getBoundingClientRect();
+      const gatilho = wrap.querySelector(".leagues__tab, .teams__item");
+      const r = gatilho.getBoundingClientRect();
       const menu = wrap.querySelector(".teams__menu");
-      menu.style.top = `${Math.round(pill.bottom + 6)}px`;
-      // Centred on the pill, then pulled back inside the window if that would
-      // hang it off either edge.
-      const largura = menu.offsetWidth || 170;
-      const meio = pill.left + pill.width / 2 - largura / 2;
-      const limite = Math.max(8, Math.min(meio, window.innerWidth - largura - 8));
-      menu.style.left = `${Math.round(limite)}px`;
+      const largura = menu.offsetWidth || 180;
+
+      if (wrap.classList.contains("teams--aninhado")) {
+        // A nested panel opens beside its entry, and flips to the other side
+        // when there is no room on the right.
+        const cabe = r.right + largura + 8 <= window.innerWidth;
+        menu.style.left = `${Math.round(cabe ? r.right + 2 : Math.max(8, r.left - largura - 2))}px`;
+        menu.style.top = `${Math.round(Math.min(r.top - 6, window.innerHeight - menu.offsetHeight - 8))}px`;
+      } else {
+        menu.style.top = `${Math.round(r.bottom + 6)}px`;
+        const meio = r.left + r.width / 2 - largura / 2;
+        menu.style.left = `${Math.round(Math.max(8, Math.min(meio, window.innerWidth - largura - 8)))}px`;
+      }
       wrap.classList.add("open");
     };
-    wrap.addEventListener("mouseenter", abrir);
-    wrap.addEventListener("mouseleave", () => wrap.classList.remove("open"));
-    wrap.addEventListener("focusin", abrir);
-    wrap.addEventListener("keydown", (e) => { if (e.key === "Escape") wrap.classList.remove("open"); });
+    // Closing waits a moment. Reaching a menu item is a diagonal movement, and
+    // a diagonal clips the corner of whatever is beside the pill on the way -
+    // closing the instant the pointer leaves makes the menu impossible to
+    // reach for anyone who does not travel in straight lines.
+    let aFechar = null;
+    const cancelar = () => { if (aFechar) { clearTimeout(aFechar); aFechar = null; } };
+    const fechar = () => { cancelar(); aFechar = setTimeout(() => wrap.classList.remove("open"), 220); };
+
+    wrap.addEventListener("mouseenter", () => { cancelar(); abrir(); });
+    wrap.addEventListener("mouseleave", fechar);
+    wrap.addEventListener("focusin", () => { cancelar(); abrir(); });
+    wrap.addEventListener("focusout", (e) => { if (!wrap.contains(e.relatedTarget)) fechar(); });
+    wrap.addEventListener("keydown", (e) => { if (e.key === "Escape") { cancelar(); wrap.classList.remove("open"); } });
   });
 
   // Anywhere else closes whatever is open. Pointerdown rather than click, so a
   // menu does not sit open under a finger that has already moved on.
   document.addEventListener("pointerdown", (e) => {
     if (!e.target.closest || !e.target.closest(".teams")) {
-      subLeagueTabs.querySelectorAll(".teams.open").forEach((o) => o.classList.remove("open"));
+      leagueTabs.querySelectorAll(".teams.open").forEach((o) => o.classList.remove("open"));
     }
   });
 }

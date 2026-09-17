@@ -1,0 +1,122 @@
+{
+  "_nota": [
+    "As frases com que camisas-descricoes.ps1 monta a descricao de cada camisola.",
+    "Vivem aqui, num ficheiro UTF-8, e nao dentro do script: o Windows PowerShell",
+    "le um .ps1 como ANSI e estraga todos os acentos, o que ja partiu dois scripts",
+    "nesta mesma pasta. O script fica so com a logica, em ASCII, e o texto fica",
+    "onde pode ter acentos em paz.",
+    "",
+    "Tudo o que esta aqui descreve a peca: o pais, o tipo, a epoca, o corte, os",
+    "tamanhos e a personalizacao. Nada afirma licenciamento oficial, resultados de",
+    "jogos, ou materiais que nao conseguimos verificar."
+  ],
+
+  "pt": {
+    "comEpoca": "{pais} — {tipo} da época {epoca}.",
+    "comAno": "{pais} — {tipo} de {epoca}.",
+    "semEpoca": "{pais} — {tipo}.",
+    "tipos": {
+      "principal": "camisola principal",
+      "alternativa": "camisola alternativa",
+      "terceira": "terceiro equipamento",
+      "guardaRedes": "camisola de guarda-redes",
+      "especial": "camisola de edição especial",
+      "retro": "reedição retro",
+      "conjunto": "conjunto de treino, camisola sem mangas e calções",
+      "camisola": "camisola"
+    },
+    "jogador": " Versão jogador: o corte mais justo e o tecido mais leve que se usa em campo, e não a versão larga de adepto.",
+    "mulher": " Corte feminino.",
+    "cropped": " Top curto, de corte feminino.",
+    "mangaLonga": " De manga longa.",
+    "fecha": " Tamanhos S a XXL. Nome e número nas costas por mais 5 €.",
+    "fechaConjunto": " Tamanhos S a XXL. Personalização por mais 5 €."
+  },
+
+  "en": {
+    "comEpoca": "{pais} — {tipo} for the {epoca} season.",
+    "comAno": "{pais} — {tipo}, {epoca}.",
+    "semEpoca": "{pais} — {tipo}.",
+    "tipos": {
+      "principal": "home shirt",
+      "alternativa": "away shirt",
+      "terceira": "third shirt",
+      "guardaRedes": "goalkeeper shirt",
+      "especial": "special edition shirt",
+      "retro": "retro reissue",
+      "conjunto": "training set, sleeveless top and shorts",
+      "camisola": "football shirt"
+    },
+    "jogador": " Player version: the closer cut and lighter fabric worn on the pitch, not the looser fan version.",
+    "mulher": " Women's cut.",
+    "cropped": " Cropped top, women's cut.",
+    "mangaLonga": " Long sleeves.",
+    "fecha": " Sizes S to XXL. A name and number on the back for 5 € more.",
+    "fechaConjunto": " Sizes S to XXL. Printing for 5 € more."
+  },
+
+  "es": {
+    "comEpoca": "{pais} — {tipo} de la temporada {epoca}.",
+    "comAno": "{pais} — {tipo} de {epoca}.",
+    "semEpoca": "{pais} — {tipo}.",
+    "tipos": {
+      "principal": "camiseta principal",
+      "alternativa": "camiseta alternativa",
+      "terceira": "tercera equipación",
+      "guardaRedes": "camiseta de portero",
+      "especial": "camiseta de edición especial",
+      "retro": "reedición retro",
+      "conjunto": "conjunto de entrenamiento, camiseta sin mangas y pantalón",
+      "camisola": "camiseta de fútbol"
+    },
+    "jogador": " Versión jugador: el corte más ajustado y el tejido más ligero que se usa en el campo, no la versión holgada de aficionado.",
+    "mulher": " Corte femenino.",
+    "cropped": " Top corto, de corte femenino.",
+    "mangaLonga": " De manga larga.",
+    "fecha": " Tallas S a XXL. Nombre y número en la espalda por 5 € más.",
+    "fechaConjunto": " Tallas S a XXL. Personalización por 5 € más."
+  },
+
+  "paises": {
+    "africa-do-sul":  { "pt": "África do Sul",   "en": "South Africa",  "es": "Sudáfrica" },
+    "alemanha":       { "pt": "Alemanha",        "en": "Germany",       "es": "Alemania" },
+    "arabia-saudita": { "pt": "Arábia Saudita",  "en": "Saudi Arabia",  "es": "Arabia Saudí" },
+    "argelia":        { "pt": "Argélia",         "en": "Algeria",       "es": "Argelia" },
+    "argentina":      { "pt": "Argentina",       "en": "Argentina",     "es": "Argentina" },
+    "belgica":        { "pt": "Bélgica",         "en": "Belgium",       "es": "Bélgica" },
+    "brasil":         { "pt": "Brasil",          "en": "Brazil",        "es": "Brasil" },
+    "cabo-verde":     { "pt": "Cabo Verde",      "en": "Cape Verde",    "es": "Cabo Verde" },
+    "canada":         { "pt": "Canadá",          "en": "Canada",        "es": "Canadá" },
+    "colombia":       { "pt": "Colômbia",        "en": "Colombia",      "es": "Colombia" },
+    "coreia":         { "pt": "Coreia do Sul",   "en": "South Korea",   "es": "Corea del Sur" },
+    "costa-marfim":   { "pt": "Costa do Marfim", "en": "Ivory Coast",   "es": "Costa de Marfil" },
+    "croacia":        { "pt": "Croácia",         "en": "Croatia",       "es": "Croacia" },
+    "dinamarca":      { "pt": "Dinamarca",       "en": "Denmark",       "es": "Dinamarca" },
+    "egito":          { "pt": "Egito",           "en": "Egypt",         "es": "Egipto" },
+    "equador":        { "pt": "Equador",         "en": "Ecuador",       "es": "Ecuador" },
+    "escocia":        { "pt": "Escócia",         "en": "Scotland",      "es": "Escocia" },
+    "espanha":        { "pt": "Espanha",         "en": "Spain",         "es": "España" },
+    "estados-unidos": { "pt": "Estados Unidos",  "en": "United States", "es": "Estados Unidos" },
+    "franca":         { "pt": "França",          "en": "France",        "es": "Francia" },
+    "gales":          { "pt": "País de Gales",   "en": "Wales",         "es": "Gales" },
+    "gana":           { "pt": "Gana",            "en": "Ghana",         "es": "Ghana" },
+    "holanda":        { "pt": "Holanda",         "en": "Netherlands",   "es": "Países Bajos" },
+    "inglaterra":     { "pt": "Inglaterra",      "en": "England",       "es": "Inglaterra" },
+    "italia":         { "pt": "Itália",          "en": "Italy",         "es": "Italia" },
+    "jamaica":        { "pt": "Jamaica",         "en": "Jamaica",       "es": "Jamaica" },
+    "japao":          { "pt": "Japão",           "en": "Japan",         "es": "Japón" },
+    "marrocos":       { "pt": "Marrocos",        "en": "Morocco",       "es": "Marruecos" },
+    "mexico":         { "pt": "México",          "en": "Mexico",        "es": "México" },
+    "nigeria":        { "pt": "Nigéria",         "en": "Nigeria",       "es": "Nigeria" },
+    "noruega":        { "pt": "Noruega",         "en": "Norway",        "es": "Noruega" },
+    "peru":           { "pt": "Peru",            "en": "Peru",          "es": "Perú" },
+    "portugal":       { "pt": "Portugal",        "en": "Portugal",      "es": "Portugal" },
+    "romenia":        { "pt": "Roménia",         "en": "Romania",       "es": "Rumanía" },
+    "senegal":        { "pt": "Senegal",         "en": "Senegal",       "es": "Senegal" },
+    "suecia":         { "pt": "Suécia",          "en": "Sweden",        "es": "Suecia" },
+    "suica":          { "pt": "Suíça",           "en": "Switzerland",   "es": "Suiza" },
+    "ucrania":        { "pt": "Ucrânia",         "en": "Ukraine",       "es": "Ucrania" },
+    "uruguai":        { "pt": "Uruguai",         "en": "Uruguay",       "es": "Uruguay" },
+    "venezuela":      { "pt": "Venezuela",       "en": "Venezuela",     "es": "Venezuela" }
+  }
+}

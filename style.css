@@ -1089,6 +1089,19 @@ button.swatch { position: relative; }
   transform: translateY(0);
   transition: opacity 0.14s, transform 0.14s, visibility 0s;
 }
+/* The gap between the pill and the menu, bridged. The menu sits six pixels
+   below the pill so it reads as a separate surface, and those six pixels were
+   enough to close it: crossing them put the pointer over the page behind, which
+   is outside the pill, so the menu shut in the face of someone reaching for it.
+   This strip is part of the menu, so the pointer never leaves. */
+.teams__menu::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 10px;
+}
 .teams__item {
   padding: 7px 12px;
   border: 0;
@@ -1104,6 +1117,38 @@ button.swatch { position: relative; }
 .teams__item:hover { background: var(--bg-alt); }
 .teams__item.active { background: var(--accent); color: #fff; }
 .teams__item:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+/* An entry that opens another panel. Inside the column of a menu it has to fill
+   the width, or the arrow sits wherever the word ends. */
+.teams--aninhado { display: block; }
+.teams--aninhado > .teams__item { width: 100%; }
+.teams__item--pai {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.teams__item--pai::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-top: 1.6px solid currentColor;
+  border-right: 1.6px solid currentColor;
+  transform: rotate(45deg);
+  opacity: 0.55;
+}
+.teams--aninhado.open > .teams__item { background: var(--bg-alt); }
+.teams--aninhado.open > .teams__item.active { background: var(--accent); }
+/* The second panel opens beside the first, so its bridge has to cover the gap
+   on the side it came from rather than above it. */
+.teams__menu--lado::before {
+  top: 0;
+  bottom: 0;
+  height: auto;
+  left: -10px;
+  right: auto;
+  width: 10px;
+}
 
 @media (max-width: 760px) { .teams__menu { max-height: 260px; } }
 
