@@ -227,7 +227,7 @@ const PRODUCTS = [
         name: "24K · lente esmeralda",
         hex: "#c39c50",
         swatch: "linear-gradient(135deg, #c39c50 50%, #58ac83 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/xx-45/24k-lente-esmeralda/1.jpeg",
           "images/products/xx-45/24k-lente-esmeralda/2.jpeg",
