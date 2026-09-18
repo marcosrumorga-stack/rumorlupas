@@ -561,7 +561,7 @@ const PRODUCTS = [
         // Black frame, black lens: the two halves would be the same colour,
         // so no split - the site's rule for that case.
         hex: "#15130f",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/flak-2xl-45/vermelha-lente-preta/1.jpeg",
           "images/products/flak-2xl-45/vermelha-lente-preta/2.jpeg",
