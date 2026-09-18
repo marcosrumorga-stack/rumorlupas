@@ -193,7 +193,7 @@ const PRODUCTS = [
         name: "Cinza escura · lente rosa",
         hex: "#4a4744",
         swatch: "linear-gradient(135deg, #4a4744 50%, #e0338c 50%)",
-        stock: 1,
+        stock: 0,
         images: [
           "images/products/juliet-45/cinza-escura-lente-rosa/1.jpeg",
           "images/products/juliet-45/cinza-escura-lente-rosa/2.jpeg",
@@ -616,7 +616,7 @@ const PRODUCTS = [
         id: "preta-lente-preta",
         name: "Preta · lente preta",
         hex: "#15130f",
-        stock: 2,
+        stock: 0,
         images: [
           "images/products/pitboss-53/preta-lente-preta/1.jpeg",
           "images/products/pitboss-53/preta-lente-preta/2.jpeg",
